@@ -1,9 +1,11 @@
-import UserOptions from "../components/UserOptions";
+import Select from "../components/Select"
 
 
 const Test = () => {
     return (
-        <UserOptions />
+        <div className="flex justify-center items-center h-screen w-screen">
+            <Select />
+        </div>
     );
 
 };
