@@ -23,10 +23,10 @@ const TextInput = ({ label, type, value, onChange, placeholder }) => {
     return (
         <div className="flex items-center gap-4">
             {/* Label */}
-            <label className="w-1/3 text-gray-700 font-medium">{label}</label>
+            <label className=" w-1/3 text-gray-700 font-medium">{label}</label>
 
             {/* Input + Icon */}
-            <div className="relative w-2/3">
+            <div className="relative" w-full>
 
                 {type === "textarea" ? (
                     <textarea

@@ -4,6 +4,8 @@ import ChangePassword from "./pages/settings/change-password";
 import ChangeProfile from "./pages/settings/change-profile";
 import ChangeCV from "./pages/settings/change-cv";
 import Test from "./pages/test"
+import SignUp from "./pages/signup"; 
+import Login from "./pages/login"; 
 
 
 function App() {
@@ -15,6 +17,8 @@ function App() {
         <Route path="/settings/change-profile" element={<ChangeProfile />} />
         <Route path="/settings/change-cv" element={<ChangeCV />} />
         <Route path="/test" element={<Test />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} /> 
       </Routes>
     </Router>
   );
