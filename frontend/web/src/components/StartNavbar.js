@@ -10,7 +10,7 @@ const StartNavbar = () => {
     return (
         <nav className="bg-white shadow-md py-2 sm:px-2 lg:px-10 flex justify-between items-center rounded-lg fixed top-0 left-0 w-full z-50">
             {/* Logo */}
-            <div className="text-2xl text-darkPrimary lobster font-lobster">SkillLink</div>
+            <div className="text-2xl text-darkPrimary lobster font-lobster cursor-pointer" onClick={() => navigate("/")}>SkillLink</div>
             
             {/* Searchbar + Buttons */}
             <div className="hidden md:flex ">
