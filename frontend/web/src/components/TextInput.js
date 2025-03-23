@@ -2,23 +2,17 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash, FaSyncAlt } from "react-icons/fa";
 import FileInput from "./FileInput";
 import AvatarInput from "./AvatarInput";
+import Select from "./Select";
 
 const TextInput = ({ label, type, value, onChange, placeholder }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const [fileError, setFileError] = useState("");
 
     const togglePassword = () => setShowPassword(!showPassword);
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file && file.type !== "application/pdf") {
-            setFileError("Only PDF files are allowed!");
-            e.target.value = ""; // Xóa file không hợp lệ
-        } else {
-            setFileError("");
-            onChange(e); // Gửi file hợp lệ lên parent component
-        }
-    };
+    const selectOptions = [
+        {label:"₫VNĐ", value:"vnd"},
+        {label:"$USD", value:"usd"}
+    ]
 
     return (
         <div className="flex items-center gap-4">
@@ -46,9 +40,21 @@ const TextInput = ({ label, type, value, onChange, placeholder }) => {
                     /> 
                 ) : type === "avatar" ? (
                     <AvatarInput />
+                )  : type === "money" ? (
+                    <div className="flex gap-2">
+                        <input
+                            type={type}
+                            value={value}
+                            placeholder={placeholder}
+                            className="flex-1 p-2 border border-darkPrimary rounded-md focus:outline-none focus:ring-2 focus:ring-darkPrimary"
+                        />
+                        <span className="flex-1">
+                            <Select options={selectOptions} />
+                        </span>
+                    </div>
                 ) : ( 
                     <input
-                        type={type === "password" && !showPassword ? "password" : "text"}
+                        type={type === "password" && !showPassword ? "password" : type}
                         value={value}
                         placeholder={placeholder}
                         className="w-full p-2 border border-darkPrimary rounded-md focus:outline-none focus:ring-2 focus:ring-darkPrimary"

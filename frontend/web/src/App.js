@@ -3,6 +3,7 @@ import Home from "./pages/home";
 import ChangePassword from "./pages/settings/change-password";
 import ChangeProfile from "./pages/settings/change-profile";
 import ChangeCV from "./pages/settings/change-cv";
+import PostJob from "./pages/jobs/post";
 import Test from "./pages/test"
 
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/settings/change-profile" element={<ChangeProfile />} />
         <Route path="/settings/change-cv" element={<ChangeCV />} />
         <Route path="/test" element={<Test />} />
+        <Route path="jobs/post" element={<PostJob />} />
       </Routes>
     </Router>
   );
