@@ -20,7 +20,7 @@ const TextInput = ({ label, type, value, onChange, placeholder }) => {
             <label className=" w-1/3 text-gray-700 font-medium">{label}</label>
 
             {/* Input + Icon */}
-            <div className="relative" w-full>
+            <div className="relative w-2/3">
 
                 {type === "textarea" ? (
                     <textarea

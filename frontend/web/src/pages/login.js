@@ -1,4 +1,4 @@
-import DefaultNavbar from "../components/DefaultNavbar";
+import StartNavbar from "../components/StartNavbar";
 import PrimaryButton from "../components/PrimaryButton";
 import TextInput from "../components/TextInput";
 import ChatIcon from "../components/ChatIcon";
@@ -9,21 +9,20 @@ import SecondaryButton from "../components/SecondaryButton";
 const Login = () => {
     return (
         <div className="min-h-screen flex flex-col justify-center bg-gray-100 mt-30 pt-20 ">
-            <DefaultNavbar />
+            <StartNavbar />
 
             <div className="flex flex-col items-center justify-center flex-grow ">
                 <div className="rounded-md border shadow-lg p-11 bg-white max-w-md w-full">
                 <h2 className="text-2xl font-bold text-gray-800 text-center font-Roboto_Mono">
                         Login
                     </h2>
-         
 
 
 
                     {/*Username/pw  */}
                     <div className="pt-6 space-y-6 w-full max-w-lg">
-                        <TextInput type="text" placeholder="Enter your username or email" />
-                        <TextInput type="password" placeholder="Enter your password" />
+                        <TextInput type="text" placeholder="Enter your username or email" label="Username" />
+                        <TextInput type="password" placeholder="Enter your password" label="Password"/>
                     </div>
                      {/* "Forgot password?" */}
                 <div className="text-right text-sm text-blue-400 mt-2 cursor-pointer hover:underline">

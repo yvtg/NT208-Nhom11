@@ -1,4 +1,4 @@
-import DefaultNavbar from "../components/DefaultNavbar";
+import StartNavbar from "../components/StartNavbar";
 import PrimaryButton from "../components/PrimaryButton";
 import TextInput from "../components/TextInput";
 import ChatIcon from "../components/ChatIcon";
@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 const SignUp = () => {
     return (
         <div className="min-h-screen flex flex-col bg-gray-100 mt-30 pt-20">
-            <DefaultNavbar />
+            <StartNavbar />
 
             <div className="flex flex-col items-center justify-center flex-grow ">
                 <div className="rounded-md border shadow-lg p-11 bg-white max-w-md w-full">
@@ -18,15 +18,15 @@ const SignUp = () => {
                     
                     {/*sign up with other*/ }
                     <div className="flex items-center justify-center space-x-6 my-4">
-      <FaFacebook className="text-blue-600 text-4xl cursor-pointer" />
-      <FaGoogle className="text-red-500 text-4xl cursor-pointer" />
-      <FaLinkedin className="text-blue-700 text-4xl cursor-pointer" />
+                        <FaFacebook className="text-blue-600 text-4xl cursor-pointer" />
+                        <FaGoogle className="text-red-500 text-4xl cursor-pointer" />
+                        <FaLinkedin className="text-blue-700 text-4xl cursor-pointer" />
                     </div>
                     {/*line OR8*/ }
                     <div className="flex items-center my-4">
-  <div className="flex-grow border-t border-gray-300"></div>
-  <span className="mx-2 text-gray-500 text-sm">OR</span>
-  <div className="flex-grow border-t border-gray-300"> </div> 
+                        <div className="flex-grow border-t border-gray-300"></div>
+                        <span className="mx-2 text-gray-500 text-sm">OR</span>
+                        <div className="flex-grow border-t border-gray-300"> </div> 
                     </div>
 
 
