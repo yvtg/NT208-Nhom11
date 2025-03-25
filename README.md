@@ -3,7 +3,16 @@
 ## Thông tin giới thiệu
 Giảng viên hướng dẫn: Thày Trần Tuấn Dũng
 
-## Thành viên nhóm
+Thành viên nhóm
+Lê Thị Tường Vy - 23521828 - 0772 889 056
+
+Lê Quốc Huy - 23520615 - 0394 644 709
+
+Phạm Thanh Sơn - 21522556 - 0908 253 436
+
+Lê Phương Uyên - 23521761 - 0327 305 175
+
+Ngô Thái Vinh - 23531791 - 0817 551 545
 
 <h2>📦 Database Schema</h2>
 <details> <summary>(click to expand)</summary>
