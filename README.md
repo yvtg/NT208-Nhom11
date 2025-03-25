@@ -121,7 +121,8 @@
   - **TransactionStatus**: "pending", "falied", "completed", etc.
   - **PaymentDate**: Timestamp of transaction.
 
-📦 **Database**
+<details> <summary>📦 <strong>Database Schema</strong> (click to expand)</summary>
+```
 ├── 📁 **Users**
 │   ├── 📄 `Username`: string 🟊 **Unique**
 │   ├── 📄 `Email`: string 🟊 **Unique**
@@ -204,3 +205,5 @@
     ├── 📄 `PaymentMethod`: string
     ├── 📄 `TransactionStatus`: string
     └── 📄 `PaymentDate`: timestamp
+```
+</details>
