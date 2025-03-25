@@ -205,4 +205,5 @@
     ├── 📄 <code>PaymentMethod</code>: string<br>
     ├── 📄 <code>TransactionStatus</code>: string<br>
     └── 📄 <code>PaymentDate</code>: timestamp<br>
+```
 </details>
