@@ -175,6 +175,7 @@ Giảng viên hướng dẫn: Thày Trần Tuấn Dũng
 │               ├── 📄 <code>FileURL</code>: string<br>
 │               ├── 📄 <code>FileType</code>: string<br>
 │               └── 📄 <code>SentDate</code>: timestamp<br>
+│ 
 ├── 📁 <strong>Companies</strong><br>
 │   ├── 📄 <code>Name</code>: string 🟊 <strong>Unique</strong><br>
 │   ├── 📄 <code>Address</code>: string<br>
