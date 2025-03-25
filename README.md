@@ -168,6 +168,7 @@
 │       ├── 📄 <code>Score</code>: number<br>
 │       ├── 📄 <code>Comment</code>: string<br>
 │       └── 📄 <code>RatingDate</code>: timestamp<br>
+│
 ├── 📁 <strong>Projects</strong><br>
 │   ├── 📄 <code>ProjectName</code>: string <br>
 │   ├── 📄 <code>UploadedDate</code>: timestamp<br>
@@ -189,6 +190,7 @@
 │       ├── 📄 <code>Score</code>: number<br>
 │       ├── 📄 <code>Comment</code>: string<br>
 │       └── 📄 <code>RatingDate</code>: timestamp<br>
+│
 ├── 📁 <strong>Messages</strong><br>
 │   ├── 📄 <code>SenderID</code>: reference to user<br>
 │   ├── 📄 <code>ReceiverID</code>: reference to user<br>
@@ -198,6 +200,7 @@
 │       ├── 📄 <code>FileURL</code>: string<br>
 │       ├── 📄 <code>FileType</code>: string<br>
 │       └── 📄 <code>SentDate</code>: timestamp<br>
+│
 └── 📁 <strong>Payments</strong><br>
     ├── 📄 <code>SenderID</code>: reference to user<br>
     ├── 📄 <code>ReceiverID</code>: reference to user<br>
