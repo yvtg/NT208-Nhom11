@@ -1,10 +1,18 @@
 # NT208-Nhom11
 
+## Thông tin giới thiệu
+Giảng viên hướng dẫn: Thày Trần Tuấn Dũng
+
+## Thành viên nhóm
+
 <h2>📦 Database Schema</h2>
 <details> <summary>(click to expand)</summary>
+ <br>
+ <details> <summary><strong>Users (Collection)</strong></summary>
+  
  <h2> Users (Collection) </h2>
-  Each user document contains personal details, skills, experience, and interactions.
-
+ Each user document contains personal details, skills, experience, and interactions.
+   
   ### User Document Structure
   - **Username**: Unique identifier for the user.
   - **Email**: Unique email address.
@@ -43,8 +51,10 @@
          - **FileURL**: Link to the file. 
          - **FileType**: Type of the file.
          - **SentDate**: Timestamp.
----
-
+  </details>
+  
+  <details><summary><strong>Companies (Collection)</strong></summary>
+   
 ## Companies (Collection)
   Each company document contains information about a company.
 
@@ -62,8 +72,10 @@
     - **Comment**: Feedback from the rater.
     - **RatingDate**: Timestamp.
 
----
+  </details>
 
+  <details><summary><strong>Projects (Collection)</strong></summary>
+   
 ## Projects (Collection)
   Each project document represents a posted job opportunity.
 
@@ -91,8 +103,10 @@
     - **Comment**: Feedback from the rater.
     - **RatingDate**: Timestamp.
 
----
+  </details>
 
+  <details><summary><strong>Messages (Collection)</strong></summary>
+   
 ## Messages (Collection)
   Global storage for messages between users.
 
@@ -107,8 +121,10 @@
     - **FileType**: Type of the file.
     - **SentDate**: Timestamp.
 
----
-
+  </details>
+  
+  <details><summary><strong>Payments (Collection)</strong></summary>
+   
 ## Payments (Collection)
   Handles salary payments between users.
 
@@ -119,6 +135,9 @@
   - **PaymentMethod**: Payment service used.
   - **TransactionStatus**: "pending", "falied", "completed", etc.
   - **PaymentDate**: Timestamp of transaction.
+    
+  </details>
+  
 </details>
 <h2>📦 Database Tree</h2>
 <details> <summary>(click to expand)</summary>
