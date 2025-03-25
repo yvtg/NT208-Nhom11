@@ -120,8 +120,9 @@
   - **PaymentMethod**: Payment service used.
   - **TransactionStatus**: "pending", "falied", "completed", etc.
   - **PaymentDate**: Timestamp of transaction.
-```
+
 <details> <summary>📦 <strong>Database Schema</strong> (click to expand)</summary>
+  <pre><code>
 ├── 📁 <strong>Users</strong><br>
 │   ├── 📄 <code>Username</code>: string 🟊 <strong>Unique</strong><br>
 │   ├── 📄 <code>Email</code>: string 🟊 <strong>Unique</strong><br>
@@ -204,5 +205,5 @@
     ├── 📄 <code>PaymentMethod</code>: string<br>
     ├── 📄 <code>TransactionStatus</code>: string<br>
     └── 📄 <code>PaymentDate</code>: timestamp<br>
-</details>
-```
+    </code></pre>
+  </details>
