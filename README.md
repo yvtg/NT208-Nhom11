@@ -123,87 +123,86 @@
 
 <details> <summary>📦 <strong>Database Schema</strong> (click to expand)</summary>
 ```
-├── 📁 **Users**
-│   ├── 📄 `Username`: string 🟊 **Unique**
-│   ├── 📄 `Email`: string 🟊 **Unique**
-│   ├── 📄 `Password`: string
-│   ├── 📄 `PhoneNumber`: string
-│   ├── 📄 `AvatarURL`: string
-│   ├── 📄 `Skill`: array of string
-│   ├── 📄 `CreatedDate`: timestamp
-│   ├── 📄 `Experience`: number
-│   ├── 📄 `CV_URL`: string
-│   ├── 📄 `AverageRating`: number
-│   ├── 📁 **RatingsReceived**
-│   │   ├── 📄 `RaterID`: reference to user
-│   │   ├── 📄 `Score`: number
-│   │   ├── 📄 `Comment`: string
-│   │   └── 📄 `RatingDate`: timestamp
-│   ├── 📁 **Projects**
-│   │   ├── 📄 `ProjectsID`: reference to project
-│   │   ├── 📄 `IsSucceed`: boolean
-│   │   ├── 📄 `IsOwned`: boolean
-│   │   ├── 📄 `AppliedDate`: timestamp
-│   │   └── 📄 `ExpiredDate`: timestamp
-│   └── 📁 **Rooms**
-│       ├── 📄 `RoomID`: string 🟊 **Unique**
-│       ├── 📄 `Participants`: array of string of users ID
-│       └── 📁 **Messages**
-│           ├── 📄 `SenderID`: reference to user
-│           ├── 📄 `MessageText`: string
-│           ├── 📄 `SentDate`: timestamp
-│           └── 📁 **Attachments**
-│               ├── 📄 `FileURL`: string
-│               ├── 📄 `FileType`: string
-│               └── 📄 `SentDate`: timestamp
-├── 📁 **Companies**
-│   ├── 📄 `Name`: string 🟊 **Unique**
-│   ├── 📄 `Address`: string
-│   ├── 📄 `AvatarURL`: string
-│   ├── 📄 `AverageRating`: number
-│   ├── 📄 `OwnerID`: reference
-│   ├── 📄 `Description`: string
-│   └── 📁 **RatingsReceived**
-│       ├── 📄 `RaterID`: reference to user
-│       ├── 📄 `Score`: number
-│       ├── 📄 `Comment`: string
-│       └── 📄 `RatingDate`: timestamp
-├── 📁 **Projects**
-│   ├── 📄 `ProjectName`: string 
-│   ├── 📄 `UploadedDate`: timestamp
-│   ├── 📄 `ExpiredDate`: timestamp
-│   ├── 📄 `MinSalary`: number
-|   ├── 📄 `MaxSalary`: number
-│   ├── 📄 `OwnerID`: reference to user
-│   ├── 📄 `Description`: string
-│   ├── 📄 `WorkingType`: string
-│   ├── 📄 `WorkingPlace`: string
-│   ├── 📄 `Field`: string
-│   ├── 📄 `Status`: string
-│   ├── 📄 `AverageRating`: number
-│   ├── 📁 **Applicants**
-│   │   ├── 📄 `AppliedDate`: timestamp
-│   │   └── 📄 `Status`: string
-│   └── 📁 **RatingsReceived**
-│       ├── 📄 `RaterID`: reference to user
-│       ├── 📄 `Score`: number
-│       ├── 📄 `Comment`: string
-│       └── 📄 `RatingDate`: timestamp
-├── 📁 **Messages**
-│   ├── 📄 `SenderID`: reference to user
-│   ├── 📄 `ReceiverID`: reference to user
-│   ├── 📄 `MessageText`: string
-│   ├── 📄 `SentDate`: timestamp
-│   └── 📁 **Attachments**
-│       ├── 📄 `FileURL`: string
-│       ├── 📄 `FileType`: string
-│       └── 📄 `SentDate`: timestamp
-└── 📁 **Payments**
-    ├── 📄 `SenderID`: reference to user
-    ├── 📄 `ReceiverID`: reference to user
-    ├── 📄 `Amount`: number
-    ├── 📄 `PaymentMethod`: string
-    ├── 📄 `TransactionStatus`: string
-    └── 📄 `PaymentDate`: timestamp
-```
+├── 📁 <strong>Users</strong><br>
+│   ├── 📄 <code>Username</code>: string 🟊 <strong>Unique</strong><br>
+│   ├── 📄 <code>Email</code>: string 🟊 <strong>Unique</strong><br>
+│   ├── 📄 <code>Password</code>: string <br>
+│   ├── 📄 <code>PhoneNumber</code>: string<br>
+│   ├── 📄 <code>AvatarURL</code>: string<br>
+│   ├── 📄 <code>Skill</code>: array of string<br>
+│   ├── 📄 <code>CreatedDate</code>: timestamp<br>
+│   ├── 📄 <code>Experience</code>: number<br>
+│   ├── 📄 <code>CV_URL</code>: string<br>
+│   ├── 📄 <code>AverageRating</code>: number<br>
+│   ├── 📁 <strong>RatingsReceived</strong><br>
+│   │   ├── 📄 <code>RaterID</code>: reference to user<br>
+│   │   ├── 📄 <code>Score</code>: number<br>
+│   │   ├── 📄 <code>Comment</code>: string<br>
+│   │   └── 📄 <code>RatingDate</code>: timestamp<br>
+│   ├── 📁 <strong>Projects</strong><br>
+│   │   ├── 📄 <code>ProjectsID</code>: reference to project<br>
+│   │   ├── 📄 <code>IsSucceed</code>: boolean<br>
+│   │   ├── 📄 <code>IsOwned</code>: boolean<br>
+│   │   ├── 📄 <code>AppliedDate</code>: timestamp<br>
+│   │   └── 📄 <code>ExpiredDate</code>: timestamp<br>
+│   └── 📁 <strong>Rooms</strong><br>
+│       ├── 📄 <code>RoomID</code>: string 🟊 <strong>Unique</strong><br>
+│       ├── 📄 <code>Participants</code>: array of string of users ID<br>
+│       └── 📁 <strong>Messages</strong><br>
+│           ├── 📄 <code>SenderID</code>: reference to user<br>
+│           ├── 📄 <code>MessageText</code>: string<br>
+│           ├── 📄 <code>SentDate</code>: timestamp<br>
+│           └── 📁 <strong>Attachments</strong><br>
+│               ├── 📄 <code>FileURL</code>: string<br>
+│               ├── 📄 <code>FileType</code>: string<br>
+│               └── 📄 <code>SentDate</code>: timestamp<br>
+├── 📁 <strong>Companies</strong><br>
+│   ├── 📄 <code>Name</code>: string 🟊 <strong>Unique</strong><br>
+│   ├── 📄 <code>Address</code>: string<br>
+│   ├── 📄 <code>AvatarURL</code>: string<br>
+│   ├── 📄 <code>AverageRating</code>: number<br>
+│   ├── 📄 <code>OwnerID</code>: reference<br>
+│   ├── 📄 <code>Description</code>: string<br>
+│   └── 📁 <strong>RatingsReceived</strong><br>
+│       ├── 📄 <code>RaterID</code>: reference to user<br>
+│       ├── 📄 <code>Score</code>: number<br>
+│       ├── 📄 <code>Comment</code>: string<br>
+│       └── 📄 <code>RatingDate</code>: timestamp<br>
+├── 📁 <strong>Projects</strong><br>
+│   ├── 📄 <code>ProjectName</code>: string <br>
+│   ├── 📄 <code>UploadedDate</code>: timestamp<br>
+│   ├── 📄 <code>ExpiredDate</code>: timestamp<br>
+│   ├── 📄 <code>MinSalary</code>: number<br>
+│   ├── 📄 <code>MaxSalary</code>: number<br>
+│   ├── 📄 <code>OwnerID</code>: reference to user<br>
+│   ├── 📄 <code>Description</code>: string<br>
+│   ├── 📄 <code>WorkingType</code>: string<br>
+│   ├── 📄 <code>WorkingPlace</code>: string<br>
+│   ├── 📄 <code>Field</code>: string<br>
+│   ├── 📄 <code>Status</code>: string<br>
+│   ├── 📄 <code>AverageRating</code>: number<br>
+│   ├── 📁 <strong>Applicants</strong><br>
+│   │   ├── 📄 <code>AppliedDate</code>: timestamp<br>
+│   │   └── 📄 <code>Status</code>: string<br>
+│   └── 📁 <strong>RatingsReceived</strong><br>
+│       ├── 📄 <code>RaterID</code>: reference to user<br>
+│       ├── 📄 <code>Score</code>: number<br>
+│       ├── 📄 <code>Comment</code>: string<br>
+│       └── 📄 <code>RatingDate</code>: timestamp<br>
+├── 📁 <strong>Messages</strong><br>
+│   ├── 📄 <code>SenderID</code>: reference to user<br>
+│   ├── 📄 <code>ReceiverID</code>: reference to user<br>
+│   ├── 📄 <code>MessageText</code>: string<br>
+│   ├── 📄 <code>SentDate</code>: timestamp<br>
+│   └── 📁 <strong>Attachments</strong><br>
+│       ├── 📄 <code>FileURL</code>: string<br>
+│       ├── 📄 <code>FileType</code>: string<br>
+│       └── 📄 <code>SentDate</code>: timestamp<br>
+└── 📁 <strong>Payments</strong><br>
+    ├── 📄 <code>SenderID</code>: reference to user<br>
+    ├── 📄 <code>ReceiverID</code>: reference to user<br>
+    ├── 📄 <code>Amount</code>: number<br>
+    ├── 📄 <code>PaymentMethod</code>: string<br>
+    ├── 📄 <code>TransactionStatus</code>: string<br>
+    └── 📄 <code>PaymentDate</code>: timestamp<br>
 </details>
