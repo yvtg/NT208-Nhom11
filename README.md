@@ -1,18 +1,15 @@
 # NT208-Nhom11
 
-## Thông tin giới thiệu
-Giảng viên hướng dẫn: Thày Trần Tuấn Dũng
+# Thành viên:
+* Nhóm trưởng: **Ngô Thái Vinh** - MSSV: **23521791** - Github: https://github.com/Vi-Alviss
 
-Thành viên nhóm
-Lê Thị Tường Vy - 23521828 - 0772 889 056
+* Thành viên 1: **Phạm Thanh Sơn** - MSSV: **21522556** - Github: https://github.com/PhamSonUIT
 
-Lê Quốc Huy - 23520615 - 0394 644 709
+* Thành viên 2: **Lê Quốc Huy** - MSSV: **23520615** - Github: https://github.com/LQHtmt 
 
-Phạm Thanh Sơn - 21522556 - 0908 253 436
+* Thành viên 3: **Lê Phương Uyên** - MSSV: **23521761** - Github: https://github.com/PUynn
 
-Lê Phương Uyên - 23521761 - 0327 305 175
-
-Ngô Thái Vinh - 23531791 - 0817 551 545
+* Thành viên 4: **Lê Thị Tường Vy** - MSSV: **23521828** - Github: https://github.com/yvtg
 
 <h2>📦 Database Schema</h2>
 <details> <summary>(click to expand)</summary>
