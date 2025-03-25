@@ -2,7 +2,7 @@
 
 
 <details> <summary>📦 Database Schema (click to expand)</summary>
-## Users (Collection)
+ <h2> Users (Collection) </h2>
   Each user document contains personal details, skills, experience, and interactions.
 
   ### User Document Structure
