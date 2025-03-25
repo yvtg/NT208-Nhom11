@@ -1,7 +1,7 @@
 # NT208-Nhom11
 
 
-## <details> <summary>📦 Database Schema (click to expand)</summary>
+<details> <summary>📦 Database Schema (click to expand)</summary>
 ## Users (Collection)
   Each user document contains personal details, skills, experience, and interactions.
 
@@ -120,7 +120,7 @@
   - **TransactionStatus**: "pending", "falied", "completed", etc.
   - **PaymentDate**: Timestamp of transaction.
 </details>
-## <details> <summary>📦 Database Tree (click to expand)</summary>
+<details> <summary>📦 Database Tree (click to expand)</summary>
   <pre><code>
 ├── 📁 <strong>Users</strong><br>
 │   ├── 📄 <code>Username</code>: string 🟊 <strong>Unique</strong><br>
