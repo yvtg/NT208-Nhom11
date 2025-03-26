@@ -1,5 +1,7 @@
-import { initializeApp } from 'firebase/app'; // npm install firebase
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, setDoc, doc } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
+
 
 // Firebase configuration (Move sensitive data to .env file in production)
 const firebaseConfig = {
@@ -19,8 +21,16 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firestore database
 const db = getFirestore(app);
 
-// Reference to Users collection
-const UsersRef = collection(db, 'Users');
+
+// Initialize Authentication
+const auth = getAuth(app);
+
+
+// Sign-up with google
+const googleProvider = new GoogleAuthProvider();
+
+//Sign-up with Facebook
+const facebookProvider = new FacebookAuthProvider();
 
 // Export services
-export { db, UsersRef };
+export { app, db, auth, collection, createUserWithEmailAndPassword, setDoc, doc, googleProvider, facebookProvider , signInWithPopup, GithubAuthProvider  };
