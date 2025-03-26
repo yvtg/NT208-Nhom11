@@ -1,15 +1,26 @@
 import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connect from "./config/database.js";
+import authRoutes from "./routes/authRoutes.js";
 
+dotenv.config();
 
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
-app.get('/', (req,res) => {
-    res.send("test")
-});
+// Middleware
+app.use(cors());
+app.use(express.json());
 
+// Routes
+app.use("/api/auth", authRoutes);
+
+// Kiểm tra kết nối database
+connect.getConnection()
+    .then(() => console.log("✅ Database connected successfully!"))
+    .catch((err) => console.error("❌ Database connection failed:", err));
 
 app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`)
+    console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
