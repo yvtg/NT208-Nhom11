@@ -1,6 +1,12 @@
-# NT208-Nhom11
+# 🚀 Skilllink
 
-# Thành viên:
+## 📌 Tổng quan
+
+**Đồ án môn học:** Lập trình ứng dụng web - NT208.P23.ANTT
+
+**Giảng viên hướng dẫn:** Trần Tuấn Dũng
+
+**👨‍💻 Thành viên nhóm 11:**
 * Nhóm trưởng: **Ngô Thái Vinh** - MSSV: **23521791** - Github: https://github.com/Vi-Alviss
 
 * Thành viên 1: **Phạm Thanh Sơn** - MSSV: **21522556** - Github: https://github.com/PhamSonUIT
@@ -11,12 +17,31 @@
 
 * Thành viên 4: **Lê Thị Tường Vy** - MSSV: **23521828** - Github: https://github.com/yvtg
 
-<h2>📦 Database Schema</h2>
-<details> <summary>(click to expand)</summary>
- <br>
- <details> <summary><strong>Users (Collection)</strong></summary>
-  
- <h2> Users (Collection) </h2>
+## 📝 Giới thiệu sơ lược
+
+**Skillink** là website kết nối freelancer với các dự án do các cá nhân hoặc công ty tuyển dụng sử dụng AI, giúp freelancer tìm việc và nhà tuyển dụng tìm nhân lực nhanh chóng.
+
+* Hỗ trợ đăng ký với nhiều phương thức, tạo hồ sơ nhanh chóng.
+
+* Dễ dàng tìm kiếm công việc với sự đề xuất từ AI.
+
+* Chat trực tiếp giữa freelancer và nhà tuyển dụng, gửi file, tài liệu.
+
+* Hỗ trợ thanh toán, giao dịch đảm bảo an toàn.
+
+* Hệ thống đánh giá và đề xuất cho cả phía freelancer và nhà tuyển dụng.
+
+* AI Chatbot hỗ trợ 24/7.
+
+## 🛠 Công nghệ sử dụng
+* Express js
+* React js
+* Firebase
+
+## 📦 Database Schema
+ 
+ <details><summary><strong>Users (Collection)</strong></summary><br>
+
  Each user document contains personal details, skills, experience, and interactions.
    
   ### User Document Structure
@@ -59,9 +84,8 @@
          - **SentDate**: Timestamp.
   </details>
   
-  <details><summary><strong>Companies (Collection)</strong></summary>
+  <details><summary><strong>Companies (Collection)</strong></summary><br>
    
-## Companies (Collection)
   Each company document contains information about a company.
 
   ### Company Document Structure
@@ -77,12 +101,10 @@
     - **Score**: Rating score.
     - **Comment**: Feedback from the rater.
     - **RatingDate**: Timestamp.
-
   </details>
 
-  <details><summary><strong>Projects (Collection)</strong></summary>
+  <details><summary><strong>Projects (Collection)</strong></summary><br>
    
-## Projects (Collection)
   Each project document represents a posted job opportunity.
 
   ### Project Document Structure
@@ -108,12 +130,10 @@
     - **Score**: Rating score.
     - **Comment**: Feedback from the rater.
     - **RatingDate**: Timestamp.
-
   </details>
 
-  <details><summary><strong>Messages (Collection)</strong></summary>
-   
-## Messages (Collection)
+  <details><summary><strong>Messages (Collection)</strong></summary><br>
+
   Global storage for messages between users.
 
   ### Message Document Structure
@@ -126,12 +146,10 @@
     - **FileURL**: Link to the file.
     - **FileType**: Type of the file.
     - **SentDate**: Timestamp.
-
   </details>
   
-  <details><summary><strong>Payments (Collection)</strong></summary>
+  <details><summary><strong>Payments (Collection)</strong></summary><br>
    
-## Payments (Collection)
   Handles salary payments between users.
 
   ### Payment Document Structure
@@ -141,12 +159,11 @@
   - **PaymentMethod**: Payment service used.
   - **TransactionStatus**: "pending", "falied", "completed", etc.
   - **PaymentDate**: Timestamp of transaction.
-    
   </details>
   
 </details>
-<h2>📦 Database Tree</h2>
-<details> <summary>(click to expand)</summary>
+
+## 📦 Database Tree
   <pre><code>
 ├── 📁 <strong>Users</strong><br>
 │   ├── 📄 <code>Username</code>: string 🟊 <strong>Unique</strong><br>
