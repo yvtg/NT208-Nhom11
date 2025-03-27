@@ -37,7 +37,7 @@
 * Express js
 * React js
 * Firebase
-
+* <a href="https://dbdiagram.io/d/67d92f3375d75cc8447cfbf7">Database</a>
 ## 📦 Database Schema
  
  <details><summary><strong>Users (Collection)</strong></summary><br>
