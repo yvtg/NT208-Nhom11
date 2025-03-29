@@ -3,10 +3,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
-import database from ".src/config/database.js";
+import database from "./src/config/database.js";
 
 
-import authRoutes from "./routes/authRoutes.js"
+import authRoutes from "./src/routes/authRoutes.js"
 
 dotenv.config();
 
