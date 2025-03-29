@@ -1,9 +1,5 @@
 import express from 'express';
-import { register } from '../controllers/authController.js';
-
-const router = express.Router();
-
-// Định nghĩa API đăng ký user
-router.post('/register', register);
-
-export default router;
+import { login } from '../controllers/authController.js';
+const authRoutes = express.Router();
+authRoutes.post('/login', login);
+export default authRoutes;

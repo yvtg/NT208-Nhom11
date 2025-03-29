@@ -1,31 +1,78 @@
-import bcrypt from 'bcryptjs';
-import { createUser, getUserByEmail, getUserByUsername } from '../models/User.js';
+import { createAccessToken } from "../config/jwt.js";
+import database from "../config/database.js";
 
-// Xử lý đăng ký user
-export const register = async (req, res) => {
-    try {
-        const { username, email, password, phoneNumber, avatarURL, skill, experience, cvURL } = req.body;
+const signup = async (req, res) => {
+  try {
+    const { username, password, confirmPassword, email, phone } = req.body;
 
-        // Kiểm tra username hoặc email đã tồn tại chưa
-        const existingUserByEmail = await getUserByEmail(email);
-        if (existingUserByEmail) {
-            return res.status(400).json({ message: 'Email đã được sử dụng!' });
-        }
-
-        const existingUserByUsername = await getUserByUsername(username);
-        if (existingUserByUsername) {
-            return res.status(400).json({ message: 'Tên đăng nhập đã tồn tại!' });
-        }
-
-        // Hash mật khẩu
-        const salt = await bcrypt.genSalt(10);
-        const passwordHash = await bcrypt.hash(password, salt);
-
-        // Lưu user vào database
-        await createUser(username, passwordHash, email, phoneNumber, avatarURL, skill, experience, cvURL);
-
-        res.status(201).json({ message: 'Đăng ký thành công!' });
-    } catch (error) {
-        res.status(500).json({ message: 'Lỗi server', error });
+    if (!username || !password || !confirmPassword || !email || !phone) {
+      return res.status(400).json({ error: "All fields are required." });
     }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({ error: "Passwords do not match." });
+    }
+
+    const [existingUser] = await database.query(
+      'SELECT * FROM Users WHERE Username = ? OR Email = ?',
+      [username, email]
+    );
+
+    if (existingUser && existingUser.length > 0) {
+      return res
+        .status(400)
+        .json({ error: "Username or Email already exists." });
+    }
+    const [result] = await database.query(
+      `INSERT INTO Users (Username, Password, Email, PhoneNumber, AvartarURL)
+       VALUES (?, ?, ?, ?, ?)`,
+      [username, password, email, phone, 'https://example.com/default-avatar.png']
+    );
+
+    const userId = result.insertId;
+
+    return res
+      .status(201)
+      .json({ message: "User registered successfully!", userId });
+  } catch (error) {
+    console.error("Signup error:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 };
+const login = async (req, res) => {
+  try {
+    const { Username, Password } = req.body;
+    const [rows] = await databbase.query(
+      'SELECT * FROM Users WHERE Username = ?',
+      [Username]
+    );
+    
+    const user = rows[0];
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+    if (user.Password !== Password) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+    const payload = {
+      UserID: user.UserID,
+      Username: user.Username,
+    };
+    const accessToken = createAccessToken(payload);
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      sameSite: "Lax",
+      secure: true,
+    });
+    console.log(user);
+    res.status(200).json({
+      message: "Đăng nhập thành công",
+      token: accessToken,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "server error" });
+  }
+};
+export { login, signup };

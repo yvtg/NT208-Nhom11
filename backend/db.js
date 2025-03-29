@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // khởi tạo connection
-const connect = mysql.createPool({
+const database = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
@@ -14,4 +14,4 @@ const connect = mysql.createPool({
 });
 
 // export connection
-export default connect;
+export default database;

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import connect from "./config/database.js";
+import database from "./config/database.js";
 import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
@@ -17,7 +17,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 
 // Kiểm tra kết nối database
-connect.getConnection()
+database.getConnection()
     .then(() => console.log("✅ Database connected successfully!"))
     .catch((err) => console.error("❌ Database connection failed:", err));
 
