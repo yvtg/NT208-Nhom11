@@ -24,9 +24,15 @@ const signup = async (req, res) => {
         .json({ error: "Username or Email already exists." });
     }
     const [result] = await database.query(
-      `INSERT INTO Users (Username, Password, Email, PhoneNumber, AvartarURL)
-       VALUES (?, ?, ?, ?, ?)`,
-      [username, password, email, phone, 'https://example.com/default-avatar.png']
+      `INSERT INTO Users (
+        Username, Password, Email, PhoneNumber, AvartarURL,
+        Skill, Experience, CV_URL
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        username, hashedPassword, email, phone, 'https://example.com/default-avatar.png', 
+        '', 0, ''
+      ]
     );
 
     const userId = result.insertId;
