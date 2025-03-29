@@ -30,7 +30,7 @@ const signup = async (req, res) => {
       )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        username, hashedPassword, email, phone, 'https://example.com/default-avatar.png', 
+        username, password, email, phone, 'https://example.com/default-avatar.png', 
         '', 0, ''
       ]
     );
