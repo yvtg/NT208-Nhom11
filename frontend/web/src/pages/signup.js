@@ -32,29 +32,6 @@ import {
     const [showSuccess, setShowSuccess] = useState(false);
     const navigate = useNavigate();
 
-    const validatePhoneNumber = (phone) => {
-        const phoneRegex = /^(0[1-9][0-9]{8})$/;  // Định dạng số điện thoại Việt Nam (10 chữ số, bắt đầu bằng 0)
-        
-        if (!phoneRegex.test(phone)) {
-            return "Số điện thoại không hợp lệ! Hãy nhập số có 10 chữ số và bắt đầu bằng 0.";
-        }
-
-        return "";  // Nếu hợp lệ
-    };
-
-    const validatePassword = (password) => {
-        const minLength = /.{8,}/;
-        const upperCase = /[A-Z]/;
-        const number = /[0-9]/;
-        const specialChar = /[!@#$%^&*(),.?":{}|<>]/;
-
-        if (!minLength.test(password)) return "Mật khẩu phải có ít nhất 8 ký tự.";
-        if (!upperCase.test(password)) return "Mật khẩu phải chứa ít nhất một chữ cái viết hoa.";
-        if (!number.test(password)) return "Mật khẩu phải chứa ít nhất một số.";
-        if (!specialChar.test(password)) return "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.";
-
-        return ""; // Nếu mật khẩu hợp lệ
-    };
 
     const handleSignup = async (e) => {
         e.preventDefault();
@@ -90,52 +67,6 @@ import {
         setShowSuccess(true);
         } catch (err) {
         setError(err.message);
-        }
-    };
-
-    const handleGoogleSignup = async () => {
-        try {
-        const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user;
-        await setDoc(
-            doc(db, "Users", user.uid),
-            { Username: user.displayName, Email: user.email, PhotoURL: user.photoURL },
-            { merge: true }
-        );
-        setShowSuccess(true);
-        } catch (err) {
-        setError("Đăng ký thất bại!");
-        }
-    };
-
-    const handleFacebookSignup = async () => {
-        try {
-        const result = await signInWithPopup(auth, facebookProvider);
-        const user = result.user;
-        await setDoc(
-            doc(db, "Users", user.uid),
-            { Username: user.displayName || "Facebook User", Email: user.email || "", PhotoURL: user.photoURL },
-            { merge: true }
-        );
-        setShowSuccess(true);
-        } catch (err) {
-        setError("Đăng ký thất bại!");
-        }
-    };
-
-    const handleGithubSignup = async () => {
-        try {
-        const result = await signInWithPopup(auth, new GithubAuthProvider());
-        const user = result.user;
-        await setDoc(
-            doc(db, "Users", user.uid),
-            { Username: user.displayName || "Facebook User", Email: user.email || "", PhotoURL: user.photoURL },
-            { merge: true }
-        );
-
-        setShowSuccess(true);
-        } catch (error) {
-        setError(error.message);
         }
     };
 
