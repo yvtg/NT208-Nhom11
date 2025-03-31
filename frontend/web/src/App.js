@@ -5,10 +5,11 @@ import ChangeProfile from "./pages/settings/change-profile";
 import ChangeCV from "./pages/settings/change-cv";
 import PostJob from "./pages/jobs/post";
 import JobPage from "./pages/jobs/page";
+import SearchJob from "./pages/jobs/search"; 
 import Test from "./pages/test"
 import SignUp from "./pages/signup"; 
 import Login from "./pages/login"; 
-import DashBroad from "./pages/dashbroad";  
+import DashBoard from "./pages/dashboard";  
 
 
 
@@ -23,9 +24,11 @@ function App() {
         <Route path="/test" element={<Test />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} /> 
-        <Route path="/dashbroad" element={<DashBroad />} /> 
+        <Route path="/dashboard" element={<DashBoard />} /> 
         <Route path="jobs/post" element={<PostJob />} />
         <Route path="jobs/page" element={<JobPage />} />
+        <Route path="jobs/search" element={<SearchJob />} />
+
 
 
 

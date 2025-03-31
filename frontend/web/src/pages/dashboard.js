@@ -4,9 +4,9 @@ import ChatIcon from "../components/ChatIcon";
 import Banner from "../components/Banner";
 import UserInfo from "../components/UserInfo";
 import JobSummary from "../components/JobSummary";
-import JobFilter from "../components/JobFilter";
+import JobFilterTab from "../components/JobFilterTab";
 
-const DashBroad = () => {
+const DashBoard = () => {
     const [selectedFilter, setSelectedFilter] = useState("Best Match");
 
     return (
@@ -18,7 +18,7 @@ const DashBroad = () => {
 
                 <div className="relative flex justify-between w-4/5 mt-5">
                     <div className="w-full lg:w-[90%]" >
-                        <JobFilter onSelect={setSelectedFilter} />
+                        <JobFilterTab onSelect={setSelectedFilter} />
                         <JobSummary filter={selectedFilter} />
                     </div>
 
@@ -33,4 +33,4 @@ const DashBroad = () => {
     );
 };
 
-export default DashBroad;
+export default DashBoard;
