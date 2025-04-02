@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 
 import database from "./src/config/database.js";
 
-
 import authRoutes from "./src/routes/authRoutes.js"
 
 dotenv.config();
