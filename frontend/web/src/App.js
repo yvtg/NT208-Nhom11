@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Home from "./pages/home";
 import ChangePassword from "./pages/settings/change-password";
 import ChangeProfile from "./pages/settings/change-profile";
@@ -11,9 +12,19 @@ import SignUp from "./pages/signup";
 import Login from "./pages/login"; 
 import DashBoard from "./pages/dashboard";  
 
-
+const isAuthenticated = () => {
+  const token = localStorage.getItem("token");
+  return token != null;
+};
 
 function App() {
+
+  const [authenticated, setAuthenticated] = useState(isAuthenticated());
+
+  useEffect(() => {
+    setAuthenticated(isAuthenticated());
+  }, [authenticated]);
+
   return (
     <Router>
       <Routes>
@@ -22,9 +33,12 @@ function App() {
         <Route path="/settings/change-profile" element={<ChangeProfile />} />
         <Route path="/settings/change-cv" element={<ChangeCV />} />
         <Route path="/test" element={<Test />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} /> 
-        <Route path="/dashboard" element={<DashBoard />} /> 
+        
+        <Route path="/signup" element={authenticated ? <Navigate to="/dashboard" /> : <SignUp />} />
+        <Route path="/login" element={authenticated ? <Navigate to="/dashboard" /> : <Login />} /> 
+        
+        <Route path="/dashboard" element={authenticated ? <DashBoard /> : <Navigate to="/login" />} />
+
         <Route path="jobs/post" element={<PostJob />} />
         <Route path="jobs/page" element={<JobPage />} />
         <Route path="jobs/search" element={<SearchJob />} />

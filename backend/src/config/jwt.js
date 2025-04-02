@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken";
 import database from "./database.js";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const createAccessToken = (payload) => {
   return jwt.sign({ payload }, process.env.SECRET_KEY, {
