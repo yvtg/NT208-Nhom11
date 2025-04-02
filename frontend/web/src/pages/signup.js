@@ -22,7 +22,8 @@ import { FaFacebook, FaGoogle, FaGithub } from "react-icons/fa";
     const validatePhoneNumber = (phone) => {
         const phoneRegex = /^(0[1-9][0-9]{8})$/;  // Định dạng số điện thoại Việt Nam (10 chữ số, bắt đầu bằng 0)
         
-        if (!phoneRegex.test(phone)) {
+        if (!phoneRegex.test(phone)) 
+        {
             return "Số điện thoại không hợp lệ! Hãy nhập số có 10 chữ số và bắt đầu bằng 0.";
         }
 
@@ -58,19 +59,22 @@ import { FaFacebook, FaGoogle, FaGithub } from "react-icons/fa";
 
             // Kiểm tra mật khẩu có hợp lệ không
         const passwordError = validatePassword(password);
-        if (passwordError) {
+        if (passwordError) 
+        {
             setError(passwordError);
             return;
         }
 
-        if (password !== confirmPassword) {
-        setError("Mật khẩu không khớp!");
-        return;
+        if (password !== confirmPassword) 
+        {
+            setError("Mật khẩu không khớp!");
+            return;
         }
 
         // Kiểm tra số điện thoại
         const phoneError = validatePhoneNumber(phone);
-        if (phoneError) {
+        if (phoneError) 
+        {
             setError(phoneError);
             return;
         }
@@ -84,7 +88,8 @@ import { FaFacebook, FaGoogle, FaGithub } from "react-icons/fa";
 
         setError("");
 
-        try {
+        try 
+        {
             const res = await fetch("http://localhost:3000/api/auth/signup", {
               method: "POST",
               headers: {
@@ -101,15 +106,20 @@ import { FaFacebook, FaGoogle, FaGithub } from "react-icons/fa";
         
             const data = await res.json();
         
-            if (!res.ok) {
+            if (!res.ok) 
+            {
               setError(data.error || "Đăng ký thất bại!");
-            } else {
+            } 
+            else 
+            {
               setShowSuccess(true); // show success notification
             }
-          } catch (err) {
+        } 
+        catch (err) 
+        {
             console.error("Signup error:", err);
             setError("Lỗi kết nối đến máy chủ!");
-          }
+        }
     };
 
     return (
