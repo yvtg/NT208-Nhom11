@@ -10,6 +10,7 @@ import Test from "./pages/test"
 import SignUp from "./pages/signup"; 
 import Login from "./pages/login"; 
 import DashBoard from "./pages/dashboard";  
+import Message from "./pages/messages";
 
 
 
@@ -28,7 +29,7 @@ function App() {
         <Route path="jobs/post" element={<PostJob />} />
         <Route path="jobs/page" element={<JobPage />} />
         <Route path="jobs/search" element={<SearchJob />} />
-
+        <Route path="messages/*" element={<Message />} />      
 
 
 

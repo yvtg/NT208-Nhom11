@@ -38,6 +38,40 @@
 * React js
 * Firebase
 * <a href="https://dbdiagram.io/d/67d92f3375d75cc8447cfbf7">Database</a>
+
+## Configuration
+Config .env 
+```
+DB_HOST=localhost
+DB_PORT=PORT # change PORT to your port  
+DB_USER=root
+
+DB_PASSWORD=YOUR_PASSWORD # change YOUR_PASSWORD to your password
+DB_NAME=YOUR_DB_NAME # change YOUR_DB_NAME to your database name
+
+```
+## Usages
+
+run database
+```sh
+docker compose up
+docker exec -it my-mysql mysql -u root -p
+```
+
+run backend server
+```sh
+cd backend
+npm install
+npm run start
+```
+
+run frontend
+```sh
+cd frontend/web
+npm install
+npm run start
+```
+
 ## 📦 Database Schema
  
  <details><summary><strong>Users (Collection)</strong></summary><br>

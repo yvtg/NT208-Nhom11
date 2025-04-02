@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import database from "./database.js";
 
 const createAccessToken = (payload) => {
-  return jwt.sign({ payload }, process.env.SECRET_KEY, {
+  return jwt.sign({ UserID: payload.UserID }, process.env.SECRET_KEY, {
     algorithm: "HS256",
     expiresIn: "3h", // h: hour, m: minutes, s: seconds, d: days
   });
@@ -17,35 +17,35 @@ const verifyAccessToken = (accessToken) => {
 };
 
 const middlewareToken = async (req, res, next) => {
-  let { authorization } = req.headers; // lấy authorization từ headers của request FE gửi lên
-  console.log("token: ", authorization);
-  // TH1: token không có trong header của request
-  if (!authorization) {
-    // mã lỗi 4xx: lỗi của user
-    return res.status(401).json({ message: "Unauthorized" });
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    console.log("Token received:", token); // Log token
+
+    if (!token) {
+      return res.status(401).json({ message: "Token is missing" });
+    }
+
+    const checkToken = verifyAccessToken(token);
+    if (!checkToken) {
+      console.log("Invalid token"); // Log invalid token
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    const userId = checkToken.UserID;
+    console.log("User ID from token:", userId); // Log user ID
+
+    const [rows] = await database.query("SELECT * FROM Users WHERE UserID = ?", [userId]);
+
+    if (rows.length === 0) {
+      console.log("User not found in database"); // Log user not found
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    req.userId = userId; // Attach userId to the request
+    next();
+  } catch (error) {
+    console.error("Middleware error:", error); // Log middleware error
+    res.status(500).json({ message: "Internal server error" });
   }
-
-  let checkToken = verifyAccessToken(authorization);
-  // TH2: token không hợp lệ
-  if (!checkToken) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  console.log("checkToken: ", checkToken);
-
-  // query user từ database
-  let userId = checkToken.payload.userId;
-
-  const [rows] = await database.query("SELECT * FROM Users WHERE UserID = ?", [userId]);
-
-  if (rows.length === 0) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  // gán userId vào req
-  req.userId = userId; // lấy user_id từ token hay user_id từ database đều được
-
-  // TH3: token hợp lệ
-  next();
 };
 export { createAccessToken, verifyAccessToken, middlewareToken };

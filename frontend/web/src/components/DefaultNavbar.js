@@ -6,14 +6,14 @@ import SecondaryButton from "./SecondaryButton";
 import TertiaryButton from "./TertiaryButton";
 import UserOptions from "./UserOptions";
 
-const DefaultNavbar = () => {
+const DefaultNavbar = ({ className }) => {
     const navigate = useNavigate();
     const [showOption, setShowOption] = useState(false);
 
     const toggleOption = () => setShowOption(!showOption);
 
     return (
-        <div>
+        <div className={className}>
             <nav className="bg-lightPrimary shadow-md py-2
                 sm:px-2 lg:px-10 flex justify-between 
                 items-center rounded-lg fixed top-0 left-0 w-full z-50">

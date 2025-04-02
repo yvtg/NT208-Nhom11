@@ -1,36 +1,59 @@
 import database from "../config/database.js";
 
-const getConversations = (req, res) => {
-    const userId = req.user.id;
-    database.query(`
-        SELECT * FROM conversations 
-        WHERE User1_ID = ? OR User2_ID = ?`, [userId, userId], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
-    });
+// lấy tất cả cuộc hội thoại của 1 người dùng
+const getConversations = async (req, res) => {
+    try {
+        const userID = req.UserID; // Extracted from the token
+        const [conversations] = await database.query(
+            `SELECT * FROM Conversations WHERE User1_ID = ? OR User2_ID = ?`,
+            [UserID, UserID]
+        );
+        res.status(200).json(conversations);
+    } catch (error) {
+        console.error("Error fetching conversations: ", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
 };
 
-const createConversation = (req, res) => {
-    const { receiver_id } = req.body;
-    const userId = req.user.id;
+// tạo cuộc hội thoại mới
+const createConversation = async (req, res) => {
+  try {
+    const userID = req.userId; // Extracted from the token
+    const { participantID } = req.body;
 
-    database.query(`SELECT * FROM conversations WHERE 
-        (User1_ID = ? AND User2_ID = ?) OR 
-        (User1_ID = ? AND User2_ID = ?)`, 
-        [userId, receiver_id, receiver_id, userId], (err, results) => {
-        
-        if (err) return res.status(500).json({ error: err.message });
+    if (!participantID) {
+      return res.status(400).json({ message: "Participant ID is required" });
+    }
 
-        if (results.length > 0) {
-            return res.json(results[0]); 
-        }
+    // Kiểm tra xem cuộc hội thoại đã tồn tại chưa
+    const [existingConversation] = await database.query(
+      `SELECT * FROM Conversations WHERE 
+      (User1_ID = ? AND User2_ID = ?) OR 
+      (User1_ID = ? AND User2_ID = ?)`,
+      [userID, participantID, participantID, userID]
+    );
 
-        database.query("INSERT INTO conversations (user1_id, user2_id) VALUES (?, ?)", 
-        [userId, receiver_id], (err, result) => {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json({ id: result.insertId });
-        });
-    });
+    if (existingConversation.length > 0) {
+      return res.status(200).json(existingConversation[0]);
+    }
+
+    // Tạo cuộc hội thoại mới
+    const [result] = await database.query(
+      `INSERT INTO Conversations (User1_ID, User2_ID, CreatedAt) VALUES (?, ?, NOW())`,
+      [userID, participantID]
+    );
+
+    const newConversation = {
+      id: result.insertId,
+      User1_ID: userID,
+      User2_ID: participantID,
+      CreatedAt: new Date(),
+    };
+
+    res.status(201).json(newConversation);
+  } catch (error) {
+    console.error("Error creating conversation:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
-
 export { getConversations, createConversation }
