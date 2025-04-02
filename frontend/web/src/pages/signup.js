@@ -51,7 +51,7 @@ import { FaFacebook, FaGoogle, FaGithub } from "react-icons/fa";
         }
 
         return "";
-      };
+    };
 
     const handleSignup = async (e) => {
         e.preventDefault();
@@ -86,30 +86,30 @@ import { FaFacebook, FaGoogle, FaGithub } from "react-icons/fa";
 
         try {
             const res = await fetch("http://localhost:3000/api/auth/signup", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                username,
-                password,
-                confirmPassword,
-                email,
-                phone,
-              }),
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username,
+                    password,
+                    confirmPassword,
+                    email,
+                    phone,
+                }),
             });
         
             const data = await res.json();
         
             if (!res.ok) {
-              setError(data.error || "Đăng ký thất bại!");
+                setError(data.error || "Đăng ký thất bại!");
             } else {
               setShowSuccess(true); // show success notification
             }
-          } catch (err) {
-            console.error("Signup error:", err);
-            setError("Lỗi kết nối đến máy chủ!");
-          }
+            } catch (err) {
+                console.error("Signup error:", err);
+                setError("Lỗi kết nối đến máy chủ!");
+            }
     };
 
     return (

@@ -45,6 +45,7 @@ const signup = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
 const login = async (req, res) => {
   try {
     const { Username, Password } = req.body;

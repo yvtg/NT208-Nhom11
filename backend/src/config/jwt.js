@@ -15,6 +15,7 @@ const verifyAccessToken = (accessToken) => {
     return false;
   }
 };
+
 const middlewareToken = async (req, res, next) => {
   let { authorization } = req.headers; // lấy authorization từ headers của request FE gửi lên
   console.log("token: ", authorization);
