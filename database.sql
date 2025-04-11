@@ -4,7 +4,7 @@ CREATE TABLE Users (
     Password VARCHAR(255) NOT NULL,
     Email VARCHAR(255) NOT NULL UNIQUE,
     PhoneNumber VARCHAR(20),
-    AvartarURL VARCHAR(255) NOT NULL,
+    AvatarURL VARCHAR(255) NOT NULL,
     Skill TEXT,
     CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Experience INT DEFAULT 0,  -- Years of experience
@@ -16,7 +16,7 @@ CREATE TABLE Companies (
     CompanyID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(255) NOT NULL,
     Address TEXT,
-    AvartarURL VARCHAR(255) NOT NULL,
+    AvatarURL VARCHAR(255) NOT NULL,
     AverageRating FLOAT DEFAULT 0,
     OwnerID INT,
     Description TEXT,

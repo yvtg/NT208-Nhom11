@@ -3,9 +3,10 @@ import database from "./database.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
+const SECRET_KEY=process.env.SECRET_KEY;
 
 const createAccessToken = (payload) => {
-  return jwt.sign({ UserID: payload.UserID }, process.env.SECRET_KEY, {
+  return jwt.sign({ UserID: payload.UserID }, SECRET_KEY, {
     algorithm: "HS256",
     expiresIn: "3h", // h: hour, m: minutes, s: seconds, d: days
   });
@@ -13,7 +14,7 @@ const createAccessToken = (payload) => {
 
 const verifyAccessToken = (accessToken) => {
   try {
-    return jwt.verify(accessToken, process.env.SECRET_KEY);
+    return jwt.verify(accessToken, SECRET_KEY);
   } catch (error) {
     return false;
   }

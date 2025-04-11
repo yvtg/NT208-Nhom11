@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
 import MessageItem from './MessageItem';
+import Spinner from './Spinner';
 
 
-function MessageComponent( { conversationID, socket, messages, loading, error, refreshMessages, setMessages } ) {
+function MessageComponent( { conversationID, socket, messages, loading, error, refreshMessages, setMessages, avatarURL, conversationName  } ) {
 
 
     // Ref để cuộn tự động đến tin nhắn mới nhất
@@ -37,14 +38,14 @@ function MessageComponent( { conversationID, socket, messages, loading, error, r
         };
     }, [conversationID, socket, setMessages, refreshMessages]);
 
-
-    if (loading) return <div>Loading messages...</div>;
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
+        <div className='flex flex-col justify-end min-h-full'>
+            {loading?<Spinner /> : <></>}
             {messages.map((message, index) => (
-                <MessageItem key={message.MessageID || message._id || index} message={message} />
+                <MessageItem key={message.MessageID || message._id || index} message={message}
+                avatarURL={avatarURL} conversationName={conversationName}/>
             ))}
             <div ref={messagesEndRef} />
         </div>

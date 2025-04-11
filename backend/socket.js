@@ -5,12 +5,15 @@ import jwt from "jsonwebtoken";
 
 dotenv.config();
 
+const FRONTEND_PORT=process.env.FRONTEND_PORT;
+const SECRET_KEY=process.env.SECRET_KEY;
+
 const setupSocket = (server) => {
 
     // tạo socket server
     const io = new Server(server, {
         cors: {
-            origin: "http://localhost:3001", // URL của frontend
+            origin: `http://localhost:${FRONTEND_PORT}`, 
             methods: ["GET", "POST"],
             credentials: true,
         },
@@ -25,7 +28,7 @@ const setupSocket = (server) => {
         }
 
         try {
-            const decoded = jwt.verify(token, process.env.SECRET_KEY); 
+            const decoded = jwt.verify(token, SECRET_KEY); 
             socket.userId = decoded.UserID; 
             next(); 
         } catch (err) {

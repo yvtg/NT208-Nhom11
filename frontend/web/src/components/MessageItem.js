@@ -1,55 +1,64 @@
 // components/MessageItem.jsx
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import 'dayjs/locale/en';
+import 'dayjs/locale/vi';
 import useAuth from '../hooks/useAuth';
+import Spinner from './Spinner';
 
 dayjs.extend(relativeTime);
-dayjs.locale('en');
+dayjs.locale('vi');
 
 
-const MessageItem = ({ message }) => {
+const MessageItem = ({ message, avatarURL, conversationName}) => {
   const { userID, isLoading } = useAuth();
   const isCurrentUser = message.SenderID === userID;
   
   return (
-    <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} mb-4 px-4 lg:px-12`}>
+    <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'} mb-4 px-4 lg:px-8`}>
+      {isLoading?<Spinner /> : <></>}
       {/* Container tin nhắn */}
-      <div className={`flex max-w-xs lg:max-w-md ${isCurrentUser ? 'flex-row-reverse' : ''}`}>
+      <div className={`flex items-start max-w-xs sm:max-w-sm lg:max-w-md gap-3 ${isCurrentUser ? 'flex-row-reverse' : ''}`}>
         {/* Avatar (ẩn với tin nhắn của current user) */}
         {!isCurrentUser && (
-          <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center mr-2 mt-1">
-            {message.SenderName?.charAt(0).toUpperCase() || 'U'}
+          <div className="mt-4 w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold text-lg overflow-hidden flex-shrink-0">
+            {avatarURL ? (
+              <img
+                src={avatarURL}
+                alt={"Ảnh đại diện"}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.style.display = "none"; // Hide broken image
+                  e.target.nextSibling.style.display = "flex"; // Show fallback
+                }}
+              />
+            ) : (
+              <span className="flex items-center justify-center w-full h-full">
+                {conversationName?.charAt(0).toUpperCase() || "?"}
+              </span>
+            )}
           </div>
         )}
 
         {/* Nội dung tin nhắn */}
-        <div>
-          {/* Tên người gửi (chỉ hiện với tin nhắn người khác) */}
-          {!isCurrentUser && (
-            <div className="text-xs font-medium text-gray-500 mb-1 ml-1">
-              {message.SenderName}
-            </div>
-          )}
-
+        <div className="flex flex-col mt-4">
           {/* Bubble tin nhắn */}
           <div
-            className={`px-4 py-2 rounded-lg ${
+            className={`px-4 py-2 rounded-2xl shadow-sm ${
               isCurrentUser
-                ? 'bg-Primary text-white rounded-tr-none'
-                : 'bg-gray-200 text-gray-800 rounded-tl-none'
+                ? "bg-Primary text-white rounded-tr-none"
+                : "bg-gray-100 text-gray-800 rounded-tl-none"
             }`}
           >
-            <p className="text-sm">{message.Content}</p>
+            <p className="text-sm leading-relaxed">{message.Content}</p>
           </div>
 
           {/* Thời gian */}
           <div
-            className={`text-xs mt-1 ${
-              isCurrentUser ? 'text-right text-gray-500' : 'text-left text-gray-400'
+            className={`text-xs mt-1.5 ${
+              isCurrentUser ? "text-right text-gray-500" : "text-left text-gray-500"
             }`}
           >
-            {dayjs(message.CreatedAt).fromNow()}
+            {dayjs(message.CreatedAt).add(7, 'hour').fromNow()}
           </div>
         </div>
       </div>

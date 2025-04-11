@@ -22,7 +22,7 @@ const validatePassword = (password) => {
     return ""; // Nếu mật khẩu hợp lệ
 };
 
-const Login = () => {
+const Login = ({ setAuthenticated }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -65,11 +65,13 @@ const Login = () => {
             const data = await response.json();
             console.log("Login response data:", data); // Log dữ liệu trả về từ API
             localStorage.setItem("token", data.token);
-            alert("Đăng nhập thành công!");
 
             // điều hướng tới dashboard
-            console.log("Navigating to dashboard...");
-            navigate("/dashboard");
+            if (data?.token) {
+                localStorage.setItem("token", data.token);
+                setAuthenticated(true); // Cập nhật trạng thái đăng nhập
+                navigate("/dashboard");
+            }
         } catch (error) {
             console.error("Login error:", error);
             setError("Lỗi khi đăng nhập, vui lòng thử lại.");

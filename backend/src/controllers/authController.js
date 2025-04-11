@@ -1,20 +1,14 @@
 import { createAccessToken } from "../config/jwt.js";
 import database from "../config/database.js";
 
+const avatarURL = 'https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg';
+
 const signup = async (req, res) => {
   try {
     const { username, password, confirmPassword, email, phone } = req.body;
 
-    if (!Username || !Password) {
+    if (!username || !password) {
       return res.status(400).json({ message: "All fields are required." });
-    }
-
-    if (!user) {
-        return res.status(401).json({ message: "User doesn't exist" });
-    }
-
-    if (user.Password !== Password) {
-        return res.status(401).json({ message: "Invalid password" });
     }
 
     if (password !== confirmPassword) {
@@ -33,12 +27,12 @@ const signup = async (req, res) => {
     }
     const [result] = await database.query(
       `INSERT INTO Users (
-        Username, Password, Email, PhoneNumber, AvartarURL,
+        Username, Password, Email, PhoneNumber, AvatarURL,
         Skill, Experience, CV_URL
       )
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        username, password, email, phone, 'https://example.com/default-avatar.png', 
+        username, password, email, phone, avatarURL,
         '', 0, ''
       ]
     );

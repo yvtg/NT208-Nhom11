@@ -12,7 +12,7 @@ const useConversations = (showConversation) => {
     try {
       setConversationLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/api/chat/messages", {
+      const response = await fetch("http://localhost:3000/api/chat/conversations", {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
