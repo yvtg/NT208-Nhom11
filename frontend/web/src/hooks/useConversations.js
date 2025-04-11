@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react';
 
 const useConversations = (showConversation) => {
   const [conversations, setConversations] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [ conversationLoading, setConversationLoading] = useState(false);
+  const [conversationError, setConversationError] = useState(null);
+
 
   const fetchConversations = async () => {
     try {
-      setLoading(true);
+      setConversationLoading(true);
       const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:3000/api/chat/messages", {
         method: "GET",
@@ -24,12 +25,12 @@ const useConversations = (showConversation) => {
 
       const data = await response.json();
       setConversations(data);
-      setError(null);
+      setConversationError(null);
     } catch (err) {
-      setError(err.message);
+      setConversationError(err.message);
       console.error("Error fetching conversations:", err);
     } finally {
-      setLoading(false);
+      setConversationLoading(false);
     }
   };
 
@@ -39,7 +40,7 @@ const useConversations = (showConversation) => {
     }
   }, [showConversation]);
 
-  return { conversations, loading, error, refresh: fetchConversations };
+  return { conversations, conversationLoading, conversationError, conversationRefresh: fetchConversations };
 };
 
 export default useConversations;

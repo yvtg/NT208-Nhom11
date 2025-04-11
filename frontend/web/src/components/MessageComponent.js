@@ -1,11 +1,8 @@
 import { useEffect, useRef } from 'react';
-import useMessages from '../hooks/useMessages';
 import MessageItem from './MessageItem';
 
 
-function MessageComponent( { conversationID, socket, onSetMessages } ) {
-    const { messages, loading, error, setMessages } = useMessages(conversationID);
-    console.log("Messages: ", messages)
+function MessageComponent( { conversationID, socket, messages, loading, error, refreshMessages, setMessages } ) {
 
 
     // Ref để cuộn tự động đến tin nhắn mới nhất
@@ -14,10 +11,6 @@ function MessageComponent( { conversationID, socket, onSetMessages } ) {
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
-
-    useEffect(() => {
-        if (onSetMessages) onSetMessages(setMessages);
-    }, [setMessages, onSetMessages]);
 
     useEffect(() => {
         scrollToBottom();
@@ -32,8 +25,8 @@ function MessageComponent( { conversationID, socket, onSetMessages } ) {
 
         currentSocket.emit("joinConversation", conversationID);
 
-        const handleReceiveMessage = (newMessage) => {
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
+        const handleReceiveMessage = () => {
+            refreshMessages();
             scrollToBottom();
         };
 
@@ -42,7 +35,7 @@ function MessageComponent( { conversationID, socket, onSetMessages } ) {
         return () => {
             currentSocket.off("receiveMessage", handleReceiveMessage);
         };
-    }, [conversationID, socket, setMessages]);
+    }, [conversationID, socket, setMessages, refreshMessages]);
 
 
     if (loading) return <div>Loading messages...</div>;
@@ -50,8 +43,8 @@ function MessageComponent( { conversationID, socket, onSetMessages } ) {
 
     return (
         <div>
-            {(Array.isArray(messages) ? messages : []).map((message) => (
-            <MessageItem key={message.MessageID} message={message} />
+            {messages.map((message, index) => (
+                <MessageItem key={message.MessageID || message._id || index} message={message} />
             ))}
             <div ref={messagesEndRef} />
         </div>

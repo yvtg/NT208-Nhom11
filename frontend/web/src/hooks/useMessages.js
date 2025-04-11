@@ -3,15 +3,15 @@ import { useState, useEffect, useCallback } from 'react';
 
 const useMessages = (conversationID) => {
     const [messages, setMessages] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [messagesLoading, setMessagesLoading] = useState(false);
+    const [messagesError, setMessagesError] = useState(null);
 
     const fetchMessages = useCallback(async () => {
         if (!conversationID) return;
         
         try {
-            setLoading(true);
-            setError(null);
+            setMessagesLoading(true);
+            setMessagesError(null);
             
             const token = localStorage.getItem('token');
             const response = await fetch(
@@ -40,10 +40,10 @@ const useMessages = (conversationID) => {
             }
 
         } catch (err) {
-        setError(err.message);
+        setMessagesError(err.message);
         console.error('Error fetching messages:', err);
         } finally {
-        setLoading(false);
+        setMessagesLoading(false);
         }
     }, [conversationID]);
 
@@ -52,12 +52,12 @@ const useMessages = (conversationID) => {
         fetchMessages();
     }, [fetchMessages]);
 
-    // Hàm refresh thủ công
+    // Hàm refresh 
     const refreshMessages = () => {
         fetchMessages();
     };
 
-    return { messages, loading, error, refreshMessages, setMessages };
+    return { messages, messagesLoading, messagesError, refreshMessages, setMessages };
 };
 
 export default useMessages;

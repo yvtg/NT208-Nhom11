@@ -8,7 +8,7 @@ import MessageInput from "../components/MessageInput";
 
 import useSocket from "../hooks/useSocket";
 import useConversations from "../hooks/useConversations";
-// import useAuth from "../hooks/useAuth";
+import useMessages from "../hooks/useMessages";
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -18,17 +18,22 @@ dayjs.extend(relativeTime);
 dayjs.locale('vi'); 
 
 const Message = () => {
+
+    // conversation
     const { id } = useParams(); // id = conversationID trên URL
     const [conversationID, setConversationID] = useState(id || null);
-    //const { userID, isLoading } = useAuth();
-    const [setMessagesFn, setMessagesFnSetter] = useState(null);
+    const [showConversations] = useState(true);
+    const { conversations, conversationLoading, conversationError, conversationRefresh } = useConversations(showConversations);
+    
+    // messages
+    const { messages, messagesLoading, messagesError, refreshMessages, setMessages } = useMessages(conversationID);
     
 
     const navigate = useNavigate();
+    
+    // khởi tạo socket
     const socket = useSocket();
 
-    const [showConversations] = useState(true);
-    const { conversations, loading, error } = useConversations(showConversations);
 
     return (
         <div className="relative flex flex-col min-h-screen bg-gray-100">
@@ -45,12 +50,12 @@ const Message = () => {
                     
                     {/* Conversation list */}
                     <div className="pt-16 flex-1 overflow-y-auto">
-                    {loading ? (
+                    {conversationLoading ? (
                         <div className="flex justify-center items-center h-20">
                             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-500"></div>
                         </div>
-                    ) : error ? (
-                        <div className="text-red-500 p-4 text-center">{error}</div>
+                    ) : conversationError ? (
+                        <div className="text-red-500 p-4 text-center">{conversationError}</div>
                     ) : conversations.length === 0 ? (
                         <div className="text-gray-500 p-4 text-center">Không có cuộc trò chuyện nào</div>
                     ) : (
@@ -97,8 +102,14 @@ const Message = () => {
                 <div className="w-3/4 flex flex-col h-screen pt-16">
                     {/* Khu vực hiển thị tin nhắn */}
                     <div className="flex-1 bg-white overflow-y-auto pb-4 px-4">
-                        <MessageComponent conversationID={conversationID} socket={socket}
-                            onSetMessages={setMessagesFnSetter}
+                        <MessageComponent 
+                            conversationID={conversationID}
+                            socket={socket}
+                            messages={messages}
+                            loading={messagesLoading}
+                            error={messagesError}
+                            refreshMessages={refreshMessages}
+                            setMessages={setMessages}
                         />
                     </div>
 
@@ -106,7 +117,7 @@ const Message = () => {
                     <MessageInput
                         conversationID={conversationID}
                         socket={socket}
-                        setMessages={setMessagesFn}
+                        refreshMessages={refreshMessages}
                     />
                 </div>
             </div>
