@@ -3,6 +3,7 @@ import database from "../config/database.js";
 const getUser = async (req, res) => {
   try {
     const [users] = await database.query('SELECT * FROM Users');
+    console.log("Users:", users);
     return res.status(200).json(users);
   } catch (error) {
     console.error("Get user error:", error);

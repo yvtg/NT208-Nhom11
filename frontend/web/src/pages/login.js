@@ -28,39 +28,49 @@ const Login = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        
+        // kiểm tra mật khẩu
         const passwordError = validatePassword(password);
         if (passwordError) 
         {
             setError(passwordError);
             return;
         }
+        
+        // kiểm tra tên người dùng
+        if (!username.trim()) {
+            setError("Tên người dùng không được để trống.");
+            return;
+        }
 
-        try 
-        {
-            const response = await fetch("http://localhost:3000/api/auth/login", 
-            {
+        // gửi yêu cầu đăng nhập tới API
+        try {
+            const response = await fetch("http://localhost:3000/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ Username: username, Password: password }),
-                credentials: "include", // Quan trọng để nhận cookie từ backend
+                credentials: "include",
             });
 
-            const data = await response.json();
-            if (response.ok) 
-            {
-                // Lưu token vào localStorage hoặc cookie
-                localStorage.setItem("token", data.token);
-                alert("Đăng nhập thành công!");
-                navigate("/dashboard"); // Chuyển hướng sau khi đăng nhập
-            } 
-            else 
-            {
-                setError(data.message);
+            // xử lý lỗi từ API
+            if (!response.ok) {
+                const errorData = await response.json();
+                setError(errorData.message || "Đăng nhập thất bại!");
+                return;
             }
-        } 
-        catch (error) 
-        {
+
+            // lưu token
+            const data = await response.json();
+            console.log("Login response data:", data); // Log dữ liệu trả về từ API
+            localStorage.setItem("token", data.token);
+            alert("Đăng nhập thành công!");
+
+            // điều hướng tới dashboard
+            console.log("Navigating to dashboard...");
+            navigate("/dashboard");
+        } catch (error) {
             console.error("Login error:", error);
             setError("Lỗi khi đăng nhập, vui lòng thử lại.");
         }
@@ -80,8 +90,28 @@ const Login = () => {
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     <form onSubmit={handleLogin}>
                         <div className="pt-6 space-y-6 w-full max-w-lg">
-                            <TextInput type="text" placeholder="Enter your username" label="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
-                            <TextInput type="password" placeholder="Enter your password" label="Password"value={password} onChange={(e) => setPassword(e.target.value)}/>
+                            <TextInput
+                                type="text"
+                                placeholder="Enter your username"
+                                label="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                            <TextInput
+                                type="password"
+                                placeholder="Enter your password"
+                                label="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </div>
+                        <div className="flex justify-center mt-6">
+                            <PrimaryButton
+                                className="w-60 flex justify-center px-3 py-1 text-lg"
+                                type="submit" // Đặt type là "submit"
+                            >
+                                Login
+                            </PrimaryButton>
                         </div>
                     </form>
 
@@ -90,9 +120,6 @@ const Login = () => {
                         Forgot your password?
                     </div>
 
-                    <div className="flex justify-center mt-6">
-                        <PrimaryButton className="w-60 flex justify-center px-3 py-1 text-lg" onClick={handleLogin}> Login </PrimaryButton>
-                    </div>
 
                     {/*line Don't have acc*/ }
                     <div className="flex items-center my-4">

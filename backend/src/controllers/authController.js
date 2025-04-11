@@ -5,8 +5,16 @@ const signup = async (req, res) => {
   try {
     const { username, password, confirmPassword, email, phone } = req.body;
 
-    if (!username || !password || !confirmPassword || !email || !phone) {
-      return res.status(400).json({ error: "All fields are required." });
+    if (!Username || !Password) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
+
+    if (!user) {
+        return res.status(401).json({ message: "User doesn't exist" });
+    }
+
+    if (user.Password !== Password) {
+        return res.status(401).json({ message: "Invalid password" });
     }
 
     if (password !== confirmPassword) {

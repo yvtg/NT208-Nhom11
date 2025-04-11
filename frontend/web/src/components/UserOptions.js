@@ -1,17 +1,29 @@
 import { useState } from "react";
+import TertiaryButton from "./TertiaryButton";
+import { useNavigate } from "react-router-dom";
 
-const UserOptions = () => {
+
+const UserOptions = ({ onLogout }) => {
     const [language, setLanguage] = useState("English");
     const [currency, setCurrency] = useState("$USD");
     const [showLanguageOptions, setShowLanguageOptions] = useState(false);
     const [showCurrencyOptions, setShowCurrencyOptions] = useState(false);
+    
 
     const userAvatar = "/images/avatar.png";
     const username = "Username";
     const email = "email@gmail.com";
+    const navigate = useNavigate();
+
+    //LOGOUT////////////////////////////////
+    const handleLogout = () => {
+        localStorage.removeItem("token"); // Xóa token khỏi localStorage
+        alert("Đăng xuất thành công!");
+        navigate("/"); // Chuyển hướng về trang bắt đầu
+    };
 
     return (
-        <div className="shadow-md w-60 h-90 bg-white shadow-lightPrimary rounded-b-md border-divideColor p-4">
+        <div className="absolute top-[56px] right-4 shadow-md w-60 bg-white rounded-lg border border-divideColor p-4 z-40">
             {/* User avatar */}
             <div className="flex items-center gap-6 p-4 border-b-2 border-divideColor">
                 <img
@@ -68,9 +80,7 @@ const UserOptions = () => {
 
             {/* Logout */}
             <div className="p-4 cursor-pointer">
-                <a href="/">
-                    <p className="text-secondaryText text-lg hover:bg-gray-100 hover:text-PrimaryText rounded-md">Logout</p>
-                </a>
+                <TertiaryButton onClick={onLogout}>Logout</TertiaryButton>
             </div>
         </div>
     );

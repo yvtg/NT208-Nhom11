@@ -1,16 +1,30 @@
+//TODO: còn lỗi khi click chỗ khác thì mấy ô dropdown ko mất đi
+
 import { FaSearch, FaBell, FaUserCircle, FaPaperPlane } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import TertiaryButton from "./TertiaryButton";
 import UserOptions from "./UserOptions";
+import ConversationList from "./ConversationList"
+import useConversations from "../hooks/useConversations"
 
-const DefaultNavbar = ({ className }) => {
+const DefaultNavbar = ({ className, onLogout  }) => {
+    
     const navigate = useNavigate();
+    // khi click vào avatar
     const [showOption, setShowOption] = useState(false);
-
+    // khi click vào icon tin nhắn
+    const [showConversation, setShowConversation] = useState(false);
+    const { conversations, loading, error, refresh } = useConversations(showConversation);
+    
     const toggleOption = () => setShowOption(!showOption);
+    const toggleConversation = () => setShowConversation(!showConversation);
+
+    //TODO: nữa chỉnh lại cái loading và error
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div className={className}>
@@ -20,7 +34,7 @@ const DefaultNavbar = ({ className }) => {
         
                 {/* Logo */}
                 <div className="text-2xl text-darkPrimary lobster  font-lobster 
-                cursor-pointer" onClick={() => navigate("/")}>SkillLink</div>
+                cursor-pointer" onClick={() => navigate("/dashboard")}>SkillLink</div>
 
                 {/* Thanh tìm kiếm */}
                 <div className="flex-1 lg:mx-6 sm:mx-2 hidden sm:block md:block lg:block">
@@ -42,7 +56,7 @@ const DefaultNavbar = ({ className }) => {
                 
                         {/* Nút icon */}
                         <div className="flex space-x-3 items-center">
-                            <FaPaperPlane className=" text-2xl text-darkPrimary cursor-pointer hover:text-lightPrimary" />
+                            <FaPaperPlane onClick={toggleConversation} className=" text-2xl text-darkPrimary cursor-pointer hover:text-lightPrimary" />
                             <FaBell className=" text-2xl cursor-pointer text-darkPrimary hover:text-lightPrimary" />
                             <FaUserCircle onClick={toggleOption} className=" text-2xl text-darkPrimary cursor-pointer hover:text-lightPrimary" />
                         </div>
@@ -52,9 +66,15 @@ const DefaultNavbar = ({ className }) => {
 
             {/* Option */}
             {showOption && (
-                <div className="absolute right-[75px] mt-6 bg-white p-4 w-48 z-40">
-                    <UserOptions />
-                </div>
+                <UserOptions onLogout={onLogout} />
+            )}
+
+            {/* Danh sách tin nhắn */}
+            {showConversation && (
+                <ConversationList
+                    conversations={conversations}
+                    onSelectConversation={(id) => navigate('/messages/'+id)}
+                />
             )}
 
         </div>

@@ -3,11 +3,13 @@ import database from "../config/database.js";
 // lấy tất cả cuộc hội thoại của 1 người dùng
 const getConversations = async (req, res) => {
     try {
-        const userID = req.UserID; // Extracted from the token
+        const userID = req.userId; // Extracted from the token
+        console.log("User ID:", userID);
         const [conversations] = await database.query(
             `SELECT * FROM Conversations WHERE User1_ID = ? OR User2_ID = ?`,
-            [UserID, UserID]
+            [userID, userID]
         );
+        console.log("Conversations:", conversations);
         res.status(200).json(conversations);
     } catch (error) {
         console.error("Error fetching conversations: ", error);

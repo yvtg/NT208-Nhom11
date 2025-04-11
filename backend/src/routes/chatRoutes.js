@@ -1,5 +1,5 @@
 import express from 'express';
-import { getMessages, sendMessage } from '../controllers/messageController.js';
+import { getMessages, getLastestMessages, sendMessage } from '../controllers/messageController.js';
 import { middlewareToken } from '../config/jwt.js';
 import { createConversation, getConversations } from '../controllers/chatController.js';
 
@@ -12,5 +12,6 @@ chatRoutes.post("/conversations", middlewareToken, createConversation);
 // Message routes
 chatRoutes.get("/messages/:conversationID", middlewareToken, getMessages);
 chatRoutes.post("/messages", middlewareToken, sendMessage);
+chatRoutes.get("/messages", middlewareToken, getLastestMessages)
 
 export default chatRoutes;

@@ -22,7 +22,6 @@ const verifyAccessToken = (accessToken) => {
 const middlewareToken = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
-    console.log("Token received:", token); // Log token
 
     if (!token) {
       return res.status(401).json({ message: "Token is missing" });
@@ -35,7 +34,6 @@ const middlewareToken = async (req, res, next) => {
     }
 
     const userId = checkToken.UserID;
-    console.log("User ID from token:", userId); // Log user ID
 
     const [rows] = await database.query("SELECT * FROM Users WHERE UserID = ?", [userId]);
 

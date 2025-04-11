@@ -11,3 +11,4 @@ services:
       - ./database.sql:/docker-entrypoint-initdb.d/database.sql
     env_file:
       - .env
+
