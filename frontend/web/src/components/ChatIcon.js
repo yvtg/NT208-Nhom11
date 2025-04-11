@@ -1,6 +1,6 @@
 import { LuMessageCircleQuestion } from "react-icons/lu";
 
-const ChatIcon = (onClick) => {
+const ChatIcon = ({ onClick }) => {
     return(
         <LuMessageCircleQuestion 
             onClick={onClick}

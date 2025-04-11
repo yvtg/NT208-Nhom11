@@ -11,23 +11,61 @@ import Test from "./pages/test"
 import SignUp from "./pages/signup"; 
 import Login from "./pages/login"; 
 import DashBoard from "./pages/dashboard";  
+import Message from "./pages/messages";
+import Spinner from "./components/Spinner";
 
-const isAuthenticated = () => {
+const isAuthenticated = async () => {
   const token = localStorage.getItem("token");
-  return token != null;
+  if (!token) return false;
+
+  try {
+    const response = await fetch("http://localhost:3000/api/auth/verify-token", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Invalid token");
+    }
+
+    const data = await response.json();
+    return data.valid;
+  } catch (error) {
+    console.error("Token verification failed:", error);
+    return false;
+  }
 };
 
 function App() {
 
-  const [authenticated, setAuthenticated] = useState(isAuthenticated());
+  const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setAuthenticated(isAuthenticated());
-  }, [authenticated]);
+      const checkAuth = async () => {
+          const authenticated = await isAuthenticated();
+          setAuthenticated(authenticated);
+          setLoading(false)
+      };
+
+      checkAuth();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); 
+    setAuthenticated(false);
+  };
+
+  if (loading) {
+    return <Spinner />
+  }
+  
 
   return (
     <Router>
-      <Routes>
+      <Routes key={authenticated}>
         <Route path="/" element={<Home />} />
         <Route path="/settings/change-password" element={<ChangePassword />} />
         <Route path="/settings/change-profile" element={<ChangeProfile />} />
@@ -35,18 +73,14 @@ function App() {
         <Route path="/test" element={<Test />} />
         
         <Route path="/signup" element={authenticated ? <Navigate to="/dashboard" /> : <SignUp />} />
-        <Route path="/login" element={authenticated ? <Navigate to="/dashboard" /> : <Login />} /> 
+        <Route path="/login" element={authenticated ? <Navigate to="/dashboard" /> : <Login setAuthenticated={setAuthenticated} />} /> 
         
-        <Route path="/dashboard" element={authenticated ? <DashBoard /> : <Navigate to="/login" />} />
+        <Route path="/dashboard" element={authenticated ? <DashBoard onLogout={handleLogout} /> : <Navigate to="/login" />} />
 
-        <Route path="jobs/post" element={<PostJob />} />
-        <Route path="jobs/page" element={<JobPage />} />
-        <Route path="jobs/search" element={<SearchJob />} />
-
-
-
-
-
+        <Route path="/jobs/post" element={<PostJob />} />
+        <Route path="/jobs/page" element={<JobPage />} />
+        <Route path="/jobs/search" element={<SearchJob />} />
+        <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );

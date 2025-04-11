@@ -6,12 +6,12 @@ import UserInfo from "../components/UserInfo";
 import JobSummary from "../components/JobSummary";
 import JobFilterTab from "../components/JobFilterTab";
 
-const DashBoard = () => {
+const DashBoard = ({ onLogout }) => {
     const [selectedFilter, setSelectedFilter] = useState("Best Match");
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
-            <DefaultNavbar />
+            <DefaultNavbar onLogout={onLogout} />
 
             <div className="relative w-full h-[488px] flex flex-col items-center">
                 <Banner />
