@@ -44,11 +44,15 @@ Config .env
 ```
 DB_HOST=localhost
 DB_PORT=PORT # change PORT to your port  
-DB_USER=root
-
+DB_USER=YOUR_USERNAME # change to your username
 DB_PASSWORD=YOUR_PASSWORD # change YOUR_PASSWORD to your password
 DB_NAME=YOUR_DB_NAME # change YOUR_DB_NAME to your database name
 
+SERVER_PORT=YOUR_SERVER_PORT
+FRONTEND_PORT=YOUR_FRONTEND_PORT
+SOCKET_PORT=YOUR_SOCKET_PORT
+
+SECRET_KEY=YOUR_SECRET_KEY
 ```
 ## Usages
 
