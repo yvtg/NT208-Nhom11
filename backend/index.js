@@ -10,6 +10,7 @@ import database from "./src/config/database.js";
 import authRoutes from "./src/routes/authRoutes.js";
 
 import chatRoutes from './src/routes/chatRoutes.js';
+import rootRoutes from "./src/routes/rootRoutes.js";
 
 dotenv.config();
 
@@ -40,7 +41,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
-
+app.use(rootRoutes);
 // Kiểm tra kết nối database
 database.getConnection()
     .then(() => console.log("✅ Database connected successfully!"))
