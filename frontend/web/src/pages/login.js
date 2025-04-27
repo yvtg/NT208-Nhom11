@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import StartNavbar from "../components/StartNavbar";
 import PrimaryButton from "../components/PrimaryButton";
 import TextInput from "../components/TextInput";
 import ChatIcon from "../components/ChatIcon";
-import { FaFacebook, FaGoogle , FaLinkedin } from "react-icons/fa";
 import Footer from "../components/Footer"; 
 import SecondaryButton from "../components/SecondaryButton";
+import OAuthButtons from "../components/OAuthButtons";
 
 const validatePassword = (password) => {
     const minLength = /.{8,}/;
@@ -27,25 +27,46 @@ const Login = ({ setAuthenticated }) => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    // Handle OAuth callback
+    useEffect(() => {
+        const token = searchParams.get('token');
+        const error = searchParams.get('error');
+        
+        if (error) {
+            setError(error);
+            return;
+        }
+
+        if (token) {
+            try {
+                localStorage.setItem("token", token);
+                setAuthenticated(true);
+                navigate("/dashboard");
+            } catch (err) {
+                console.error("Error handling OAuth callback:", err);
+                setError("Có lỗi xảy ra khi xử lý đăng nhập. Vui lòng thử lại.");
+            }
+        }
+    }, [searchParams, setAuthenticated, navigate]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         
-        // kiểm tra mật khẩu
-        const passwordError = validatePassword(password);
-        if (passwordError) 
-        {
-            setError(passwordError);
-            return;
-        }
-        
-        // kiểm tra tên người dùng
+        // Validate username
         if (!username.trim()) {
             setError("Tên người dùng không được để trống.");
             return;
         }
 
-        // gửi yêu cầu đăng nhập tới API
+        // Validate password
+        if (!password.trim()) {
+            setError("Mật khẩu không được để trống.");
+            return;
+        }
+
+        // Send login request to API
         try {
             const response = await fetch("http://localhost:3000/api/auth/login", {
                 method: "POST",
@@ -54,22 +75,16 @@ const Login = ({ setAuthenticated }) => {
                 credentials: "include",
             });
 
-            // xử lý lỗi từ API
             if (!response.ok) {
                 const errorData = await response.json();
                 setError(errorData.message || "Đăng nhập thất bại!");
                 return;
             }
 
-            // lưu token
             const data = await response.json();
-            console.log("Login response data:", data); // Log dữ liệu trả về từ API
-            localStorage.setItem("token", data.token);
-
-            // điều hướng tới dashboard
             if (data?.token) {
                 localStorage.setItem("token", data.token);
-                setAuthenticated(true); // Cập nhật trạng thái đăng nhập
+                setAuthenticated(true);
                 navigate("/dashboard");
             }
         } catch (error) {
@@ -89,7 +104,7 @@ const Login = ({ setAuthenticated }) => {
                     </h2>
 
                     {/* Form Username & Password */}
-                    {error && <p style={{ color: "red" }}>{error}</p>}
+                    {error && <p className="text-red-500 text-center mt-2">{error}</p>}
                     <form onSubmit={handleLogin}>
                         <div className="pt-6 space-y-6 w-full max-w-lg">
                             <TextInput
@@ -110,10 +125,10 @@ const Login = ({ setAuthenticated }) => {
                         <div className="flex justify-center mt-6">
                             <PrimaryButton
                                 className="w-60 flex justify-center px-3 py-1 text-lg"
-                                type="submit" // Đặt type là "submit"
+                                type="submit"
                             >
                                 Login
-                            </PrimaryButton>
+                            </PrimaryButton>  
                         </div>
                     </form>
 
@@ -122,36 +137,39 @@ const Login = ({ setAuthenticated }) => {
                         Forgot your password?
                     </div>
 
-
-                    {/*line Don't have acc*/ }
-                    <div className="flex items-center my-4">
-                        <div className="flex-grow border-t border-gray-300"></div>
-                        <span className="mx-2 text-gray-500 text-sm">Don't have an account?</span>
-                        <div className="flex-grow border-t border-gray-300"></div> 
+                    {/* OAuth Buttons */}
+                    <div className="mt-6">
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-white text-gray-500">Hoặc đăng nhập với</span>
+                            </div>
+                        </div>
+                        <OAuthButtons />
                     </div>
 
-                    {/*sign up with other*/ }
-                    <div className="flex items-center justify-center space-x-6 my-4">
-                        <FaFacebook className="text-blue-600 text-4xl cursor-pointer" />
-                        <FaGoogle className="text-red-500 text-4xl cursor-pointer" />
-                        <FaLinkedin className="text-blue-700 text-4xl cursor-pointer" />
-                    </div>
-
-                    {/*line or*/ }
+                    {/* Divider */}
                     <div className="flex items-center my-4">
                         <div className="flex-grow border-t border-gray-300"></div>
                         <span className="mx-2 text-gray-500 text-sm">OR</span>
-                        <div className="flex-grow border-t border-gray-300"> </div> 
+                        <div className="flex-grow border-t border-gray-300"></div> 
                     </div>
 
                     <div className="flex justify-center mt-6">
-                        <SecondaryButton className="w-60 flex justify-center px-3 py-1 text-lg"> Sign Up </SecondaryButton>
+                        <SecondaryButton 
+                            className="w-60 flex justify-center px-3 py-1 text-lg"
+                            onClick={() => navigate("/register")}
+                        >
+                            Sign Up
+                        </SecondaryButton>
                     </div>
                 </div>
             </div>
 
             <ChatIcon />
-            <Footer></Footer>
+            <Footer />
         </div>
     );
 };

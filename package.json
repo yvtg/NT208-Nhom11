@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "dotenv": "^16.4.7",
-    "mysql2": "^3.13.0"
+    "mysql2": "^3.13.0",
+    "passport-github2": "^0.1.12"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",

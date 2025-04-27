@@ -4,6 +4,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import session from "express-session";
+import passport from "./src/config/passport.js";
 
 import database from "./src/config/database.js";
 
@@ -37,6 +39,13 @@ app.use(cors({
     credentials: true
     }));
 app.use(cookieParser());
+app.use(session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
 app.use("/api/auth", authRoutes);
