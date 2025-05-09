@@ -29,7 +29,7 @@
 ## Cài đặt
 Clone dự án từ repository:
 ```shell
-git clone <repository_url>
+git clone https://github.com/Vi-Alviss/NT208-Nhom11.git
 cd NT208-Nhom11
 ```
 
@@ -39,7 +39,7 @@ cp backend/.env.example backend/.env
 ```
 Sau đó chỉnh sửa các giá trị trong file .env theo cấu hình của bạn.
 
-3. Khởi chạy ứng dụng với Docker Compose:
+Khởi chạy ứng dụng với Docker Compose:
 ```shell
 docker-compose up -d
 ```
