@@ -1,20 +1,67 @@
+
 services:
   mysql:
     image: mysql:latest
-    container_name: my-mysql
+    container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: freelance-app
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - ./database.sql:/docker-entrypoint-initdb.d/database.sql
-    env_file:
-      - .env
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "3000:3000"  # REST API
+      - "3002:3002"  # Socket
+    environment:
+      DATABASE_URL: mysql://root:password@mysql:3306/freelance-app
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_PASSWORD: 123456
+      DB_NAME: freelance-app
+      SERVER_PORT: 3000
+      FRONTEND_PORT: 3001
+      SOCKET_PORT: 3002
+      JWT_SECRET: your_secret_key_here
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend/web
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3001:3001"
+    environment:
+      REACT_APP_API_URL: http://backend:3000
+      REACT_APP_SOCKET_URL: http://backend:3002
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mysql_data:
 

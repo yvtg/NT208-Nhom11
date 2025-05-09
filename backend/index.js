@@ -56,6 +56,6 @@ database.getConnection()
     .then(() => console.log("✅ Database connected successfully!"))
     .catch((err) => console.error("❌ Database connection failed:", err));
 
-app.listen(SERVER_PORT, () => {
+app.listen(SERVER_PORT, '0.0.0.0', () => {
     console.log(`🚀 Server is running on http://localhost:${SERVER_PORT}`);
 });

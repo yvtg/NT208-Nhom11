@@ -3,94 +3,50 @@
 ## 📌 Tổng quan
 
 **Đồ án môn học:** Lập trình ứng dụng web - NT208.P23.ANTT
-
 **Giảng viên hướng dẫn:** Trần Tuấn Dũng
-
 **👨‍💻 Thành viên nhóm 11:**
-* Nhóm trưởng: **Ngô Thái Vinh** - MSSV: **23521791** - Github: https://github.com/Vi-Alviss
+| Vai trò       | Họ và Tên                                                                 | MSSV      |
+|---------------|---------------------------------------------------------------------------|-----------|
+| Nhóm trưởng   | [**Ngô Thái Vinh**](https://github.com/Vi-Alviss)                         | 23521791  |
+| Thành viên 1  | [**Phạm Thanh Sơn**](https://github.com/PhamSonUIT)                       | 21522556  |
+| Thành viên 2  | [**Lê Quốc Huy**](https://github.com/LQHtmt)                              | 23520615  |
+| Thành viên 3  | [**Lê Phương Uyên**](https://github.com/PUynn)                            | 23521761  |
+| Thành viên 4  | [**Lê Thị Tường Vy**](https://github.com/yvtg)                            | 23521828  |
 
-* Thành viên 1: **Phạm Thanh Sơn** - MSSV: **21522556** - Github: https://github.com/PhamSonUIT
-
-* Thành viên 2: **Lê Quốc Huy** - MSSV: **23520615** - Github: https://github.com/LQHtmt 
-
-* Thành viên 3: **Lê Phương Uyên** - MSSV: **23521761** - Github: https://github.com/PUynn
-
-* Thành viên 4: **Lê Thị Tường Vy** - MSSV: **23521828** - Github: https://github.com/yvtg
 
 ## 📝 Giới thiệu sơ lược
-
 **Skillink** là website kết nối freelancer với các dự án do các cá nhân hoặc công ty tuyển dụng sử dụng AI, giúp freelancer tìm việc và nhà tuyển dụng tìm nhân lực nhanh chóng.
-
 * Hỗ trợ đăng ký với nhiều phương thức, tạo hồ sơ nhanh chóng.
-
 * Dễ dàng tìm kiếm công việc với sự đề xuất từ AI.
-
 * Chat trực tiếp giữa freelancer và nhà tuyển dụng, gửi file, tài liệu.
-
 * Hỗ trợ thanh toán, giao dịch đảm bảo an toàn.
-
 * Hệ thống đánh giá và đề xuất cho cả phía freelancer và nhà tuyển dụng.
-
 * AI Chatbot hỗ trợ 24/7.
+## Yêu cầu cài đặt
+- tải [Node.js](https://nodejs.org/en)
+- tải [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-## 🛠 Công nghệ sử dụng
-* Express js
-* React js
-* Firebase
-* <a href="https://dbdiagram.io/d/67d92f3375d75cc8447cfbf7">Database</a>
-
-## Configuration
-Config .env 
-```
-DB_HOST=localhost
-DB_PORT=PORT # change PORT to your port  
-DB_USER=YOUR_USERNAME # change to your username
-DB_PASSWORD=YOUR_PASSWORD # change YOUR_PASSWORD to your password
-DB_NAME=YOUR_DB_NAME # change YOUR_DB_NAME to your database name
-
-SERVER_PORT=YOUR_SERVER_PORT
-FRONTEND_PORT=YOUR_FRONTEND_PORT
-SOCKET_PORT=YOUR_SOCKET_PORT
-
-SECRET_KEY=YOUR_SECRET_KEY
-
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-
-FACEBOOK_APP_ID=
-FACEBOOK_APP_SECRET=
-
-
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-
-JWT_EXPIRES_IN=24h
-JWT_SECRET=
-
-CALLBACK_URL=http://localhost:3000
-
-```
-## Usages
-
-run database
-```sh
-docker compose up
-docker exec -it my-mysql mysql -u root -p
+## Cài đặt
+Clone dự án từ repository:
+```shell
+git clone <repository_url>
+cd NT208-Nhom11
 ```
 
-run backend server
-```sh
-cd backend
-npm install
-npm run start
+Tạo file .env trong thư mục backend (dựa trên .env.example):
+```shell
+cp backend/.env.example backend/.env
+```
+Sau đó chỉnh sửa các giá trị trong file .env theo cấu hình của bạn.
+
+3. Khởi chạy ứng dụng với Docker Compose:
+```shell
+docker-compose up -d
 ```
 
-run frontend
-```sh
-cd frontend/web
-npm install
-npm run start
-```
+Truy cập ứng dụng:
+- Frontend: http://localhost:3001
+- Backend API: http://localhost:3000
 
 ## 📦 Database Schema
  
