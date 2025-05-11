@@ -4,11 +4,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const SECRET_KEY=process.env.SECRET_KEY;
+const EXPIRES_IN = process.env.JWT_EXPIRES_IN || "3h";
 
 const createAccessToken = (payload) => {
   return jwt.sign({ UserID: payload.UserID }, SECRET_KEY, {
     algorithm: "HS256",
-    expiresIn: "3h", // h: hour, m: minutes, s: seconds, d: days
+    expiresIn: EXPIRES_IN, // h: hour, m: minutes, s: seconds, d: days
   });
 };
 

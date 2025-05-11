@@ -1,0 +1,195 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkingType {
+  onsite
+  remote
+  hybrid
+}
+
+enum ProjectStatus {
+  open
+  closed
+  in_progress
+}
+
+enum ApplicationStatus {
+  pending
+  accepted
+  rejected
+}
+
+enum FileType {
+  image
+  video
+  document
+  pdf
+  excel
+}
+
+enum PaymentMethod {
+  PayPal
+  Credit_Card
+  Bank_Transfer
+}
+
+enum TransactionStatus {
+  pending
+  completed
+  failed
+}
+
+enum UserProjectRole {
+  posted
+  completed
+}
+
+model Users {
+  UserID            Int                   @id @default(autoincrement())
+  Username          String                @unique
+  Password          String?
+  Email             String                @unique
+  Provider          String?
+  PhoneNumber       String?
+  AvatarURL         String?
+  Skill             String?
+  CreatedDate       DateTime              @default(now())
+  Experience        Int                   @default(0)
+  CV_URL            String?
+  AverageRating     Float                 @default(0)
+
+  companies         Companies[]           @relation("CompanyOwner")
+  projects          Projects[]            @relation("UserProjects")
+  ratingsGiven      Ratings[]             @relation("Rater")
+  ratingsReceived   Ratings[]             @relation("Rated")
+  conversations1    Conversations[]       @relation("User1")
+  conversations2    Conversations[]       @relation("User2")
+  messages          Messages[]
+  paymentsSent      Payments[]            @relation("Sender")
+  paymentsReceived  Payments[]            @relation("Receiver")
+  appliedProjects   ProjectApplicants[]
+  userProjects      UserProjects[]
+}
+
+model Companies {
+  CompanyID     Int      @id @default(autoincrement())
+  Name          String
+  Address       String?
+  AvatarURL     String
+  AverageRating Float    @default(0)
+  OwnerID       Int?
+
+  Description   String?
+  Owner         Users?   @relation("CompanyOwner", fields: [OwnerID], references: [UserID])
+
+  @@index([OwnerID])
+}
+
+model Projects {
+  ProjectID      Int                  @id @default(autoincrement())
+  ProjectName    String
+  UploadedDate   DateTime             @default(now())
+  ExpiredDate    DateTime             @default(now())
+  Budget         Decimal              @db.Decimal(10, 2)
+  OwnerID        Int
+  Description    String?
+  WorkingType    WorkingType
+  WorkingPlace   String?
+  Field          String?
+  Status         ProjectStatus        @default(open)
+  AverageRating  Float                @default(0)
+
+  Owner          Users                @relation("UserProjects", fields: [OwnerID], references: [UserID])
+  applicants     ProjectApplicants[]
+  userProjects   UserProjects[]
+}
+
+model ProjectApplicants {
+  ProjectID   Int
+  UserID      Int
+  AppliedDate DateTime           @default(now())
+  Status      ApplicationStatus  @default(pending)
+
+  project     Projects           @relation(fields: [ProjectID], references: [ProjectID])
+  user        Users              @relation(fields: [UserID], references: [UserID])
+
+  @@id([ProjectID, UserID])
+}
+
+model Ratings {
+  RatingID     Int      @id @default(autoincrement())
+  RatedUserID  Int
+  RaterID      Int
+  Score        Int
+  Comment      String?
+  RatingDate   DateTime @default(now())
+
+  rated        Users    @relation("Rated", fields: [RatedUserID], references: [UserID])
+  rater        Users    @relation("Rater", fields: [RaterID], references: [UserID])
+}
+
+model Conversations {
+  ConversationID Int     @id @default(autoincrement())
+  User1_ID       Int
+  User2_ID       Int
+  CreatedAt      DateTime @default(now())
+
+  user1          Users   @relation("User1", fields: [User1_ID], references: [UserID])
+  user2          Users   @relation("User2", fields: [User2_ID], references: [UserID])
+  messages       Messages[]
+
+  @@unique([User1_ID, User2_ID])
+}
+
+model Messages {
+  MessageID       Int       @id @default(autoincrement())
+  ConversationID  Int
+  SenderID        Int
+  Content         String
+  CreatedAt       DateTime  @default(now())
+
+  conversation    Conversations @relation(fields: [ConversationID], references: [ConversationID])
+  sender          Users         @relation(fields: [SenderID], references: [UserID])
+  attachments     MessageAttachments[]
+}
+
+model MessageAttachments {
+  AttachmentID Int       @id @default(autoincrement())
+  MessageID    Int
+  FileURL      String
+  FileType     FileType
+  UploadedDate DateTime  @default(now())
+
+  message      Messages  @relation(fields: [MessageID], references: [MessageID])
+}
+
+model Payments {
+  PaymentID         Int               @id @default(autoincrement())
+  SenderID          Int
+  ReceiverID        Int
+  Salary            Decimal           @db.Decimal(10, 2)
+  PaymentMethod     PaymentMethod
+  TransactionStatus TransactionStatus @default(pending)
+  PaymentDate       DateTime          @default(now())
+
+  sender            Users             @relation("Sender", fields: [SenderID], references: [UserID])
+  receiver          Users             @relation("Receiver", fields: [ReceiverID], references: [UserID])
+}
+
+model UserProjects {
+  UserID    Int
+  ProjectID Int
+  Role      UserProjectRole
+
+  user      Users    @relation(fields: [UserID], references: [UserID])
+  project   Projects @relation(fields: [ProjectID], references: [ProjectID])
+
+  @@id([UserID, ProjectID, Role])
+}
