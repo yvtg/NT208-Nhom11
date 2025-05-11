@@ -14,11 +14,9 @@ RUN npm install
 
 COPY . .
 
-# Generate Prisma client
-RUN npx prisma generate
 
 EXPOSE 3000
 EXPOSE 3002
 
 # Dùng script chờ thay vì chạy trực tiếp
-CMD ["/bin/bash", "-c", "wait-for-it.sh mysql:3306 -t 60 -- npm start"]
+CMD ["/bin/bash", "-c", "wait-for-it.sh mysql:3306 -t 60 -- sh -c 'npx prisma generate && npm start'"]

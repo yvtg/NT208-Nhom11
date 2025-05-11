@@ -4,7 +4,7 @@ services:
     image: mysql:latest
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: freelance-app
     ports:
       - "3306:3306"
@@ -32,10 +32,10 @@ services:
       - "3000:3000"  # REST API
       - "3002:3002"  # Socket
     environment:
-      DATABASE_URL: mysql://root:my-secret-pw@mysql:3306/freelance-app
+      DATABASE_URL: mysql://root:123456@mysql:3306/freelance-app
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_PASSWORD: my-secret-pw
+      DB_PASSWORD: 123456
       DB_NAME: freelance-app
       SERVER_PORT: 3000
       FRONTEND_PORT: 3001
