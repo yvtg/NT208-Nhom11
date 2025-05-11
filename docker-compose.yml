@@ -4,12 +4,13 @@ services:
     image: mysql:latest
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: my-secret-pw
       MYSQL_DATABASE: freelance-app
     ports:
       - "3306:3306"
     volumes:
       - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+      - mysql_data:/var/lib/mysql
     networks:
       - app-network
     healthcheck:
@@ -31,10 +32,10 @@ services:
       - "3000:3000"  # REST API
       - "3002:3002"  # Socket
     environment:
-      DATABASE_URL: mysql://root:password@mysql:3306/freelance-app
+      DATABASE_URL: mysql://root:my-secret-pw@mysql:3306/freelance-app
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_PASSWORD: 123456
+      DB_PASSWORD: my-secret-pw
       DB_NAME: freelance-app
       SERVER_PORT: 3000
       FRONTEND_PORT: 3001
