@@ -1,19 +1,16 @@
-import mysql from 'mysql2/promise';
+import pg from 'pg';
 import dotenv from 'dotenv';
 
 // Load biến môi trường từ file .env
 dotenv.config();
 
-// Tạo connection pool
-const database = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+// Sử dụng connection string cho PostgreSQL
+const { Pool } = pg;
+const connectionString = process.env.DATABASE_URL || 'postgresql://username:password@localhost:5432/database_name';
+
+const database = new Pool({
+    connectionString,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
 export default database;

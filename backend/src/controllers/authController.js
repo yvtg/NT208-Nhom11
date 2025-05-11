@@ -15,29 +15,31 @@ const signup = async (req, res) => {
       return res.status(400).json({ error: "Passwords do not match." });
     }
 
-    const [existingUser] = await database.query(
-      'SELECT * FROM Users WHERE Username = ? OR Email = ?',
+    const existingUserResult = await database.query(
+      'SELECT * FROM users WHERE username = $1 OR email = $2',
       [username, email]
     );
 
-    if (existingUser && existingUser.length > 0) {
+    if (existingUserResult.rows.length > 0) {
       return res
         .status(400)
         .json({ error: "Username or Email already exists." });
     }
-    const [result] = await database.query(
-      `INSERT INTO Users (
-        Username, Password, Email, PhoneNumber, AvatarURL,
-        Skill, Experience, CV_URL
+    
+    const result = await database.query(
+      `INSERT INTO users (
+        username, password, email, phonenumber, avatarurl,
+        skill, experience, cv_url
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING userid`,
       [
         username, password, email, phone, avatarURL,
         '', 0, ''
       ]
     );
 
-    const userId = result.insertId;
+    const userId = result.rows[0].userid;
 
     return res
       .status(201)
@@ -58,24 +60,24 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    const [rows] = await database.query(
-      'SELECT * FROM Users WHERE Username = ?',
+    const result = await database.query(
+      'SELECT * FROM users WHERE username = $1',
       [Username]
     );
     
-    const user = rows[0];
+    const user = result.rows[0];
 
     if (!user) {
       return res.status(401).json({ message: "User don't exist" });
     }
 
-    if (user.Password !== Password) {
+    if (user.password !== Password) {
       return res.status(401).json({ message: "Invalid password" });
     }
 
     const payload = {
-      UserID: user.UserID,
-      Username: user.Username,
+      userid: user.userid,
+      username: user.username,
     };
 
     const accessToken = createAccessToken(payload);

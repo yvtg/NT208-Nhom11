@@ -5,13 +5,13 @@ import { Strategy as GitHubStrategy } from 'passport-github2';
 import database from './database.js';
 
 passport.serializeUser((user, done) => {
-    done(null, user.UserID);
+    done(null, user.userid);
 });
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const [users] = await database.query('SELECT * FROM Users WHERE UserID = ?', [id]);
-        done(null, users[0]);
+        const users = await database.query('SELECT * FROM users WHERE userid = $1', [id]);
+        done(null, users.rows[0]);
     } catch (error) {
         done(error, null);
     }
@@ -33,25 +33,25 @@ async (accessToken, refreshToken, profile, done) => {
             return done(new Error('Email not provided by Google'), null);
         }
 
-        const [existingUser] = await database.query(
-            'SELECT * FROM Users WHERE Email = ?',
+        const existingUser = await database.query(
+            'SELECT * FROM users WHERE email = $1',
             [email]
         );
 
-        if (existingUser.length > 0) {
-            return done(null, existingUser[0]);
+        if (existingUser.rows.length > 0) {
+            return done(null, existingUser.rows[0]);
         }
 
-        const [result] = await database.query(
-            'INSERT INTO Users (Username, Email, Password, Provider) VALUES (?, ?, ?, ?)',
+        const result = await database.query(
+            'INSERT INTO users (username, email, password, provider) VALUES ($1, $2, $3, $4) RETURNING userid',
             [profile.displayName, email, null, 'google']
         );
 
         const newUser = {
-            UserID: result.insertId,
-            Username: profile.displayName,
-            Email: email,
-            Provider: 'google'
+            user_id: result.rows[0].userid,
+            username: profile.displayName,
+            email: email,
+            provider: 'google'
         };
 
         return done(null, newUser);
@@ -77,25 +77,25 @@ async (accessToken, refreshToken, profile, done) => {
             return done(new Error('Email not provided by Facebook'), null);
         }
 
-        const [existingUser] = await database.query(
-            'SELECT * FROM Users WHERE Email = ?',
+        const existingUser = await database.query(
+            'SELECT * FROM users WHERE email = $1',
             [email]
         );
 
-        if (existingUser.length > 0) {
-            return done(null, existingUser[0]);
+        if (existingUser.rows.length > 0) {
+            return done(null, existingUser.rows[0]);
         }
 
-        const [result] = await database.query(
-            'INSERT INTO Users (Username, Email, Password, Provider) VALUES (?, ?, ?, ?)',
+        const result = await database.query(
+            'INSERT INTO users (username, email, password, provider) VALUES ($1, $2, $3, $4) RETURNING userid',
             [profile.displayName, email, null, 'facebook']
         );
 
         const newUser = {
-            UserID: result.insertId,
-            Username: profile.displayName,
-            Email: email,
-            Provider: 'facebook'
+            user_id: result.rows[0].userid,
+            username: profile.displayName,
+            email: email,
+            provider: 'facebook'
         };
 
         return done(null, newUser);
@@ -121,25 +121,25 @@ async (accessToken, refreshToken, profile, done) => {
             return done(new Error('Email not provided by GitHub'), null);
         }
 
-        const [existingUser] = await database.query(
-            'SELECT * FROM Users WHERE Email = ?',
+        const existingUser = await database.query(
+            'SELECT * FROM users WHERE email = $1',
             [email]
         );
 
-        if (existingUser.length > 0) {
-            return done(null, existingUser[0]);
+        if (existingUser.rows.length > 0) {
+            return done(null, existingUser.rows[0]);
         }
 
-        const [result] = await database.query(
-            'INSERT INTO Users (Username, Email, Password, Provider) VALUES (?, ?, ?, ?)',
+        const result = await database.query(
+            'INSERT INTO users (username, email, password, provider) VALUES ($1, $2, $3, $4) RETURNING userid',
             [profile.displayName, email, null, 'github']
         );
 
         const newUser = {
-            UserID: result.insertId,
-            Username: profile.displayName,
-            Email: email,
-            Provider: 'github'
+            user_id: result.rows[0].userid,
+            username: profile.displayName,
+            email: email,
+            provider: 'github'
         };
 
         return done(null, newUser);

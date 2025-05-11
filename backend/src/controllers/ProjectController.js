@@ -1,21 +1,21 @@
-import {PrismaClient} from '@prisma/client';
+import database from "../config/database.js";
 
-const prisma = new PrismaClient();
 const getProjects = async (req, res) => {
   try {
-    const projects = await prisma.project.findMany();
-    res.status(200).json(projects);
+    const result = await database.query('SELECT * FROM projects');
+    res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error retrieving projects" });
   }
 };
+
 const getProjectById = async (req, res) => {
   const { ProjectID } = req.params;
   try {
-    const project = await prisma.projects.findUnique({
-      where: { ProjectID: parseInt(ProjectID) },
-    });
+    const result = await database.query('SELECT * FROM projects WHERE projectid = $1', [parseInt(ProjectID)]);
+    const project = result.rows[0];
+    
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
@@ -25,6 +25,7 @@ const getProjectById = async (req, res) => {
     res.status(500).json({ message: "Error retrieving project" });
   }
 };
+
 const createProject = async (req, res) => {
   try {
     const {
@@ -34,17 +35,29 @@ const createProject = async (req, res) => {
       WorkingType,
       Budget,
       Description,
+      OwnerID
     } = req.body;
-    const newProject = await prisma.projects.create({
-      data: {
-        ProjectName,
-        Field,
-        ExpiredDate: new Date(ExpiredDate),
-        WorkingType,
-        Budget,
-        Description,
-      },
-    });
+
+    const result = await database.query(
+      `INSERT INTO projects (
+        projectname, field, expireddate, workingtype, 
+        budget, description, ownerid, uploadeddate, status
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), 'open')
+      RETURNING project_id`,
+      [ProjectName, Field, new Date(ExpiredDate), WorkingType, Budget, Description, OwnerID]
+    );
+
+    const newProject = {
+      projectid: result.rows[0].project_id,
+      projectname: ProjectName,
+      field: Field,
+      expireddate: ExpiredDate,
+      workingtype: WorkingType,
+      budget: Budget,
+      description: Description,
+      ownerid: OwnerID
+    };
+
     res.status(201).json(newProject);
   } catch (error) {
     console.error(error);
@@ -63,33 +76,34 @@ const updateProject = async (req, res) => {
         Budget,
         Description,
         } = req.body;
-        const updatedProject = await prisma.projects.update({
-        where: { ProjectID: parseInt(ProjectID) },
-        data: {
-            ProjectName,
-            Field,
-            ExpiredDate,
-            WorkingType,
-            Budget,
-            Description,
-        },
-        });
+        
+        await database.query(
+          `UPDATE projects 
+           SET projectname = $1, field = $2, expireddate = $3, 
+               workingtype = $4, budget = $5, description = $6
+           WHERE projectid = $7`,
+          [ProjectName, Field, ExpiredDate, WorkingType, Budget, Description, parseInt(ProjectID)]
+        );
+        
+        const result = await database.query('SELECT * FROM projects WHERE projectid = $1', [parseInt(ProjectID)]);
+        const updatedProject = result.rows[0];
+        
         res.status(200).json(updatedProject);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error updating project" });
     }
 }
+
 const deleteProject = async (req, res) => {
   const { ProjectID } = req.params;
   try {
-    await prisma.projects.delete({
-      where: { ProjectID: parseInt(ProjectID) },
-    });
+    await database.query('DELETE FROM projects WHERE projectid = $1', [parseInt(ProjectID)]);
     res.status(200).json({ message: "Project deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error deleting project" });
   }
 };
+
 export { getProjects, createProject, updateProject, deleteProject, getProjectById };

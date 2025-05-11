@@ -1,24 +1,22 @@
-FROM node:20-slim
+FROM node:18-alpine
 
 WORKDIR /app
 
-# Cài đặt OpenSSL cho Prisma và thêm công cụ wait-for-it
-RUN apt-get update -y && apt-get install -y openssl netcat-openbsd wget
+# Cài đặt các công cụ cần thiết
+RUN apk add --no-cache bash curl postgresql-client
 
-# Tải script wait-for-it
-RUN wget -O /usr/local/bin/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh \
-    && chmod +x /usr/local/bin/wait-for-it.sh
+# Sao chép package.json và package-lock.json
+COPY package*.json ./
 
-COPY package.json package-lock.json ./
+# Cài đặt dependencies
 RUN npm install
+RUN npm install pg
 
+# Sao chép toàn bộ mã nguồn
 COPY . .
 
-# Generate Prisma client
-RUN npx prisma generate
+# Expose port
+EXPOSE 3000 3002
 
-EXPOSE 3000
-EXPOSE 3002
-
-# Dùng script chờ thay vì chạy trực tiếp
-CMD ["/bin/bash", "-c", "wait-for-it.sh mysql:3306 -t 60 -- npm start"]
+# Khởi động ứng dụng
+CMD ["npm", "start"]

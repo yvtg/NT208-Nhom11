@@ -51,9 +51,13 @@ app.use(passport.session());
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 app.use(rootRoutes);
+
 // Kiểm tra kết nối database
-database.getConnection()
-    .then(() => console.log("✅ Database connected successfully!"))
+database.connect()
+    .then(client => {
+        console.log("✅ PostgreSQL database connected successfully!");
+        client.release();
+    })
     .catch((err) => console.error("❌ Database connection failed:", err));
 
 app.listen(SERVER_PORT, '0.0.0.0', () => {
