@@ -7,7 +7,7 @@ const SECRET_KEY=process.env.SECRET_KEY;
 const EXPIRES_IN = process.env.JWT_EXPIRES_IN || "3h";
 
 const createAccessToken = (payload) => {
-  return jwt.sign({ UserID: payload.UserID }, SECRET_KEY, {
+  return jwt.sign({ userid: payload.userid }, SECRET_KEY, {
     algorithm: "HS256",
     expiresIn: EXPIRES_IN, // h: hour, m: minutes, s: seconds, d: days
   });
@@ -35,14 +35,9 @@ const middlewareToken = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    const userId = checkToken.UserID;
+    const userId = checkToken.userid;
 
-    const [rows] = await database.query("SELECT * FROM Users WHERE UserID = ?", [userId]);
-
-    if (rows.length === 0) {
-      console.log("User not found in database"); // Log user not found
-      return res.status(401).json({ message: "User not found" });
-    }
+    const result = await database.query("SELECT * FROM users WHERE userid = $1", [userId]);
 
     req.userId = userId; // Attach userId to the request
     next();

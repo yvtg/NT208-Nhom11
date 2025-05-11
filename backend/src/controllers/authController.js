@@ -52,17 +52,17 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { Username, Password } = req.body;
+    const { username, password } = req.body;
 
-    console.log(Username, Password);
+    console.log(username, password);
   
-    if (!Username || !Password) {
+    if (!username || !password) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
     const result = await database.query(
       'SELECT * FROM users WHERE username = $1',
-      [Username]
+      [username]
     );
     
     const user = result.rows[0];
@@ -71,7 +71,7 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "User don't exist" });
     }
 
-    if (user.password !== Password) {
+    if (user.password !== password) {
       return res.status(401).json({ message: "Invalid password" });
     }
 
