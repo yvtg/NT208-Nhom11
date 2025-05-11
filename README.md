@@ -47,6 +47,7 @@ docker-compose up -d
 Truy cập ứng dụng:
 - Frontend: http://localhost:3001
 - Backend API: http://localhost:3000
+- API doc: http://localhost:3000/api-docs
 
 ## 📦 Database Schema
  

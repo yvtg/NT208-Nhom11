@@ -29,7 +29,7 @@ const setupSocket = (server) => {
 
         try {
             const decoded = jwt.verify(token, SECRET_KEY); 
-            socket.userId = decoded.UserID; 
+            socket.userId = decoded.userid; 
             next(); 
         } catch (err) {
             console.error("JWT verify failed:", err);
