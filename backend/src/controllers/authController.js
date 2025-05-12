@@ -28,14 +28,12 @@ const signup = async (req, res) => {
     
     const result = await database.query(
       `INSERT INTO users (
-        username, password, email, phonenumber, avatarurl,
-        skill, experience, cv_url
+        username, password, email, phonenumber, avatarurl
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING userid`,
       [
-        username, password, email, phone, avatarURL,
-        '', 0, ''
+        username, password, email, phone, avatarURL
       ]
     );
 

@@ -10,6 +10,22 @@ const getProjects = async (req, res) => {
   }
 };
 
+const getMyProjects = async (req, res) => {
+  try {
+    const ownerId = req.userId; // Lấy từ JWT đã xác thực qua middleware
+
+    const result = await database.query(
+      'SELECT * FROM projects WHERE ownerid = $1 ORDER BY uploadeddate DESC',
+      [ownerId]
+    );
+
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error getting user projects:", error);
+    res.status(500).json({ message: "Error retrieving user projects" });
+  }
+};
+
 const getProjectById = async (req, res) => {
   const { ProjectID } = req.params;
   try {
@@ -35,22 +51,23 @@ const createProject = async (req, res) => {
       WorkingType,
       Budget,
       Description,
-      OwnerID
     } = req.body;
+
+    const OwnerID = req.userId; // Lấy từ token đã xác thực
 
     const result = await database.query(
       `INSERT INTO projects (
-        projectname, field, expireddate, workingtype, 
+        projectname, field_id, expireddate, workingtype, 
         budget, description, ownerid, uploadeddate, status
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), 'open')
-      RETURNING project_id`,
+      RETURNING projectid`,
       [ProjectName, Field, new Date(ExpiredDate), WorkingType, Budget, Description, OwnerID]
     );
 
     const newProject = {
       projectid: result.rows[0].project_id,
       projectname: ProjectName,
-      field: Field,
+      field_id: Field,
       expireddate: ExpiredDate,
       workingtype: WorkingType,
       budget: Budget,
@@ -79,7 +96,7 @@ const updateProject = async (req, res) => {
         
         await database.query(
           `UPDATE projects 
-           SET projectname = $1, field = $2, expireddate = $3, 
+           SET projectname = $1, field_id = $2, expireddate = $3, 
                workingtype = $4, budget = $5, description = $6
            WHERE projectid = $7`,
           [ProjectName, Field, ExpiredDate, WorkingType, Budget, Description, parseInt(ProjectID)]
@@ -106,4 +123,14 @@ const deleteProject = async (req, res) => {
   }
 };
 
-export { getProjects, createProject, updateProject, deleteProject, getProjectById };
+const getFields = async (req, res) => {
+  try {
+    const result = await database.query("SELECT field_id, field_name FROM fields ORDER BY field_name ASC");
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error retrieving fields:", error);
+    res.status(500).json({ message: "Error retrieving fields" });
+  }
+};
+
+export { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields };

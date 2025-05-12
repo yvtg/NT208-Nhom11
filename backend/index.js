@@ -12,9 +12,6 @@ import passport from "./src/config/passport.js";
 
 import database from "./src/config/database.js";
 
-import authRoutes from "./src/routes/authRoutes.js";
-
-import chatRoutes from './src/routes/chatRoutes.js';
 import rootRoutes from "./src/routes/rootRoutes.js";
 
 dotenv.config();

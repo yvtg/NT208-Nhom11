@@ -1,6 +1,6 @@
 import React from "react";
 
-const UserInfo = ({ username = "Unknown", email = "No email", avatar, rating = 0, title = "Title" }) => {
+const UserInfo = ({ username, email, avatar, rating }) => {
     return (
         <div className="flex items-center gap-8">
             <div className="relative">
@@ -21,6 +21,16 @@ const UserInfo = ({ username = "Unknown", email = "No email", avatar, rating = 0
                     <button className="text-gray-400 px-2 pb-1">Job finished</button>
                     <button className="text-gray-400 px-2 pb-1">CV</button>
                 </div>
+            </div>
+
+            <div className="flex items-center mt-4">
+                {Array.from({ length: 5 }, (_, index) => (
+                    index < rating ? (
+                        <FaStar key={index} className="text-yellow-400 text-lg" />
+                    ) : (
+                        <FaRegStar key={index} className="text-gray-400 text-lg" />
+                    )
+                ))}
             </div>
         </div>
     );
