@@ -1,4 +1,5 @@
 import database from "../config/database.js";
+import bcrypt from "bcrypt";
 
 // lấy thông tin toàn bộ người dùng có trong database
 const getUsers = async (req, res) => {

@@ -1,5 +1,6 @@
 import { createAccessToken } from "../config/jwt.js";
 import database from "../config/database.js";
+import bcrypt from "bcrypt";
 
 const avatarURL = 'https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg';
 
@@ -26,6 +27,8 @@ const signup = async (req, res) => {
         .json({ error: "Username or Email already exists." });
     }
     
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
     const result = await database.query(
       `INSERT INTO users (
         username, password, email, phonenumber, avatarurl
@@ -33,7 +36,7 @@ const signup = async (req, res) => {
       VALUES ($1, $2, $3, $4, $5)
       RETURNING userid`,
       [
-        username, password, email, phone, avatarURL
+        username, hashedPassword, email, phone, avatarURL
       ]
     );
 
@@ -69,7 +72,8 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "User don't exist" });
     }
 
-    if (user.password !== password) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
 
