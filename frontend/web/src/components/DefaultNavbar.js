@@ -99,10 +99,16 @@ const DefaultNavbar = ({ className, onLogout  }) => {
             {/* Danh sách tin nhắn */}
             {showConversation && (
                 <div ref={conversationRef}>
-                    <ConversationList
-                        conversations={conversations}
-                        onSelectConversation={(id) => navigate('/messages/'+id)}
-                    />
+                    {conversations && conversations.length > 0 ? (
+                        <ConversationList
+                            conversations={conversations}
+                            onSelectConversation={(id) => navigate('/messages/'+id)}
+                        />
+                    ) : (
+                        <div className="absolute top-[56px] right-20 shadow-lg w-64 bg-white rounded-lg border border-gray-200 p-4 z-40 text-center">
+                            <p className="text-gray-600">Chưa có tin nhắn nào</p>
+                        </div>
+                    )}
                 </div>
             )}
 

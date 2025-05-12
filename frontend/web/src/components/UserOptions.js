@@ -15,12 +15,6 @@ const UserOptions = ({ onLogout }) => {
     const email = "email@gmail.com";
     const navigate = useNavigate();
 
-    //LOGOUT////////////////////////////////
-    const handleLogout = () => {
-        localStorage.removeItem("token"); // Xóa token khỏi localStorage
-        alert("Đăng xuất thành công!");
-        navigate("/"); // Chuyển hướng về trang bắt đầu
-    };
 
     return (
         <div className="absolute top-[56px] right-4 shadow-md w-60 bg-white rounded-lg border border-divideColor p-4 z-40">

@@ -1,6 +1,6 @@
 import { FaStar, FaRegStar } from "react-icons/fa";
 
-const UserInfo = ({ username = "Unknown", email = "No email", avatar = "/images/avatar.png", rating = 0  }) => {
+const UserInfo = ({ username, email, avatar, rating }) => {
     return (
         <div className="bg-white p-6 relative rounded-lg drop-shadow-md w-[300px] h-[200px] flex flex-col justify-center">
             <div className="flex items-center">
@@ -21,7 +21,6 @@ const UserInfo = ({ username = "Unknown", email = "No email", avatar = "/images/
                     )
                 ))}
             </div>
-\
         </div>
     );
 };

@@ -6,22 +6,40 @@ import UserInfo from "../components/UserInfo";
 import JobSummary from "../components/JobSummary";
 import JobFilterTab from "../components/JobFilterTab";
 import { getProjects } from "../api/projectAPI.js";
+import useAuth from "../hooks/useAuth";
+import { getCurrentUser } from "../api/userAPI";
 const DashBoard = ({ onLogout }) => {
   const [selectedFilter, setSelectedFilter] = useState("Best Match");
 
-  const [projects, setProjects] = useState();
+  // const [projects, setProjects] = useState();
+  // useEffect(() => {
+  //   const fetchProjects = async () => {
+  //     try {
+  //       const response = await getProjects();
+  //       setProjects(response);
+  //       return response.data;
+  //     } catch (error) {
+  //       console.error("Error fetching projects:", error);
+  //     }
+  //   };
+  //   fetchProjects();
+  // });
+
+  const { userID, isLoading } = useAuth();
+  const [userData, setUserData] = useState();
+
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await getProjects();
-        setProjects(response);
-        return response.data;
+        const userData = await getCurrentUser();
+        setUserData(userData);
       } catch (error) {
-        console.error("Error fetching projects:", error);
+        console.error("Error fetching user data:", error);
       }
     };
-    fetchProjects();
-  });
+    
+    fetchUserData();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -37,7 +55,7 @@ const DashBoard = ({ onLogout }) => {
           </div>
 
           <div className="w-2/4 flex justify-end mt-[-50px]">
-            <UserInfo />
+            <UserInfo username={userData?.username} email={userData?.email} avatar={userData?.avatarurl} rating="0" />
           </div>
         </div>
       </div>
