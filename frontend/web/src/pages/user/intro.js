@@ -31,8 +31,8 @@ const IntroPage = () => {
                     <Searchbar />
                 </div>
             </div>
-            <div className="flex gap-8 px-16 -mt-20">
-                <div className="flex-1 bg-white rounded-2xl shadow-lg p-10 pt-16 min-h-[350px] flex flex-col">
+            <div className="flex gap-8 px-16 ">
+                <div className="flex-1 bg-white rounded-2xl shadow-lg p-10 min-h-[350px] flex flex-col pt-24 ">
                     <UserInfo
                         username={user?.username || "Username"}
                         title={user?.title || "Title"}
@@ -42,10 +42,10 @@ const IntroPage = () => {
                     />
                     <div className="border-b border-gray-300 my-6" />
                     <div className="text-sm text-gray-700 pl-2">
-                        <p>{user?.introduce || "Lorem ipsum dolor sit amet consectetur. Et turpis sed elementum morbi. Turpis pharetra..."}</p>
+                        <p>{user?.introduce }</p>
                     </div>
                 </div>
-                <div className="w-[350px] flex-shrink-0">
+                <div className="w-[350px] flex-shrink-0 pt-24 ">
                     <UserContactBox
                         phone={user?.phonenumber || "+84 123 456 789"}
                         email={user?.email || "email@gmail.com"}

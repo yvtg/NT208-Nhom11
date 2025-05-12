@@ -1,6 +1,7 @@
 import React from "react";
+import { FaStar, FaRegStar } from "react-icons/fa"; 
 
-const UserInfo = ({ username, email, avatar, rating }) => {
+const UserInfo = ({ username, title, email, avatar, rating }) => {
     return (
         <div className="flex items-center gap-8">
             <div className="relative">
