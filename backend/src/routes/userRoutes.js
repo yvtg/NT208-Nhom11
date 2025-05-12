@@ -1,12 +1,12 @@
 import express from "express";
-import { getUsers, getUserById, getCurrentUser } from "../controllers/userController.js";
+import { getUsers, getUserById, getCurrentUser, updateProfile, updatePassword, updateCV } from "../controllers/userController.js";
 import { middlewareToken } from '../config/jwt.js';
 
 const userRoutes = express.Router();
 
 /**
  * @swagger
- * /user/getUsers:
+ * /api/users:
  *   get:
  *     summary: Lấy thông tin toàn bộ người dùng có trong database
  *     tags: [Users]
@@ -18,11 +18,11 @@ const userRoutes = express.Router();
  *       401:
  *         description: Không có quyền truy cập
  */
-userRoutes.get("/getUsers", getUsers);
+userRoutes.get("/users", getUsers);
 
 /**
  * @swagger
- * /user/getUserByID/{id}:
+ * /api/user/{id}:
  *   get:
  *     summary: Lấy thông tin người dùng theo ID
  *     tags: [Users]
@@ -39,11 +39,11 @@ userRoutes.get("/getUsers", getUsers);
  *       404:
  *         description: Không tìm thấy người dùng
  */
-userRoutes.get("/getUserByID/:id", getUserById);
+userRoutes.get("/user/:id", getUserById);
 
 /**
  * @swagger
- * /user/getCurrentUser:
+ * /api/profile:
  *   get:
  *     summary: Lấy thông tin người dùng hiện tại
  *     tags: [Users]
@@ -57,7 +57,111 @@ userRoutes.get("/getUserByID/:id", getUserById);
  *       404:
  *         description: Không tìm thấy thông tin người dùng
  */
-userRoutes.get("/getCurrentUser", middlewareToken, getCurrentUser);
+userRoutes.get("/profile", middlewareToken, getCurrentUser);
 
+/**
+ * @swagger
+ * /api/profile:
+ *   put:
+ *     summary: Cập nhật thông tin người dùng
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               avatarurl:
+ *                 type: string
+ *                 format: url
+ *               username:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               phonenumber:
+ *                 type: string
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Cập nhật thông tin người dùng thành công
+ *       401:
+ *         description: Không có quyền truy cập
+ *       404:
+ *         description: Không tìm thấy thông tin người dùng
+ */
+userRoutes.put("/profile", middlewareToken, updateProfile);
+
+/**
+ * @swagger
+ * /api/profile/password:
+ *   put:
+ *     summary: Cập nhật mật khẩu người dùng
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *               confirmPassword:
+ *                 type: string
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Cập nhật mật khẩu người dùng thành công
+ *       401:
+ *         description: Không có quyền truy cập
+ *       404:
+ *         description: Không tìm thấy thông tin người dùng
+ *       400:
+ *         description: Mật khẩu mới và xác nhận mật khẩu không khớp
+ */
+userRoutes.put("/profile/password", middlewareToken, updatePassword);
+
+/**
+ * @swagger
+ * /api/profile/cv:
+ *   put:
+ *     summary: Cập nhật cv người dùng
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               personal_website:
+ *                 type: string
+ *               cv_url:
+ *                 type: string
+ *               field_id:
+ *                 type: integer
+ *               skills:
+ *                 type: string
+ *               introduce:
+ *                 type: string
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Cập nhật cv người dùng thành công
+ *       401:
+ *         description: Không có quyền truy cập
+ *       404:
+ *         description: Không tìm thấy thông tin người dùng
+ */
+userRoutes.put("/profile/cv", middlewareToken, updateCV);
 
 export default userRoutes;

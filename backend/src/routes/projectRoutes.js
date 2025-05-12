@@ -5,7 +5,7 @@ const projectRoutes = express.Router();
 
 /**
  * @swagger
- * /project/getproject:
+ * /api/project/getproject:
  *   get:
  *     summary: Lấy danh sách tất cả dự án
  *     tags: [Projects]
@@ -17,7 +17,7 @@ projectRoutes.get('/getproject', getProjects);
 
 /**
  * @swagger
- * /project/createproject:
+ * /api/project/createproject:
  *   post:
  *     summary: Tạo dự án mới
  *     tags: [Projects]
@@ -47,7 +47,7 @@ projectRoutes.post('/createproject', middlewareToken, createProject);
 
 /**
  * @swagger
- * /project/updateproject/{ProjectID}:
+ * /api/project/updateproject/{ProjectID}:
  *   put:
  *     summary: Cập nhật thông tin dự án
  *     tags: [Projects]
@@ -81,7 +81,7 @@ projectRoutes.put('/updateproject/:ProjectID', updateProject);
 
 /**
  * @swagger
- * /project/deleteproject/{ProjectID}:
+ * /api/project/deleteproject/{ProjectID}:
  *   delete:
  *     summary: Xóa dự án
  *     tags: [Projects]
@@ -102,7 +102,7 @@ projectRoutes.delete('/deleteproject/:ProjectID', deleteProject);
 
 /**
  * @swagger
- * /project/getprojectbyid/{ProjectID}:
+ * /api/project/getprojectbyid/{ProjectID}:
  *   get:
  *     summary: Lấy thông tin dự án theo ID
  *     tags: [Projects]
