@@ -54,9 +54,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/chat", chatRoutes);
-app.use(rootRoutes);
+app.use("/api", rootRoutes);
 
 // Kiểm tra kết nối database
 database.connect()

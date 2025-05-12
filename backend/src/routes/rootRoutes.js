@@ -2,6 +2,7 @@ import express from 'express';
 import authRoutes from './authRoutes.js';
 import userRoutes from './userRoutes.js';
 import projectRoutes from './projectRoutes.js';
+import chatRoutes from './chatRoutes.js';
 
 /**
  * @swagger
@@ -18,6 +19,7 @@ import projectRoutes from './projectRoutes.js';
 
 const rootRoutes = express.Router();
 rootRoutes.use('/auth', authRoutes);
-rootRoutes.use('/user', userRoutes);
+rootRoutes.use('/', userRoutes);
 rootRoutes.use('/project', projectRoutes);
+rootRoutes.use('/chat', chatRoutes);
 export default rootRoutes;
