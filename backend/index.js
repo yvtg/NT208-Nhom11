@@ -5,6 +5,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./src/config/swagger.js";
+
 import passport from "./src/config/passport.js";
 
 import database from "./src/config/database.js";
@@ -31,6 +34,9 @@ server.listen(SOCKET_PORT, () => {
     console.log("Socket server is running on port ", SOCKET_PORT);
 });
 
+// cấu hình swagger
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // Middleware
 app.use(express.json());
@@ -48,9 +54,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/chat", chatRoutes);
-app.use(rootRoutes);
+app.use("/api", rootRoutes);
 
 // Kiểm tra kết nối database
 database.connect()

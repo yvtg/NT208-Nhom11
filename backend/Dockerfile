@@ -10,7 +10,6 @@ COPY package*.json ./
 
 # Cài đặt dependencies
 RUN npm install
-RUN npm install pg
 
 # Sao chép toàn bộ mã nguồn
 COPY . .

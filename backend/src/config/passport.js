@@ -48,7 +48,7 @@ async (accessToken, refreshToken, profile, done) => {
         );
 
         const newUser = {
-            user_id: result.rows[0].userid,
+            userid: result.rows[0].userid,
             username: profile.displayName,
             email: email,
             provider: 'google'
@@ -92,7 +92,7 @@ async (accessToken, refreshToken, profile, done) => {
         );
 
         const newUser = {
-            user_id: result.rows[0].userid,
+            userid: result.rows[0].userid,
             username: profile.displayName,
             email: email,
             provider: 'facebook'
@@ -136,7 +136,7 @@ async (accessToken, refreshToken, profile, done) => {
         );
 
         const newUser = {
-            user_id: result.rows[0].userid,
+            userid: result.rows[0].userid,
             username: profile.displayName,
             email: email,
             provider: 'github'
