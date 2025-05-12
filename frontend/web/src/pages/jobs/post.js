@@ -3,18 +3,16 @@ import PrimaryButton from "../../components/PrimaryButton";
 import ChatIcon from "../../components/ChatIcon";
 import TextInput from "../../components/TextInput";
 import Select from "../../components/Select";
-import { useState } from "react";
-import { createProject } from "../../api/projectAPI.js";
+import { useState, useEffect } from "react";
 
 const PostJob = () => {
-  const fieldOptions = [
-    { value: "tech", label: "tech" },
-    { value: "design", label: "design" },
-    { value: "marketing", label: "marketing" },
-    { value: "music", label: "music" },
-    { value: "writing", label: "writing" },
-    { value: "video", label: "video" },
-  ];
+  const [fieldOptions, setFieldOptions] = useState([]);
+  const [Field, setField] = useState(""); // Đây sẽ là field_id
+  const [WorkingType, setWorkingType] = useState("");
+  const [ExpiredDate, setExpiredDate] = useState("");
+  const [Budget, setBudget] = useState("");
+  const [Description, setDescription] = useState("");
+  const [ProjectName, setProjectName] = useState("");
 
   const workingTypeOptions = [
     { value: "remote", label: "remote" },
@@ -22,17 +20,29 @@ const PostJob = () => {
     { value: "hybrid", label: "hybrid" },
   ];
 
-  const [Field, setField] = useState("");
-  const [WorkingType, setWorkingType] = useState("");
-  const [ExpiredDate, setExpiredDate] = useState("");
-  const [Budget, setBudget] = useState("");
-  const [Description, setDescription] = useState("");
-  const [ProjectName, setProjectName] = useState("");
+  // ✅ Load field list từ API khi component mount
+  useEffect(() => {
+    const fetchFields = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/project/getfields");
+        const data = await res.json();
+        const options = data.map((field) => ({
+          value: field.field_id,
+          label: field.field_name,
+        }));
+        setFieldOptions(options);
+      } catch (err) {
+        console.error("Failed to fetch fields:", err);
+        alert("Failed to load field options.");
+      }
+    };
+
+    fetchFields();
+  }, []);
 
   const handlePostJob = async (e) => {
     e.preventDefault();
 
-    // Validation
     if (
       !ProjectName.trim() ||
       !Field ||
@@ -57,7 +67,7 @@ const PostJob = () => {
         },
         body: JSON.stringify({
           ProjectName,
-          Field,
+          Field, // là field_id
           ExpiredDate: expiredDateObj,
           WorkingType,
           Budget,
@@ -70,7 +80,6 @@ const PostJob = () => {
       if (response.ok) {
         console.log("Project created:", result);
         alert("✅ Project posted successfully!");
-        // Optional: reset form
         setField("");
         setWorkingType("");
         setExpiredDate("");

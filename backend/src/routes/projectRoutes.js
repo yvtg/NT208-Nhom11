@@ -1,5 +1,5 @@
 import express from 'express';
-import { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects } from '../controllers/projectController.js';
+import { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields } from '../controllers/projectController.js';
 import { middlewareToken } from '../config/jwt.js';
 const projectRoutes = express.Router();
 
@@ -137,5 +137,33 @@ projectRoutes.get('/getprojectbyid/:ProjectID', getProjectById);
  *         description: Không có token hoặc token không hợp lệ
  */
 projectRoutes.get('/getmyprojects', middlewareToken, getMyProjects);
+
+
+/**
+ * @swagger
+ * /project/getfields:
+ *   get:
+ *     summary: Lấy danh sách tất cả lĩnh vực (fields)
+ *     tags: [Projects]
+ *     responses:
+ *       200:
+ *         description: Trả về danh sách lĩnh vực thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   field_id:
+ *                     type: integer
+ *                     example: 1
+ *                   field_name:
+ *                     type: string
+ *                     example: Web Development
+ *       500:
+ *         description: Lỗi khi truy vấn danh sách lĩnh vực
+ */
+projectRoutes.get('/getfields', getFields)
 
 export default projectRoutes;
