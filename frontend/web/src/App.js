@@ -14,6 +14,8 @@ import DashBoard from "./pages/dashboard";
 import Message from "./pages/messages";
 import Spinner from "./components/Spinner";
 
+import IntroPage from "./pages/user/intro";
+
 const isAuthenticated = async () => {
   const token = localStorage.getItem("token");
   if (!token) return false;
@@ -74,13 +76,15 @@ function App() {
         
         <Route path="/signup" element={authenticated ? <Navigate to="/dashboard" /> : <SignUp />} />
         <Route path="/login" element={authenticated ? <Navigate to="/dashboard" /> : <Login setAuthenticated={setAuthenticated} />} /> 
-        
         <Route path="/dashboard" element={authenticated ? <DashBoard onLogout={handleLogout} /> : <Navigate to="/login" />} />
 
         <Route path="/jobs/post" element={<PostJob />} />
         <Route path="/jobs/page" element={<JobPage />} />
         <Route path="/jobs/search" element={<SearchJob />} />
         <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" />} />
+
+        <Route path="/user/intro" element={<IntroPage />} /> 
+
       </Routes>
     </Router>
   );
