@@ -10,6 +10,22 @@ const getProjects = async (req, res) => {
   }
 };
 
+const getMyProjects = async (req, res) => {
+  try {
+    const ownerId = req.userId; // Lấy từ JWT đã xác thực qua middleware
+
+    const result = await database.query(
+      'SELECT * FROM projects WHERE ownerid = $1 ORDER BY uploadeddate DESC',
+      [ownerId]
+    );
+
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error getting user projects:", error);
+    res.status(500).json({ message: "Error retrieving user projects" });
+  }
+};
+
 const getProjectById = async (req, res) => {
   const { ProjectID } = req.params;
   try {
@@ -35,8 +51,9 @@ const createProject = async (req, res) => {
       WorkingType,
       Budget,
       Description,
-      OwnerID
     } = req.body;
+
+    const OwnerID = req.userId; // Lấy từ token đã xác thực
 
     const result = await database.query(
       `INSERT INTO projects (
@@ -106,4 +123,4 @@ const deleteProject = async (req, res) => {
   }
 };
 
-export { getProjects, createProject, updateProject, deleteProject, getProjectById };
+export { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects };

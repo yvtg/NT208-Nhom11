@@ -47,19 +47,43 @@ const PostJob = () => {
 
     try {
       const expiredDateObj = new Date(ExpiredDate);
+      const token = localStorage.getItem("token");
 
-      const response = await createProject({
-        ProjectName,
-        Field,
-        ExpiredDate: expiredDateObj,
-        WorkingType,
-        Budget,
-        Description,
+      const response = await fetch("http://localhost:3000/api/project/createproject", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ProjectName,
+          Field,
+          ExpiredDate: expiredDateObj,
+          WorkingType,
+          Budget,
+          Description,
+        }),
       });
 
-      console.log("Project created:", response);
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("Project created:", result);
+        alert("✅ Project posted successfully!");
+        // Optional: reset form
+        setField("");
+        setWorkingType("");
+        setExpiredDate("");
+        setBudget("");
+        setDescription("");
+        setProjectName("");
+      } else {
+        console.error("Server error:", result);
+        alert("❌ Failed to post project: " + (result.message || "Unknown error"));
+      }
     } catch (error) {
       console.error("Error posting job:", error);
+      alert("❌ An error occurred while posting the project.");
     }
   };
 

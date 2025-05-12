@@ -1,6 +1,6 @@
 import express from 'express';
-import { getProjects, createProject, updateProject, deleteProject, getProjectById } from '../controllers/projectController.js';
-
+import { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects } from '../controllers/projectController.js';
+import { middlewareToken } from '../config/jwt.js';
 const projectRoutes = express.Router();
 
 /**
@@ -43,7 +43,7 @@ projectRoutes.get('/getproject', getProjects);
  *       400:
  *         description: Dữ liệu không hợp lệ
  */
-projectRoutes.post('/createproject', createProject);
+projectRoutes.post('/createproject', middlewareToken, createProject);
 
 /**
  * @swagger
@@ -120,5 +120,22 @@ projectRoutes.delete('/deleteproject/:ProjectID', deleteProject);
  *         description: Không tìm thấy dự án
  */
 projectRoutes.get('/getprojectbyid/:ProjectID', getProjectById);
+
+
+/**
+ * @swagger
+ * /project/getmyprojects:
+ *   get:
+ *     summary: Lấy danh sách dự án của người dùng hiện tại
+ *     tags: [Projects]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Trả về danh sách dự án của người dùng
+ *       401:
+ *         description: Không có token hoặc token không hợp lệ
+ */
+projectRoutes.get('/getmyprojects', middlewareToken, getMyProjects);
 
 export default projectRoutes;
