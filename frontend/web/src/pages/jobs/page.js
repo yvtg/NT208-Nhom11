@@ -21,12 +21,12 @@ const JobPage = () => {
 
             <div className="flex flex-col lg:flex-row gap-8 max-w-[90%] mx-auto mt-5">
                 <div className="w-full lg:w-[90%] ">
-                     <JobDetail />
+                    <JobDetail />
                 </div>
 
                 <div className=" lg:w-[30%] flex flex-col justify-start items-end space-y-4">
                     <PrimaryButton className="w-full h-[50px] font-bold text-2xl rounded-full">
-                         APPLY NOW
+                        APPLY NOW
                     </PrimaryButton>
                     <HirerInfo />
                     <JobSummary />

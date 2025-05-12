@@ -136,14 +136,17 @@ const updatePassword = async (req, res) => {
       return res.status(404).json({ message: "Không tìm thấy thông tin người dùng" });
     }
 
+    // Sử dụng bcrypt.compare để so sánh mật khẩu cũ
+    const isOldPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
     // Kiểm tra mật khẩu cũ
-    if (user.password !== oldPassword) {
+    if (!isOldPasswordValid) {
       return res.status(401).json({ message: "Mật khẩu cũ không chính xác" });
     }
 
     // Kiểm tra xem mật khẩu mới và xác nhận mật khẩu có giống nhau không
     if (newPassword !== confirmPassword) {
-      return res.status(400).json({ message: "Mật khẩu mới và xác nhận mật khẩu không khớp" });
+      return res.status(400).json({ message: "Mật khẩu mới không khớp" });
     }
 
     // Cập nhật mật khẩu mới
