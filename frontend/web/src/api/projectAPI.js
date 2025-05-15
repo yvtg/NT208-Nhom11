@@ -19,3 +19,23 @@ export const createProject = async (projectData) => {
         throw error;
     }
 }
+
+export const getFields = async () => {
+    try {
+        // Lấy token từ localStorage
+        const token = localStorage.getItem('token');
+        
+        // Tạo headers với token
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+
+        const response = await apiClient.get('/api/project/getfields', config);
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi lấy thông tin fields ', error);
+        throw error;
+    }
+}

@@ -20,7 +20,7 @@ const PostJob = () => {
     { value: "hybrid", label: "hybrid" },
   ];
 
-  // ✅ Load field list từ API khi component mount
+  // Load field list từ API khi component mount
   useEffect(() => {
     const fetchFields = async () => {
       try {

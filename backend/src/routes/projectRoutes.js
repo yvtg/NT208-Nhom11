@@ -124,7 +124,7 @@ projectRoutes.get('/getprojectbyid/:ProjectID', getProjectById);
 
 /**
  * @swagger
- * /project/getmyprojects:
+ * /api/project/getmyprojects:
  *   get:
  *     summary: Lấy danh sách dự án của người dùng hiện tại
  *     tags: [Projects]
@@ -141,7 +141,7 @@ projectRoutes.get('/getmyprojects', middlewareToken, getMyProjects);
 
 /**
  * @swagger
- * /project/getfields:
+ * /api/project/getfields:
  *   get:
  *     summary: Lấy danh sách tất cả lĩnh vực (fields)
  *     tags: [Projects]

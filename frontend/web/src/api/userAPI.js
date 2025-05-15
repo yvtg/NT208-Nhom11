@@ -22,15 +22,15 @@ export const getUserById = async (id) => {
 
 export const getCurrentUser = async () => {
     try {
-        // Lấy token từ localStorage
-        const token = localStorage.getItem('token');
+            // Lấy token từ localStorage
+            const token = localStorage.getItem('token');
             
             // Tạo headers với token
             const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        };
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
         
         const response = await apiClient.get('/api/profile', config);
         return response.data;
@@ -43,16 +43,17 @@ export const getCurrentUser = async () => {
 export const updateProfile = async (profileData) => {
     try {
         const token = localStorage.getItem('token');
-        const config = {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+            const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         };
         
         const response = await apiClient.put('/api/profile', profileData, config);
         return response.data;
     } catch (error) {
         console.error('Lỗi khi cập nhật thông tin cá nhân:', error);
+        console.log(profileData);
         throw error;
     }
 };
