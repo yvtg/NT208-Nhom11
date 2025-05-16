@@ -50,8 +50,8 @@ const DashBoard = ({ onLogout }) => {
 
         <div className="relative flex justify-between w-4/5 mt-5">
           <div className="w-full lg:w-[90%]">
-            <JobFilterTab onSelect={setSelectedFilter} />
-            <JobSummary filter={selectedFilter} />
+            {/* <JobFilterTab onSelect={setSelectedFilter} />
+            <JobSummary filter={selectedFilter} /> */}
           </div>
 
           <div className="w-2/4 flex justify-end mt-[-50px]">

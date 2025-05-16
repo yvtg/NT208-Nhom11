@@ -18,7 +18,7 @@ const userRoutes = express.Router();
  *       401:
  *         description: Không có quyền truy cập
  */
-userRoutes.get("/users", getUsers);
+userRoutes.get("/users", middlewareToken, getUsers);
 
 /**
  * @swagger
@@ -39,7 +39,7 @@ userRoutes.get("/users", getUsers);
  *       404:
  *         description: Không tìm thấy người dùng
  */
-userRoutes.get("/user/:id", getUserById);
+userRoutes.get("/user/:id", middlewareToken, getUserById);
 
 /**
  * @swagger

@@ -12,6 +12,7 @@ import UserOptions from "./UserOptions";
 import ConversationList from "./ConversationList"
 import useConversations from "../hooks/useConversations"
 import Spinner from "./Spinner";
+import Searchbar from "./Searchbar";
 
 const DefaultNavbar = ({ className, onLogout  }) => {
     
@@ -62,16 +63,7 @@ const DefaultNavbar = ({ className, onLogout  }) => {
                 cursor-pointer" onClick={() => navigate("/dashboard")}>SkillLink</div>
 
                 {/* Thanh tìm kiếm */}
-                <div className="flex-1 lg:mx-6 sm:mx-2 hidden sm:block md:block lg:block">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            placeholder="SEARCH"
-                            className="w-full px-4 py-2 rounded-full shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                        <FaSearch className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-500" />
-                    </div>
-                </div>
+                <Searchbar />
 
                 {/* Menu */}
                 <div className="hidden md:flex justify-center space-x-6 text-darkPrimary font-semibold">

@@ -85,6 +85,7 @@ function App() {
 
         <Route path="/profile" element={authenticated ? <IntroPage /> : <Navigate to="/login" />} /> 
 
+
       </Routes>
     </Router>
   );

@@ -3,6 +3,7 @@ import authRoutes from './authRoutes.js';
 import userRoutes from './userRoutes.js';
 import projectRoutes from './projectRoutes.js';
 import chatRoutes from './chatRoutes.js';
+import searchRoutes from './searchRoutes.js';
 
 /**
  * @swagger
@@ -22,4 +23,6 @@ rootRoutes.use('/auth', authRoutes);
 rootRoutes.use('/', userRoutes);
 rootRoutes.use('/project', projectRoutes);
 rootRoutes.use('/chat', chatRoutes);
+rootRoutes.use('/', searchRoutes);
+
 export default rootRoutes;

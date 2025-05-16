@@ -160,7 +160,7 @@ const Login = ({ setAuthenticated }) => {
                     <div className="flex justify-center mt-6">
                         <SecondaryButton 
                             className="w-60 flex justify-center px-3 py-1 text-lg"
-                            onClick={() => navigate("/register")}
+                            onClick={() => navigate("/signup")}
                         >
                             Sign Up
                         </SecondaryButton>

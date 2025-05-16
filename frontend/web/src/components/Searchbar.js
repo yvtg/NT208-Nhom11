@@ -1,14 +1,39 @@
+import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Searchbar = ({ className }) => {
+    const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/jobs/search?q=${encodeURIComponent(searchQuery)}`);
+        }
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit(e);
+        }
+    };
+
     return (
-        <div className={` bg-white relative flex items-center border-2 border-darkPrimary rounded-full px-4 py-2  mx-auto ${className}`}>
-            <input 
-                type="text" 
-                placeholder="SEARCH" 
-                className="outline-none text-darkPrimary font-semibold uppercase bg-transparent px-2 flex-1"
-            />
-            <FaSearch className="text-darkPrimary cursor-pointer" />
+        <div className={`flex-1 lg:mx-6 sm:mx-2 hidden sm:block md:block lg:block ${className}`}>
+            <div className="relative">
+                <input 
+                    type="text" 
+                    placeholder="SEARCH" 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="w-full px-4 py-2 rounded-full shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-darkPrimary"
+                />
+                <button type="button" onClick={handleSubmit}>
+                    <FaSearch className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-500" />
+                </button>
+            </div>
         </div>
     );
 };

@@ -2,6 +2,15 @@ import apiClient from './apiClient.js';
 
 export const getUsers = async () => {
     try {
+        // Lấy token từ localStorage
+        const token = localStorage.getItem('token');
+        
+        // Tạo headers với token
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
         const response = await apiClient.get('/api/users');
         return response.data;
     } catch (error) {
@@ -12,6 +21,15 @@ export const getUsers = async () => {
 
 export const getUserById = async (id) => {
     try {
+        // Lấy token từ localStorage
+        const token = localStorage.getItem('token');
+        
+        // Tạo headers với token
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
         const response = await apiClient.get(`/api/user/${id}`);
         return response.data;
     } catch (error) {
@@ -22,15 +40,15 @@ export const getUserById = async (id) => {
 
 export const getCurrentUser = async () => {
     try {
-            // Lấy token từ localStorage
-            const token = localStorage.getItem('token');
-            
-            // Tạo headers với token
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            };
+        // Lấy token từ localStorage
+        const token = localStorage.getItem('token');
+        
+        // Tạo headers với token
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
         
         const response = await apiClient.get('/api/profile', config);
         return response.data;
