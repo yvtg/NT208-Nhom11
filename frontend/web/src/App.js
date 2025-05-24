@@ -69,18 +69,18 @@ function App() {
     <Router>
       <Routes key={authenticated}>
         <Route path="/" element={<Home />} />
-        <Route path="/settings/change-password" element={<ChangePassword />} />
-        <Route path="/settings/change-profile" element={<ChangeProfile />} />
-        <Route path="/settings/change-cv" element={<ChangeCV />} />
+        <Route path="/settings/change-password" element={ authenticated ? <ChangePassword onLogout={handleLogout} /> : <Navigate to="/login" /> }/>
+        <Route path="/settings/change-profile" element={ authenticated ? <ChangeProfile onLogout={handleLogout} /> : <Navigate to="/login" /> } />
+        <Route path="/settings/change-cv" element={ authenticated ? <ChangeCV onLogout={handleLogout} /> : <Navigate to="/login" /> } />
         <Route path="/test" element={<Test />} />
         
         <Route path="/signup" element={authenticated ? <Navigate to="/dashboard" /> : <SignUp />} />
         <Route path="/login" element={authenticated ? <Navigate to="/dashboard" /> : <Login setAuthenticated={setAuthenticated} />} /> 
         <Route path="/dashboard" element={authenticated ? <DashBoard onLogout={handleLogout} /> : <Navigate to="/login" />} />
 
-        <Route path="/jobs/post" element={<PostJob />} />
-        <Route path="/jobs/page" element={<JobPage />} />
-        <Route path="/jobs/search" element={<SearchJob />} />
+        <Route path="/jobs/post" element={ authenticated ? <PostJob onLogout={handleLogout} /> : <Navigate to="/login" /> } />
+        <Route path="/jobs/page" element={ authenticated ? <JobPage onLogout={handleLogout} /> : <Navigate to="/login" /> } />
+        <Route path="/jobs/search" element={ authenticated ? <SearchJob onLogout={handleLogout} /> : <Navigate to="/login" /> } />
         <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" />} />
 
         <Route path="/profile" element={authenticated ? <IntroPage /> : <Navigate to="/login" />} /> 

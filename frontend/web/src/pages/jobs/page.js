@@ -7,10 +7,10 @@ import Searchbar from "../../components/Searchbar";
 import PrimaryButton from "../../components/PrimaryButton";
 import JobSummary from "../../components/JobSummary";
 
-const JobPage = () => {
+const JobPage = (onLogout={onLogout}) => {
     return (
         <div className="min-h-screen bg-gray-100">
-            <DefaultNavbar />
+            <DefaultNavbar onLogout={onLogout} />
 
             <div className="relative w-full h-[250px]">
                 <Banner />

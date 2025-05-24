@@ -17,8 +17,8 @@ const StartNavbar = () => {
                 
                 {/* Nút đăng nhập / đăng ký */}
                 <div className="space-x-2">
-                    <SecondaryButton className="px-4" onClick={() => navigate("/login")}>Sign in</SecondaryButton>
-                    <PrimaryButton className="px-4" onClick={() => navigate("/signup")}>Sign up</PrimaryButton>
+                    <SecondaryButton className="px-4" onClick={() => navigate("/login")}>Đăng nhập</SecondaryButton>
+                    <PrimaryButton className="px-4" onClick={() => navigate("/signup")}>Đăng ký</PrimaryButton>
                 </div>
             </div>
         </nav>

@@ -5,7 +5,7 @@ import { FaLinkedin } from "react-icons/fa";
 const UserContactBox = ({ phone, email, linkedin }) => {
   return (
     <div className="bg-white rounded-xl shadow-md p-6 flex flex-col gap-6 items-center w-80">
-      <button className="bg-blue-700 text-white font-semibold py-2 px-8 rounded-lg shadow">CONTACT</button>
+      <button className="bg-blue-700 text-white font-semibold py-2 px-8 rounded-lg shadow">Liên hệ </button>
       <div className="flex flex-col gap-4 w-full">
         <div className="flex items-center gap-3 text-lg">
           <FiPhone />

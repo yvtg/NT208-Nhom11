@@ -16,10 +16,10 @@ const UserInfo = ({ username, title, email, avatar, rating }) => {
                 <div className="text-lg text-gray-600 mb-1">{title}</div>
                 <div className="text-sm text-green-500 mb-4">● last online: 01/01/2025</div>
                 <div className="flex gap-2 mt-2">
-                    <button className="border-b-2 border-black px-2 pb-1 font-semibold">Introduce</button>
-                    <button className="text-gray-400 px-2 pb-1">Skill</button>
-                    <button className="text-gray-400 px-2 pb-1">Job posted</button>
-                    <button className="text-gray-400 px-2 pb-1">Job finished</button>
+                    <button className="border-b-2 border-black px-2 pb-1 font-semibold">Giới thiệu</button>
+                    <button className="text-gray-400 px-2 pb-1">Kỹ năng</button>
+                    <button className="text-gray-400 px-2 pb-1">Công việc đã đăng</button>
+                    <button className="text-gray-400 px-2 pb-1">Công việc đã hoàn thành</button>
                     <button className="text-gray-400 px-2 pb-1">CV</button>
                 </div>
             </div>

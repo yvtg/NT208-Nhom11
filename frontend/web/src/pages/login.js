@@ -100,7 +100,7 @@ const Login = ({ setAuthenticated }) => {
             <div className="flex flex-col items-center justify-center flex-grow">
                 <div className="rounded-md border shadow-lg p-11 bg-white max-w-md w-full">
                     <h2 className="text-2xl font-bold text-gray-800 text-center font-Roboto_Mono">
-                        Login
+                        Đăng nhập
                     </h2>
 
                     {/* Form Username & Password */}
@@ -109,15 +109,15 @@ const Login = ({ setAuthenticated }) => {
                         <div className="pt-6 space-y-6 w-full max-w-lg">
                             <TextInput
                                 type="text"
-                                placeholder="Enter your username"
-                                label="Username"
+                                placeholder="Nhập tên đăng nhập"
+                                label="Tên đăng nhập"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                             <TextInput
                                 type="password"
-                                placeholder="Enter your password"
-                                label="Password"
+                                placeholder="Nhập mật khẩu"
+                                label="Mật khẩu"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
@@ -127,14 +127,14 @@ const Login = ({ setAuthenticated }) => {
                                 className="w-60 flex justify-center px-3 py-1 text-lg"
                                 type="submit"
                             >
-                                Login
+                                Đăng nhập
                             </PrimaryButton>  
                         </div>
                     </form>
 
                     {/* "Forgot password?" */}
                     <div className="text-right text-sm text-blue-400 mt-2 cursor-pointer hover:underline">
-                        Forgot your password?
+                        Quên mật khẩu?
                     </div>
 
                     {/* OAuth Buttons */}
@@ -153,7 +153,7 @@ const Login = ({ setAuthenticated }) => {
                     {/* Divider */}
                     <div className="flex items-center my-4">
                         <div className="flex-grow border-t border-gray-300"></div>
-                        <span className="mx-2 text-gray-500 text-sm">OR</span>
+                        <span className="mx-2 text-gray-500 text-sm">Nếu bạn chưa có tài khoản</span>
                         <div className="flex-grow border-t border-gray-300"></div> 
                     </div>
 
@@ -162,7 +162,7 @@ const Login = ({ setAuthenticated }) => {
                             className="w-60 flex justify-center px-3 py-1 text-lg"
                             onClick={() => navigate("/signup")}
                         >
-                            Sign Up
+                            Đăng ký
                         </SecondaryButton>
                     </div>
                 </div>

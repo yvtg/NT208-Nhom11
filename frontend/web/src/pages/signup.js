@@ -127,16 +127,15 @@ import OAuthButtons from "../components/OAuthButtons";
             <StartNavbar />
             <div className="flex flex-col items-center justify-center flex-grow">
                 <div className="rounded-md border shadow-lg p-11 bg-white max-w-md w-full">
-                <h2 className="text-2xl font-bold text-gray-800 text-center font-Roboto_Mono">Sign Up</h2>
+                <h2 className="text-2xl font-bold text-gray-800 text-center font-Roboto_Mono">Đăng ký</h2>
                 
                   {/* OAuth Buttons */}
-                  <div className="mt-6">
+                <div className="mt-6">
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
                                 <div className="w-full border-t border-gray-300"></div>
                             </div>
                             <div className="relative flex justify-center text-sm">
-                                <span className="px-2 bg-white text-gray-500">Hoặc đăng ký với</span>
                             </div>
                         </div>
                         <OAuthButtons />
@@ -144,20 +143,20 @@ import OAuthButtons from "../components/OAuthButtons";
                     
                 <div className="flex items-center my-4">
                     <div className="flex-grow border-t border-gray-300"></div>
-                    <span className="mx-2 text-gray-500 text-sm">OR</span>
+                    <span className="mx-2 text-gray-500 text-sm">Hoặc</span>
                     <div className="flex-grow border-t border-gray-300"></div>
                 </div>
                 {error && <p style={{ color: "red" }}>{error}</p>}
                 <form onSubmit={handleSignup}>
-                    <div className="space-y-4">
-                    <TextInput label="Username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                    <div className="space-y-4 mt-2">
+                    <TextInput label="Tên đăng nhập" type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
                     <TextInput label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    <TextInput label="Phone Number" type="text" value={phone} onChange={(e) => setPhone(e.target.value)} required />
-                    <TextInput label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                    <TextInput label="Confirm Password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                    <TextInput label="Số điện thoại" type="text" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                    <TextInput label="Mật khẩu" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <TextInput label="Nhập lại mật khẩu" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                     </div>
                     <div className="flex justify-center mt-6">
-                    <PrimaryButton className="w-auto flex justify-center px-3 py-1 text-lg" type="submit">Sign Up</PrimaryButton>
+                    <PrimaryButton className="w-auto flex justify-center px-3 py-1 text-lg" type="submit">Đăng ký</PrimaryButton>
                     </div>
                 </form>
                 </div>
