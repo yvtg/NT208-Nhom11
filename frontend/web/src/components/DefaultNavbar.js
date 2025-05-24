@@ -22,6 +22,7 @@ const DefaultNavbar = ({ className, onLogout  }) => {
     // khi click vào icon tin nhắn
     const [showConversation, setShowConversation] = useState(false);
     const { conversations, loading, error, refresh } = useConversations(showConversation);
+    console.log(conversations)
 
     // dropdown
     const optionRef = useRef(null);

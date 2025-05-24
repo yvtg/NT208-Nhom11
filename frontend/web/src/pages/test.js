@@ -8,7 +8,7 @@ const Test = () => {
     const { createConversation, createLoading, createError } = useCreateConversation();
     const navigate = useNavigate();
     // nữa edit chỗ này /////////////
-    const participantID = 1;
+    const participantID = 2;
 
     const handleCreate = async () => {
         const data = await createConversation(participantID);

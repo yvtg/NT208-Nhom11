@@ -8,19 +8,19 @@ import Footer from "../components/Footer";
 import SecondaryButton from "../components/SecondaryButton";
 import OAuthButtons from "../components/OAuthButtons";
 
-const validatePassword = (password) => {
-    const minLength = /.{8,}/;
-    const upperCase = /[A-Z]/;
-    const number = /[0-9]/;
-    const specialChar = /[!@#$%^&*(),.?":{}|<>]/;
+// const validatePassword = (password) => {
+//     const minLength = /.{8,}/;
+//     const upperCase = /[A-Z]/;
+//     const number = /[0-9]/;
+//     const specialChar = /[!@#$%^&*(),.?":{}|<>]/;
 
-    if (!minLength.test(password)) return "Mật khẩu phải có ít nhất 8 ký tự.";
-    if (!upperCase.test(password)) return "Mật khẩu phải chứa ít nhất một chữ cái viết hoa.";
-    if (!number.test(password)) return "Mật khẩu phải chứa ít nhất một số.";
-    if (!specialChar.test(password)) return "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.";
+//     if (!minLength.test(password)) return "Mật khẩu phải có ít nhất 8 ký tự.";
+//     if (!upperCase.test(password)) return "Mật khẩu phải chứa ít nhất một chữ cái viết hoa.";
+//     if (!number.test(password)) return "Mật khẩu phải chứa ít nhất một số.";
+//     if (!specialChar.test(password)) return "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.";
 
-    return ""; // Nếu mật khẩu hợp lệ
-};
+//     return ""; // Nếu mật khẩu hợp lệ
+// };
 
 const Login = ({ setAuthenticated }) => {
     const [username, setUsername] = useState("");

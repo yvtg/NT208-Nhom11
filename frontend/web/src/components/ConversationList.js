@@ -1,14 +1,9 @@
 /**
  * hiển thị danh sách tin nhắn
 **/
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import 'dayjs/locale/vi'; 
+import { timeFromNow, formatTime } from '../utils/dayjs';
 import useAuth from '../hooks/useAuth';
 import Spinner from './Spinner';
-
-dayjs.extend(relativeTime);
-dayjs.locale('vi'); 
 
 const ConversationList = ({ conversations, onSelectConversation }) => {
     console.log(conversations)
@@ -18,23 +13,23 @@ const ConversationList = ({ conversations, onSelectConversation }) => {
             {isLoading ? <Spinner /> : <></>}
             {conversations.map((conversation, index) => (
                 <div
-                    key={conversation.ConversationID || index}
+                    key={conversation.conversationid || index}
                     className="conversation-item p-3 hover:bg-gray-50 cursor-pointer rounded-md transition-colors duration-150"
-                    onClick={() => onSelectConversation(conversation.ConversationID)}
+                    onClick={() => onSelectConversation(conversation.conversationid)}
                 >
                     <div className="flex items-start">
                         {/* Avatar */}
                         <div className="flex-shrink-0 mr-3">
                             <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold text-lg overflow-hidden">
-                                {conversation.AvatarURL ? (
+                                {conversation.avatarurl ? (
                                     //TODO: lỗi chỗ avatar
                                     <img
-                                        src={conversation.AvatarURL}
-                                        alt={conversation.ConversationName || "Ảnh đại diện"}
+                                        src={conversation.avatarurl}
+                                        alt={conversation.conversationname || "Ảnh đại diện"}
                                         className="w-full h-full object-cover"
                                     />
                                 ) : (
-                                    <span>{conversation.ConversationName?.charAt(0).toUpperCase() || '?'}</span>
+                                    <span>{conversation.conversationname?.charAt(0).toUpperCase() || '?'}</span>
                                 )}
                             </div>
                         </div>
@@ -43,16 +38,16 @@ const ConversationList = ({ conversations, onSelectConversation }) => {
                             <div className="flex justify-between items-start">
                                 <div className="conversation-name font-medium text-gray-900 truncate max-w-[180px]">
                                     {/* Tên cuộc hội thoại */}
-                                    {conversation.ConversationName}
+                                    {conversation.conversationname}
                                 </div>
                                 <div className="text-xs text-gray-400 ml-2 whitespace-nowrap">
-                                    {dayjs(conversation.CreatedAt).add(7, 'hour').fromNow()}
+                                    {timeFromNow(conversation.lastmessagetime)}
                                 </div>
                             </div>
                             {/* Tin nhắn gần đây nhất */}
                             <div className="conversation-last-message text-sm text-gray-500 mt-1 truncate">
-                                <span>{conversation.SenderID===userID?"Bạn: ":""}</span>
-                                {conversation.LastMessage}
+                                <span>{conversation.senderid===userID?"Bạn: ":""}</span>
+                                {conversation.lastmessage}
                             </div>
                         </div>
                     </div>

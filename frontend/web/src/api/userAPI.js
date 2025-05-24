@@ -11,7 +11,7 @@ export const getUsers = async () => {
                 Authorization: `Bearer ${token}`
             }
         };
-        const response = await apiClient.get('/api/users');
+        const response = await apiClient.get('/api/users', config);
         return response.data;
     } catch (error) {
         console.error('Lỗi khi lấy danh sách người dùng:', error);
@@ -30,7 +30,7 @@ export const getUserById = async (id) => {
                 Authorization: `Bearer ${token}`
             }
         };
-        const response = await apiClient.get(`/api/user/${id}`);
+        const response = await apiClient.get(`/api/user/${id}`, config);
         return response.data;
     } catch (error) {
         console.error(`Lỗi khi lấy thông tin người dùng ID ${id}:`, error);
@@ -42,6 +42,10 @@ export const getCurrentUser = async () => {
     try {
         // Lấy token từ localStorage
         const token = localStorage.getItem('token');
+        
+        if (!token) {
+            throw new Error('Không tìm thấy token');
+        }
         
         // Tạo headers với token
         const config = {
@@ -61,7 +65,7 @@ export const getCurrentUser = async () => {
 export const updateProfile = async (profileData) => {
     try {
         const token = localStorage.getItem('token');
-            const config = {
+        const config = {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -80,9 +84,9 @@ export const updatePassword = async (passwordData) => {
     try {
         const token = localStorage.getItem('token');
         const config = {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         };
         
         const response = await apiClient.put('/api/profile/password', passwordData, config);
