@@ -162,23 +162,14 @@ const PostJob = ({onLogout}) => {
               <TextInput
                 label="Tên công việc"
                 type="text"
-<<<<<<< HEAD
-                placeholder="Enter job title"
-                value={projectName}
-=======
                 placeholder="Nhập tên công việc"
-                value={ProjectName}
->>>>>>> 25ce4861a1bf09e9fcd2f43432ecc03c9ec504bc
+                value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
                 required
               />
 
               <Select
-<<<<<<< HEAD
-                label="field"
-=======
                 label="Lĩnh vực"
->>>>>>> 25ce4861a1bf09e9fcd2f43432ecc03c9ec504bc
                 options={fieldOptions}
                 value={field}
                 onChange={(val) => setField(val)}
@@ -246,42 +237,19 @@ const PostJob = ({onLogout}) => {
               />
 
               <TextInput
-<<<<<<< HEAD
-                label="Working place"
-                type="text"
-                placeholder="Enter Working place"
-                value={workingPlace}
-                onChange={(e) => setWorkingPlace(e.target.value)}
-                required
-              />
-
-              <TextInput
-                label="budget"
-                type="text"
-                placeholder="Enter budget"
-                value={budget}
-=======
                 label="Số tiền"
                 type="text"
                 placeholder="Nhập số tiền"
-                value={Budget}
->>>>>>> 25ce4861a1bf09e9fcd2f43432ecc03c9ec504bc
+                value={budget}
                 onChange={(e) => setBudget(e.target.value)}
                 required
               />
 
               <TextInput
-<<<<<<< HEAD
-                label="Job description"
-                type="textarea"
-                placeholder="Enter job description"
-                value={description}
-=======
                 label="Mô tả công việc"
                 type="textarea"
                 placeholder="Nhâp mô tả công việc"
-                value={Description}
->>>>>>> 25ce4861a1bf09e9fcd2f43432ecc03c9ec504bc
+                value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
               />
