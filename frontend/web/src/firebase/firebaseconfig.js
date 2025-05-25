@@ -16,5 +16,3 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
-
-console.log("✅ Bucket:", process.env.REACT_APP_FIREBASE_STORAGE_BUCKET);
