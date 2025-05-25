@@ -7,13 +7,16 @@ const useAuth = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        console.log("Token from localStorage:", token);
         
         if (token) {
             try {
                 const decoded = jwtDecode(token);
+                console.log("Decoded token:", decoded);
                 // Kiểm tra và lấy userID từ token
                 const userId = decoded.userid || decoded.UserID || decoded.user_id;
                 if (userId) {
+                    console.log("UserID from token:", userId);
                     setUserId(userId);
                 } else {
                     console.error("Token không chứa thông tin userID");

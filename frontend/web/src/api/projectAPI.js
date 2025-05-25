@@ -2,7 +2,7 @@ import apiClient from './apiClient.js';
 
 export const getProjects = async () => {
     try {
-        const response = await apiClient.get('/project/getproject');
+        const response = await apiClient.get('/api/project/getproject');
         return response.data;
     } catch (error) {
         console.error('Error fetching projects:', error);

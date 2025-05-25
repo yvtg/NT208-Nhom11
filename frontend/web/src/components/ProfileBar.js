@@ -3,10 +3,12 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import useUserProfile from "../hooks/useUserProfile";
 
-const ProfileBar = () => {
+const ProfileBar = ({ username, email, avatar, rating = "0" }) => {
     const { userId } = useParams();
     const [activeTab, setActiveTab] = useState('introduce');
     const { userData, loading, error, updateUserSection } = useUserProfile(userId);
+    
+    console.log("User Data:", JSON.stringify(userData, null, 2));
 
     const renderTabContent = () => {
         if (loading) {
@@ -31,14 +33,14 @@ const ProfileBar = () => {
             case 'introduce':
                 return (
                     <div className="mt-4 p-4 bg-white rounded-lg shadow">
-                        <h3 className="text-lg font-semibold mb-2">About Me</h3>
-                        <p className="text-gray-600">{userData.about || 'No introduction available.'}</p>
+                        <h3 className="text-lg font-semibold mb-2">Giới thiệu</h3>
+                        <p className="text-gray-600">{userData.introduce || 'No introduction available.'}</p>
                     </div>
                 );
             case 'skill':
                 return (
                     <div className="mt-4 p-4 bg-white rounded-lg shadow">
-                        <h3 className="text-lg font-semibold mb-2">Skills</h3>
+                        <h3 className="text-lg font-semibold mb-2">Kỹ năng</h3>
                         {userData.skills && userData.skills.length > 0 ? (
                             <div className="flex flex-wrap gap-2">
                                 {userData.skills.map((skill, index) => (
@@ -51,14 +53,14 @@ const ProfileBar = () => {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-gray-600">No skills listed yet.</p>
+                            <p className="text-gray-600">Chưa có kỹ năng nào.</p>
                         )}
                     </div>
                 );
             case 'jobPosted':
                 return (
                     <div className="mt-4 p-4 bg-white rounded-lg shadow">
-                        <h3 className="text-lg font-semibold mb-2">Posted Jobs</h3>
+                        <h3 className="text-lg font-semibold mb-2">Dự án đã đăng</h3>
                         {userData.postedJobs && userData.postedJobs.length > 0 ? (
                             <div className="space-y-4">
                                 {userData.postedJobs.map((job) => (
@@ -72,14 +74,14 @@ const ProfileBar = () => {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-gray-600">No jobs posted yet.</p>
+                            <p className="text-gray-600">Chưa có dự án nào.</p>
                         )}
                     </div>
                 );
             case 'jobFinished':
                 return (
                     <div className="mt-4 p-4 bg-white rounded-lg shadow">
-                        <h3 className="text-lg font-semibold mb-2">Completed Jobs</h3>
+                        <h3 className="text-lg font-semibold mb-2">Dự án đã hoàn thành</h3>
                         {userData.completedJobs && userData.completedJobs.length > 0 ? (
                             <div className="space-y-4">
                                 {userData.completedJobs.map((job) => (
@@ -93,14 +95,14 @@ const ProfileBar = () => {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-gray-600">No completed jobs yet.</p>
+                            <p className="text-gray-600">Chưa có dự án nào.</p>
                         )}
                     </div>
                 );
             case 'cv':
                 return (
                     <div className="mt-4 p-4 bg-white rounded-lg shadow">
-                        <h3 className="text-lg font-semibold mb-2">Resume</h3>
+                        <h3 className="text-lg font-semibold mb-2">CV</h3>
                         {userData.cv ? (
                             <div>
                                 <a 
@@ -109,14 +111,11 @@ const ProfileBar = () => {
                                     rel="noopener noreferrer"
                                     className="text-blue-600 hover:text-blue-800 underline"
                                 >
-                                    View Resume
+                                    Xem CV
                                 </a>
-                                <p className="text-sm text-gray-500 mt-2">
-                                    Last updated: {new Date(userData.cv.updatedAt).toLocaleDateString()}
-                                </p>
                             </div>
                         ) : (
-                            <p className="text-gray-600">CV not uploaded yet.</p>
+                            <p className="text-gray-600">Chưa tải CV lên.</p>
                         )}
                     </div>
                 );
@@ -147,50 +146,54 @@ const ProfileBar = () => {
             </div>
         );
     }
+    const displayUsername = username || userData?.username;
+    const displayEmail = email || userData?.email;
+    const displayAvatar = avatar || userData?.avatar || "/images/avatar.png";
+    const displayRating = rating || userData?.rating || 0;
 
     return (
         <div className="flex flex-col gap-8">
             <div className="flex items-center gap-8">
                 <div className="relative">
                     <img
-                        src={userData.avatar || "/images/avatar.png"}
+                        src={displayAvatar}
                         alt="avatar"
                         className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-lg bg-gray-200"
                     />
-                    {userData.isOnline && (
+                    {userData?.isOnline && (
                         <div className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                     )}
                 </div>
                 <div className="flex flex-col justify-center">
-                    <div className="text-2xl font-bold mb-1">{userData.username}</div>
-                    <div className="text-lg text-gray-600 mb-1">{userData.title}</div>
-                    <div className={`text-sm ${userData.isOnline ? 'text-green-500' : 'text-gray-500'} mb-4`}>
-                        ● {userData.isOnline ? 'Online' : 'Offline'}
+                    <div className="text-2xl font-bold mb-1">{displayUsername}</div>
+                    <div className="text-lg text-gray-600 mb-1">{userData?.title}</div>
+                    <div className={`text-sm ${userData?.isOnline ? 'text-green-500' : 'text-gray-500'} mb-4`}>
+                        ● {userData?.isOnline ? 'Online' : 'Offline'}
                     </div>
                     <div className="flex gap-2 mt-2">
                         <button 
                             onClick={() => setActiveTab('introduce')}
                             className={`px-2 pb-1 font-semibold ${activeTab === 'introduce' ? 'border-b-2 border-black' : 'text-gray-400'}`}
                         >
-                            Introduce
+                            Giới thiệu
                         </button>
                         <button 
                             onClick={() => setActiveTab('skill')}
                             className={`px-2 pb-1 font-semibold ${activeTab === 'skill' ? 'border-b-2 border-black' : 'text-gray-400'}`}
                         >
-                            Skill
+                            Kỹ năng
                         </button>
                         <button 
                             onClick={() => setActiveTab('jobPosted')}
                             className={`px-2 pb-1 font-semibold ${activeTab === 'jobPosted' ? 'border-b-2 border-black' : 'text-gray-400'}`}
                         >
-                            Job posted
+                            Dự án đã đăng
                         </button>
                         <button 
                             onClick={() => setActiveTab('jobFinished')}
                             className={`px-2 pb-1 font-semibold ${activeTab === 'jobFinished' ? 'border-b-2 border-black' : 'text-gray-400'}`}
                         >
-                            Job finished
+                            Dự án đã hoàn thành
                         </button>
                         <button 
                             onClick={() => setActiveTab('cv')}
@@ -200,16 +203,16 @@ const ProfileBar = () => {
                         </button>
                     </div>
                 </div>
-
-                <div className="flex items-center mt-4">
+                
+                {/* <div className="flex items-center mt-4">
                     {Array.from({ length: 5 }, (_, index) => (
-                        index < userData.rating ? (
+                        index < displayRating ? (
                             <FaStar key={index} className="text-yellow-400 text-lg" />
                         ) : (
                             <FaRegStar key={index} className="text-gray-400 text-lg" />
                         )
                     ))}
-                </div>
+                </div> */}
             </div>
             
             {renderTabContent()}

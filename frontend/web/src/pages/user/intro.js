@@ -8,31 +8,32 @@ import UserContactBox from "../../components/UserContactBox";
 import useUserProfile from "../../hooks/useUserProfile";
 import { useParams } from "react-router-dom";
 
-const IntroPage = () => {
+const IntroPage = ({onLogout}) => {
   const { userId } = useParams();
   const { userData, loading, error } = useUserProfile(userId);
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <DefaultNavbar />
+      <DefaultNavbar onLogout={onLogout} />
+
 
       <div className="relative w-full h-[220px]">
         <Banner />
-        <div className="absolute top-3 right-10">
+        <div className="absolute top-4 right-8">
           <Searchbar />
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto px-4 pt-24">
-        <div className="flex justify-between gap-8">
-          <div className="w-3/4 bg-white rounded-2xl shadow-lg p-8 pr-10 pt-[-48px]">
+      <div className="container mx-auto px-6 py-8 z-40 mt-10">
+        <div className="flex justify-between gap-6 z-40">
+          <div className="w-[72%] bg-white rounded-2xl shadow-lg p-6 z-40">
             <ProfileBar />
           </div>
 
-          <div className="w-1/4">
+          <div className="w-[28%]">
             <div className="sticky top-24">
               <UserContactBox
-                phone={userData?.phone}
+                phone={userData?.phonenumber}
                 email={userData?.email}
               />
             </div>
