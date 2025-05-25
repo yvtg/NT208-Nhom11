@@ -21,9 +21,6 @@ const UserContactBox = ({ phone, email }) => {
           <span className="tracking-wider">{email}</span>
         </div>
       </div>
-
-    
-     
     </div>
   );
 };

@@ -19,13 +19,21 @@ import { SocketProvider } from "./contexts/SocketContext";
 import MessageHandler from "./components/MessageHandler";
 
 const AppContent = () => {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setAuthenticated(true);
-    }
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      setAuthenticated(!!token);
+    };
+    
+    checkAuth();
+    // Thêm event listener để lắng nghe thay đổi trong localStorage
+    window.addEventListener('storage', checkAuth);
+    
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -42,22 +50,19 @@ const AppContent = () => {
       <MessageHandler />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={!authenticated ? <Login setAuthenticated={setAuthenticated} /> : <Navigate to="/dashboard" />} />
-        <Route path="/signup" element={!authenticated ? <SignUp /> : <Navigate to="/dashboard" />} />
-        <Route path="/dashboard" element={authenticated ? <DashBoard onLogout={handleLogout} /> : <Navigate to="/login" />} />
-        <Route path="/settings/change-password" element={authenticated ? <ChangePassword onLogout={handleLogout} /> : <Navigate to="/login" />} />
-        <Route path="/settings/change-profile" element={authenticated ? <ChangeProfile onLogout={handleLogout} /> : <Navigate to="/login" />} />
-        <Route path="/settings/change-cv" element={authenticated ? <ChangeCV onLogout={handleLogout} /> : <Navigate to="/login" />} />
-        <Route path="/jobs/post" element={authenticated ? <PostJob onLogout={handleLogout} /> : <Navigate to="/login" />} />
-        <Route path="/jobs/page" element={authenticated ? <JobPage onLogout={handleLogout} /> : <Navigate to="/login" />} />
-        <Route path="/jobs/search" element={authenticated ? <SearchJob onLogout={handleLogout} /> : <Navigate to="/login" />} />
+        <Route path="/login" element={!authenticated ? <Login setAuthenticated={setAuthenticated} /> : <Navigate to="/dashboard" replace />} />
+        <Route path="/signup" element={!authenticated ? <SignUp /> : <Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={authenticated ? <DashBoard onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+        <Route path="/settings/change-password" element={authenticated ? <ChangePassword onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+        <Route path="/settings/change-profile" element={authenticated ? <ChangeProfile onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+        <Route path="/settings/change-cv" element={authenticated ? <ChangeCV onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+        <Route path="/jobs/post" element={authenticated ? <PostJob onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+        <Route path="/jobs/:id" element={authenticated ? <JobPage onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+        <Route path="/jobs/search" element={authenticated ? <SearchJob onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
         <Route path="/test" element={<Test />} />
-        <Route path="/messages" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" />} />
-        <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" />} />
-
-        <Route path="/profile" element={authenticated ? <IntroPage /> : <Navigate to="/login" />} /> 
-        <Route path="/user/intro" element={<IntroPage />} />
-
+        <Route path="/messages" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+        <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+        <Route path="/profile" element={authenticated ? <IntroPage /> : <Navigate to="/login" replace />} />
       </Routes>
     </>
   );
