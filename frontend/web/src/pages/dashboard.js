@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DefaultNavbar from "../components/DefaultNavbar";
 import ChatIcon from "../components/ChatIcon";
 import Banner from "../components/Banner";
-import UserInfo from "../components/UserInfo";
+import ProfileBar from "../components/ProfileBar";
 import JobSummary from "../components/JobSummary";
 import JobFilterTab from "../components/JobFilterTab";
 import { getProjects } from "../api/projectAPI.js";
@@ -55,7 +55,7 @@ const DashBoard = ({ onLogout }) => {
           </div>
 
           <div className="w-2/4 flex justify-end mt-[-50px]">
-            <UserInfo username={userData?.username} email={userData?.email} avatar={userData?.avatarurl} rating="0" />
+            <ProfileBar username={userData?.username} email={userData?.email} avatar={userData?.avatarurl} rating="0" />
           </div>
         </div>
       </div>

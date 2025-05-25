@@ -84,7 +84,7 @@ function App() {
         <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" />} />
 
         <Route path="/profile" element={authenticated ? <IntroPage /> : <Navigate to="/login" />} /> 
-
+        <Route path="/user/intro" element={<IntroPage />} />
 
       </Routes>
     </Router>
