@@ -39,3 +39,21 @@ export const getFields = async () => {
         throw error;
     }
 }
+
+export const getProject = async (projectID) => {
+    try {
+        const token = localStorage.getItem('token');
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await apiClient.get(`/api/project/getprojectbyid/${projectID}`, config);
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi lấy thông tin projects', error);
+        throw error;
+    }
+}

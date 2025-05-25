@@ -29,7 +29,17 @@ const getMyProjects = async (req, res) => {
 const getProjectById = async (req, res) => {
   const { ProjectID } = req.params;
   try {
-    const result = await database.query('SELECT * FROM projects WHERE projectid = $1', [parseInt(ProjectID)]);
+    const result = await database.query(
+      ` SELECT p.*, 
+        u.username, 
+        u.email,
+        u.phonenumber,
+        u.avatarurl,
+        u.userid
+        FROM projects p
+        JOIN users u ON p.ownerid = u.userid
+        WHERE p.projectid = $1
+      `, [parseInt(ProjectID)]);
     const project = result.rows[0];
     
     if (!project) {
@@ -100,9 +110,9 @@ const updateProject = async (req, res) => {
         
         await database.query(
           `UPDATE projects 
-           SET projectName = $1, field_id = $2, expiredDate = $3, 
-               workingType = $4, budget = $5, description = $6
-           WHERE projectid = $7`,
+          SET projectName = $1, field_id = $2, expiredDate = $3, 
+              workingType = $4, budget = $5, description = $6
+          WHERE projectid = $7`,
           [projectName, field, expiredDate, workingType, budget, description, parseInt(ProjectID)]
         );
         
@@ -136,5 +146,14 @@ const getFields = async (req, res) => {
     res.status(500).json({ message: "Error retrieving fields" });
   }
 };
+
+const getProjectOwner = async (req, res) => {
+  try {
+    //TODO:viet query o day
+  } catch (error) {
+    console.error("Error retrieving project owner:", error);
+    res.status(500).json({ message: "Error project owner" });
+  }
+}
 
 export { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields };
