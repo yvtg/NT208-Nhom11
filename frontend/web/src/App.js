@@ -14,6 +14,7 @@ import DashBoard from "./pages/dashboard";
 import Message from "./pages/messages";
 import Spinner from "./components/Spinner";
 import IntroPage from "./pages/user/intro";
+import ChatBot from "./components/ChatBot";
 import { ToastProvider } from "./contexts/ToastContext";
 import { SocketProvider } from "./contexts/SocketContext";
 import MessageHandler from "./components/MessageHandler";
@@ -63,7 +64,9 @@ const AppContent = () => {
         <Route path="/messages" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
         <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
         <Route path="/profile" element={authenticated ? <IntroPage /> : <Navigate to="/login" replace />} />
+        <Route path="/user/intro" element={authenticated ? <IntroPage /> : <Navigate to="/login" replace />} />
       </Routes>
+      <ChatBot />
     </>
   );
 };
