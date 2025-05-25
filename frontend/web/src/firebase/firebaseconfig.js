@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, setDoc, doc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, GithubAuthProvider } from "firebase/auth";
+import { getStorage } from "firebase/storage"
 
 
 // Firebase configuration (Move sensitive data to .env file in production)
@@ -15,22 +14,7 @@ const firebaseConfig = {
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase app
 const app = initializeApp(firebaseConfig);
+export const storage = getStorage(app);
 
-// Initialize Firestore database
-const db = getFirestore(app);
-
-
-// Initialize Authentication
-const auth = getAuth(app);
-
-
-// Sign-up with google
-const googleProvider = new GoogleAuthProvider();
-
-//Sign-up with Facebook
-const facebookProvider = new FacebookAuthProvider();
-
-// Export services
-export { app, db, auth, collection, createUserWithEmailAndPassword, setDoc, doc, googleProvider, facebookProvider , signInWithPopup, GithubAuthProvider  };
+console.log("✅ Bucket:", process.env.REACT_APP_FIREBASE_STORAGE_BUCKET);
