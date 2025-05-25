@@ -54,14 +54,10 @@ const AppContent = () => {
         <Route path="/test" element={<Test />} />
         <Route path="/messages" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" />} />
         <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" />} />
-<<<<<<< HEAD
 
         <Route path="/profile" element={authenticated ? <IntroPage /> : <Navigate to="/login" />} /> 
         <Route path="/user/intro" element={<IntroPage />} />
 
-=======
-        <Route path="/profile" element={authenticated ? <IntroPage /> : <Navigate to="/login" />} />
->>>>>>> a9fe9fbd897c9c552d6baa64cb6cb313d667972d
       </Routes>
     </>
   );
