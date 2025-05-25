@@ -13,6 +13,7 @@ import passport from "./src/config/passport.js";
 import database from "./src/config/database.js";
 
 import rootRoutes from "./src/routes/rootRoutes.js";
+import chatbotRoutes from "./src/routes/chatbotRoute.js";
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use(passport.session());
 
 // Routes
 app.use("/api", rootRoutes);
+app.use("/api/chatbot", chatbotRoutes);
 
 // Kiểm tra kết nối database
 database.connect()
