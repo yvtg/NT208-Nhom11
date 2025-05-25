@@ -8,7 +8,7 @@ import Toaster from "../../components/Toaster";
 import { updateProfile } from "../../api/userAPI";
 
 
-const ChangePassword = () => {
+const ChangePassword = ({onLogout}) => {
 
     //TODO: nào có firebase thì thêm sửa avatar
 
@@ -56,7 +56,7 @@ const ChangePassword = () => {
     
     return (
         <div className="min-h-screen flex flex-col">
-            <DefaultNavbar />
+            <DefaultNavbar onLogout={onLogout} />
 
             <SettingBar className="mt-24"/>
 
@@ -77,12 +77,12 @@ const ChangePassword = () => {
                     <div className="space-y-4">
                         {/*Avatar*/}
                         <TextInput 
-                            label="Avatar"
+                            label="Ảnh đại diện"
                             type="avatar"
                         />
 
                         <TextInput 
-                            label="Username"
+                            label="Tên đăng nhập"
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
@@ -94,7 +94,7 @@ const ChangePassword = () => {
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextInput 
-                            label="Phone"
+                            label="Số điện thoại"
                             type="phone"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
@@ -112,9 +112,9 @@ const ChangePassword = () => {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Changing ...
+                                    Đang cập nhật ...
                                 </>
-                            ) : 'Change'}
+                            ) : 'Cập nhật'}
                         </PrimaryButton>
                     </div>
 

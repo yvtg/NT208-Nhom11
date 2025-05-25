@@ -5,7 +5,7 @@ import TextInput from "../../components/TextInput";
 import Select from "../../components/Select";
 import { useState, useEffect } from "react";
 
-const PostJob = () => {
+const PostJob = ({onLogout}) => {
   const [fieldOptions, setFieldOptions] = useState([]);
   const [field, setField] = useState(""); // Đây sẽ là field_id
 
@@ -150,30 +150,39 @@ const PostJob = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <DefaultNavbar />
+      <DefaultNavbar onLogout={onLogout} />
 
       <div className="flex flex-col items-center justify-center flex-grow">
         <div className="rounded-md border-divideColor shadow-lg shadow-lightPrimary p-11 bg-white sm:w-auto lg:w-1/2">
           <h2 className="flex text-5xl font-bold justify-center items-start mb-10">
-            Post your job
+            Đăng dự án
           </h2>
           <form onSubmit={handlePostJob}>
             <div className="space-y-4">
               <TextInput
-                label="Job title"
+                label="Tên công việc"
                 type="text"
+<<<<<<< HEAD
                 placeholder="Enter job title"
                 value={projectName}
+=======
+                placeholder="Nhập tên công việc"
+                value={ProjectName}
+>>>>>>> 25ce4861a1bf09e9fcd2f43432ecc03c9ec504bc
                 onChange={(e) => setProjectName(e.target.value)}
                 required
               />
 
               <Select
+<<<<<<< HEAD
                 label="field"
+=======
+                label="Lĩnh vực"
+>>>>>>> 25ce4861a1bf09e9fcd2f43432ecc03c9ec504bc
                 options={fieldOptions}
                 value={field}
                 onChange={(val) => setField(val)}
-                placeholder="Select field"
+                placeholder="Chọn lĩnh vực"
               />
 
               {/* skills */}
@@ -221,7 +230,7 @@ const PostJob = () => {
               </div>
 
               <TextInput
-                label="Expired Date"
+                label="Ngày hết hạn"
                 type="datetime-local"
                 value={expiredDate}
                 onChange={(e) => setExpiredDate(e.target.value)}
@@ -229,14 +238,15 @@ const PostJob = () => {
               />
 
               <Select
-                label="Working type"
+                label="Hình thức làm việc"
                 options={workingTypeOptions}
                 value={workingType}
                 onChange={(val) => setWorkingType(val)}
-                placeholder="Select working type"
+                placeholder="Chọn hình thức"
               />
 
               <TextInput
+<<<<<<< HEAD
                 label="Working place"
                 type="text"
                 placeholder="Enter Working place"
@@ -250,15 +260,28 @@ const PostJob = () => {
                 type="text"
                 placeholder="Enter budget"
                 value={budget}
+=======
+                label="Số tiền"
+                type="text"
+                placeholder="Nhập số tiền"
+                value={Budget}
+>>>>>>> 25ce4861a1bf09e9fcd2f43432ecc03c9ec504bc
                 onChange={(e) => setBudget(e.target.value)}
                 required
               />
 
               <TextInput
+<<<<<<< HEAD
                 label="Job description"
                 type="textarea"
                 placeholder="Enter job description"
                 value={description}
+=======
+                label="Mô tả công việc"
+                type="textarea"
+                placeholder="Nhâp mô tả công việc"
+                value={Description}
+>>>>>>> 25ce4861a1bf09e9fcd2f43432ecc03c9ec504bc
                 onChange={(e) => setDescription(e.target.value)}
                 required
               />
@@ -266,9 +289,9 @@ const PostJob = () => {
             <div className="flex justify-center mt-10">
               <PrimaryButton
                 type="submit"
-                className="w-auto flex justify-center px-3 py-1 text-3xl"
+                className="w-auto flex justify-center px-3 py-1 text-lg"
               >
-                POST
+                Đăng tải
               </PrimaryButton>
             </div>
           </form>

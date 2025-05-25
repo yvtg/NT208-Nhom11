@@ -9,7 +9,7 @@ import { updateCV } from "../../api/userAPI";
 import useGetFields from "../../hooks/useGetFields";
 
 //TODO: Nào có firebase thì thêm change cv
-const ChangeCV = () => {
+const ChangeCV = ({ onLogout }) => {
     
     // các thông tin cần cập nhật
     const [title, setTitle] = useState("");
@@ -102,7 +102,7 @@ const ChangeCV = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <DefaultNavbar />
+            <DefaultNavbar onLogout={onLogout}/>
 
             <SettingBar className="mt-24"/>
 
@@ -123,7 +123,7 @@ const ChangeCV = () => {
                     <div className="space-y-4">
                         {/* Title */}
                         <TextInput
-                            label="Title"
+                            label="Chức danh"
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
@@ -131,7 +131,7 @@ const ChangeCV = () => {
 
                         {/* Personal website */}
                         <TextInput 
-                            label="Personal website"
+                            label="Website cá hân"
                             type="link"
                             value={personalWebsite}
                             onChange={(e) => setPersonalWebsite(e.target.value)}
@@ -139,13 +139,13 @@ const ChangeCV = () => {
 
                         {/* TODO: nho them file */}
                         <TextInput 
-                            label="CV file"
+                            label="File CV"
                             type="file"
                         />
 
                         {/* fields */}
                         <div className="flex items-center gap-4">
-                            <label className="w-1/3 mb-2 font-medium text-gray-700">Field</label>
+                            <label className="w-1/3 mb-2 font-medium text-gray-700">Lĩnh vực</label>
                             <select 
                                 className="w-2/3 px-4 py-2 border border-darkPrimary rounded-md focus:outline-none focus:ring-2 focus:ring-darkPrimary resize-none"
                                 value={fieldId}
@@ -167,7 +167,7 @@ const ChangeCV = () => {
                         
                         {/* skills */}
                         <div className="flex items-start gap-4">
-                            <label className="w-1/3 mb-2 font-medium text-gray-700">Skills</label>
+                            <label className="w-1/3 mb-2 font-medium text-gray-700">Kỹ năng</label>
                             <div className="w-2/3">
                                 <div className="px-4 py-2 border border-darkPrimary rounded-md focus-within:ring-2 focus-within:ring-darkPrimary mb-2">
                                     <div className="flex flex-wrap gap-2 mb-2">
@@ -199,19 +199,19 @@ const ChangeCV = () => {
                                             className="text-sm text-red-500 hover:text-red-700"
                                             onClick={handleRemoveAllSkills}
                                         >
-                                            Remove All
+                                            Xóa tất cả
                                         </button>
                                     </div>
                                 )}
                                 <div className="text-xs text-gray-500 mt-1">
-                                    {skills.length} skill đã được thêm
+                                    {skills.length} kỹ năng đã được thêm
                                 </div>
                             </div>
                         </div>
 
                         {/* introduce */}
                         <TextInput
-                            label="Introduce yourself"
+                            label="Giới thiệu"
                             type="textarea"
                             value={introduce}
                             onChange={(e) => setIntroduce(e.target.value)}
@@ -224,7 +224,7 @@ const ChangeCV = () => {
                             onClick={handleChangeCV}
                             disabled={isLoading}
                         > 
-                            {isLoading ? "Đang cập nhật..." : "Change"} 
+                            {isLoading ? "Đang cập nhật..." : "Cập nhật"} 
                         </PrimaryButton>
                     </div>
 

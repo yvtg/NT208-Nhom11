@@ -43,30 +43,20 @@ const setupSocket = (server) => {
         console.log("A user connected:", socket.id);
 
         // Lắng nghe sự kiện gửi tin nhắn
-        socket.on("sendMessage", async ({ conversationID, content }) => {
+        socket.on("sendMessage", async ({ conversationID, content, messageID }) => {
             const senderID = socket.userId;
-            console.log("Data from client:", { conversationID, senderID, content });
-            try {
-                // Lưu tin nhắn vào database (tham khảo sendMessage trong messageController.js)
-                const [result] = await database.query(
-                    `INSERT INTO Messages (ConversationID, SenderID, Content, CreatedAt) VALUES (?, ?, ?, NOW())`,
-                    [conversationID, senderID, content]
-                );
-
-                const newMessage = {
-                    id: result.insertId,
-                    conversationID,
-                    senderID: socket.userId, 
-                    content,
-                    createdAt: new Date(),
-                };
-
-                // Phát tin nhắn đến tất cả các client trong cuộc hội thoại
-                socket.to(conversationID).emit("receiveMessage", newMessage);
-            } catch (error) {
-                console.error("Error saving message:", error);
-            }
+            console.log("Data from client:", { conversationID, senderID, content, messageID });
+            
+            // Broadcast tin nhắn cho người nhận
+            socket.to(conversationID).emit("receiveMessage", {
+                id: messageID,
+                conversationID,
+                senderID,
+                content,
+                createdAt: new Date().toISOString()
+            });
         });
+
 
         // Tham gia vào cuộc hội thoại
         socket.on("joinConversation", (conversationID) => {

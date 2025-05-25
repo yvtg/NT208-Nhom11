@@ -8,7 +8,7 @@ import useSearch from "../../hooks/useSearch";
 import Lottie from "lottie-react";
 import animationData from "../../lotties/page-not-found.json"
 
-const SearchJob = () => {
+const SearchJob = ({onLogout}) => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const searchQuery = queryParams.get("q") || "";
@@ -17,7 +17,7 @@ const SearchJob = () => {
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
-            <DefaultNavbar />
+            <DefaultNavbar onLogout={onLogout} />
 
             <div className="relative w-full h-[488px] flex flex-col items-center">
                 <Banner />

@@ -24,7 +24,7 @@ const Searchbar = ({ className }) => {
             <div className="relative">
                 <input 
                     type="text" 
-                    placeholder="SEARCH" 
+                    placeholder="Tìm kiếm dự án" 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyPress={handleKeyPress}

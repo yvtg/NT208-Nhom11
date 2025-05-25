@@ -18,7 +18,7 @@ const HirerInfo = () => {
                         <span key={index} className="text-gray-400 text-lg">★</span>
                     ))}
                 </div>
-                <PrimaryButton>CONTACT</PrimaryButton>
+                <PrimaryButton>LIÊN HỆ</PrimaryButton>
             </div>
 
             {/* Infor*/}

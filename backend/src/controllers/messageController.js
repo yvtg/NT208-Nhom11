@@ -1,5 +1,6 @@
 import database from "../config/database.js";
 
+
 // Lấy tất cả tin nhắn trong một cuộc hội thoại
 const getMessages =  async (req, res) => {
     try {
@@ -67,7 +68,7 @@ const sendMessage = async (req, res) => {
 
         const result = await database.query(
             `INSERT INTO messages (conversationid, senderid, content, createdat) 
-             VALUES ($1, $2, $3, NOW()) RETURNING messageid`,
+            VALUES ($1, $2, $3, NOW()) RETURNING messageid`,
             [conversationID, userID, content]
         );
 

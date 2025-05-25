@@ -8,7 +8,7 @@ import ChatIcon from "../../components/ChatIcon"
 import Toaster from "../../components/Toaster";
 //TODO: Thêm OTP + gửi mail
 
-const ChangePassword = () => {
+const ChangePassword = ({onLogout}) => {
 
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -58,7 +58,7 @@ const ChangePassword = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <DefaultNavbar />
+            <DefaultNavbar onLogout={onLogout}/>
 
             <SettingBar className="mt-24"/>
 
@@ -78,19 +78,19 @@ const ChangePassword = () => {
                 <div className="rounded-md border-divideColor shadow-lg shadow-lightPrimary p-11 bg-white lg:w-1/2 sm:w-auto">
                     <div className="space-y-4">
                         <TextInput 
-                        label="Current password"
+                        label="Mật khẩu hiện tại"
                         type="password"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)} />
                         
                         <TextInput 
-                        label="New password"
+                        label="Mật khẩu mới"
                         type="password"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)} />
 
                         <TextInput 
-                        label="Confirm password"
+                        label="Nhập lại mật khẩu mới"
                         type="password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)} />
@@ -113,9 +113,9 @@ const ChangePassword = () => {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Changing ...
+                                    Đang cập nhật ...
                                 </>
-                            ) : 'Change'}
+                            ) : 'Cập nhật'}
                         </PrimaryButton>
                     </div>
 

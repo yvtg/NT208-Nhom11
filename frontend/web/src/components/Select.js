@@ -10,10 +10,10 @@ const Select = ({ options = [], value = "", onChange, label }) => {
             onChange={(e) => onChange?.(e.target.value)}
           >
             <option value="" disabled>
-              -- Select an option --
+              -- Chọn --
             </option>
             {options.length === 0 ? (
-              <option disabled>No options available</option>
+              <option disabled>Không có lựa chọn nào khả thi</option>
             ) : (
               options.map((option, index) => (
                 <option key={index} value={option.value}>

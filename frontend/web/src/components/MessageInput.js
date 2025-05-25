@@ -1,26 +1,38 @@
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import { IoIosSend } from "react-icons/io";
 import { useState } from "react";
+import { sendMessage } from "../api/messages";
 
 const MessageInput = ({ conversationID, socket, refreshMessages }) => {
 
     // nội dung đang gõ
     const [inputMessage, setInputMessage] = useState("");
+    const [isSending, setIsSending] = useState(false);
 
     const handleSendMessages = async () => {
-        if (!inputMessage.trim()) return;
+        if (!inputMessage.trim() || !conversationID || isSending) return;
 
         try {
-            const newMessage = {
-                conversationID,
-                content: inputMessage,
-            };
+            setIsSending(true);
+            // Gửi tin nhắn qua API
+            const newMessage = await sendMessage(conversationID, inputMessage);
+            
+            // Emit socket event để thông báo cho người nhận
+            if (socket?.current) {
+                socket.current.emit("sendMessage", {
+                    conversationID,
+                    content: inputMessage,
+                    messageID: newMessage.id
+                });
+            }
 
-            socket.current.emit("sendMessage", newMessage);
             setInputMessage(""); // xóa nội dung đang gõ
             refreshMessages();
         } catch (error) {
-            alert(error);
+            console.error("Lỗi gửi tin nhắn:", error);
+            alert(error.message || "Không thể gửi tin nhắn");
+        } finally {
+            setIsSending(false);
         }
     };
 
@@ -40,10 +52,15 @@ const MessageInput = ({ conversationID, socket, refreshMessages }) => {
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessages()}
+                disabled={isSending}
             />
 
             {/* Gửi tin nhắn */}
-            <button className="p-2 text-Primary hover:text-darkPrimary hover:shadow-md" onClick={handleSendMessages}>
+            <button 
+                className={`p-2 text-Primary hover:text-darkPrimary hover:shadow-md ${isSending ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                onClick={handleSendMessages}
+                disabled={isSending}
+            >
                 <IoIosSend className="w-8 h-8"/>
             </button>
         </div>
