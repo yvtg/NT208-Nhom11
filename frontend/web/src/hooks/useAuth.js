@@ -9,12 +9,20 @@ const useAuth = () => {
         const token = localStorage.getItem('token');
         
         if (token) {
-        try {
-            const decoded = jwtDecode(token);
-            setUserId(decoded.UserID);
-        } catch (error) {
-            console.error("Invalid token:", error);
-        }
+            try {
+                const decoded = jwtDecode(token);
+                // Kiểm tra và lấy userID từ token
+                const userId = decoded.userid || decoded.UserID || decoded.user_id;
+                if (userId) {
+                    setUserId(userId);
+                } else {
+                    console.error("Token không chứa thông tin userID");
+                }
+            } catch (error) {
+                console.error("Token không hợp lệ:", error);
+                // Xóa token không hợp lệ
+                localStorage.removeItem('token');
+            }
         }
         setIsLoading(false);
     }, []);

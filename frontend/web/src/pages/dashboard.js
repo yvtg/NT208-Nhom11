@@ -8,23 +8,9 @@ import JobFilterTab from "../components/JobFilterTab";
 import { getProjects } from "../api/projectAPI.js";
 import useAuth from "../hooks/useAuth";
 import { getCurrentUser } from "../api/userAPI";
+
 const DashBoard = ({ onLogout }) => {
   const [selectedFilter, setSelectedFilter] = useState("Best Match");
-
-  // const [projects, setProjects] = useState();
-  // useEffect(() => {
-  //   const fetchProjects = async () => {
-  //     try {
-  //       const response = await getProjects();
-  //       setProjects(response);
-  //       return response.data;
-  //     } catch (error) {
-  //       console.error("Error fetching projects:", error);
-  //     }
-  //   };
-  //   fetchProjects();
-  // });
-
   const { userID, isLoading } = useAuth();
   const [userData, setUserData] = useState();
 

@@ -5,7 +5,7 @@ import TextInput from "../../components/TextInput";
 import Select from "../../components/Select";
 import { useState, useEffect } from "react";
 
-const PostJob = () => {
+const PostJob = ({onLogout}) => {
   const [fieldOptions, setFieldOptions] = useState([]);
   const [Field, setField] = useState(""); // Đây sẽ là field_id
   const [WorkingType, setWorkingType] = useState("");
@@ -98,34 +98,34 @@ const PostJob = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <DefaultNavbar />
+      <DefaultNavbar onLogout={onLogout} />
 
       <div className="flex flex-col items-center justify-center flex-grow">
         <div className="rounded-md border-divideColor shadow-lg shadow-lightPrimary p-11 bg-white sm:w-auto lg:w-1/2">
           <h2 className="flex text-5xl font-bold justify-center items-start mb-10">
-            Post your job
+            Đăng dự án
           </h2>
           <form onSubmit={handlePostJob}>
             <div className="space-y-4">
               <TextInput
-                label="Job title"
+                label="Tên công việc"
                 type="text"
-                placeholder="Enter job title"
+                placeholder="Nhập tên công việc"
                 value={ProjectName}
                 onChange={(e) => setProjectName(e.target.value)}
                 required
               />
 
               <Select
-                label="Field"
+                label="Lĩnh vực"
                 options={fieldOptions}
                 value={Field}
                 onChange={(val) => setField(val)}
-                placeholder="Select field"
+                placeholder="Chọn lĩnh vực"
               />
 
               <TextInput
-                label="Expired Date"
+                label="Ngày hết hạn"
                 type="datetime-local"
                 value={ExpiredDate}
                 onChange={(e) => setExpiredDate(e.target.value)}
@@ -133,26 +133,26 @@ const PostJob = () => {
               />
 
               <Select
-                label="Working type"
+                label="Hình thức làm việc"
                 options={workingTypeOptions}
                 value={WorkingType}
                 onChange={(val) => setWorkingType(val)}
-                placeholder="Select working type"
+                placeholder="Chọn hình thức"
               />
 
               <TextInput
-                label="Budget"
+                label="Số tiền"
                 type="text"
-                placeholder="Enter Budget"
+                placeholder="Nhập số tiền"
                 value={Budget}
                 onChange={(e) => setBudget(e.target.value)}
                 required
               />
 
               <TextInput
-                label="Job Description"
+                label="Mô tả công việc"
                 type="textarea"
-                placeholder="Enter job description"
+                placeholder="Nhâp mô tả công việc"
                 value={Description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
@@ -161,9 +161,9 @@ const PostJob = () => {
             <div className="flex justify-center mt-10">
               <PrimaryButton
                 type="submit"
-                className="w-auto flex justify-center px-3 py-1 text-3xl"
+                className="w-auto flex justify-center px-3 py-1 text-lg"
               >
-                POST
+                Đăng tải
               </PrimaryButton>
             </div>
           </form>

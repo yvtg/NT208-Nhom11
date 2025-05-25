@@ -2,7 +2,7 @@ import express from 'express';
 import { login , signup } from '../controllers/authController.js';
 import { middlewareToken } from '../config/jwt.js'
 import passport from '../config/passport.js';
-import jwt from 'jsonwebtoken';
+import { createAccessToken } from '../config/jwt.js';
 
 const authRoutes = express.Router();
 
@@ -121,11 +121,11 @@ authRoutes.get('/google',
 authRoutes.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     (req, res) => {
-        const token = jwt.sign(
-            { userid: req.user.userid },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_EXPIRES_IN }
-        );
+        const payload = {
+            userid: req.user.userid,
+            username: req.user.username,
+        };
+        const token = createAccessToken(payload);
         res.redirect(`http://localhost:3001/login?token=${token}`);
     }
 );
@@ -157,11 +157,11 @@ authRoutes.get('/facebook',
 authRoutes.get('/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
     (req, res) => {
-        const token = jwt.sign(
-            { userid: req.user.userid },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_EXPIRES_IN }
-        );
+        const payload = {
+            userid: req.user.userid,
+            username: req.user.username,
+        };
+        const token = createAccessToken(payload);
         res.redirect(`http://localhost:3001/login?token=${token}`);
     }
 );
@@ -193,11 +193,11 @@ authRoutes.get('/github',
 authRoutes.get('/github/callback',
     passport.authenticate('github', { failureRedirect: '/login' }),
     (req, res) => {
-        const token = jwt.sign(
-            { userid: req.user.userid },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_EXPIRES_IN }
-        );
+        const payload = {
+            userid: req.user.userid,
+            username: req.user.username,
+        };
+        const token = createAccessToken(payload);
         res.redirect(`http://localhost:3001/login?token=${token}`);
     }
 );

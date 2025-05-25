@@ -22,7 +22,7 @@ const UserOptions = ({ onLogout }) => {
             <div className="flex items-center gap-6 p-4 border-b-2 border-divideColor">
                 <img
                     src={userAvatar}
-                    alt="Avatar"
+                    alt="Ảnh đại diện"
                     className="w-10 h-10 rounded-full border border-gray-300 object-cover"
                 />
                 <div>
@@ -34,10 +34,10 @@ const UserOptions = ({ onLogout }) => {
             {/* Profile + Setting */}
             <div className="p-4 border-b-2 border-divideColor">
                 <a href="/profile">
-                    <p className="text-secondaryText text-lg hover:bg-gray-100 hover:text-PrimaryText rounded-md">Profile</p>
+                    <p className="text-secondaryText text-lg hover:bg-gray-100 hover:text-PrimaryText rounded-md">Tài khoản</p>
                 </a>
                 <a href="/settings/change-profile">
-                    <p className="text-secondaryText text-lg hover:bg-gray-100 hover:text-PrimaryText rounded-md">Setting</p>
+                    <p className="text-secondaryText text-lg hover:bg-gray-100 hover:text-PrimaryText rounded-md">Cài đặt</p>
                 </a>
             </div>
 
@@ -48,10 +48,10 @@ const UserOptions = ({ onLogout }) => {
                     {showLanguageOptions && (
                         <div>
                             <button className="block w-full text-left px-4 py-2 hover:bg-gray-100" onClick={() => setLanguage("English")}>
-                                English
+                                Tiếng anh
                             </button>
                             <button className="block w-full text-left px-4 py-2 hover:bg-gray-100" onClick={() => setLanguage("Vietnamese")}>
-                                Vietnamese
+                                Tiếng việt
                             </button>
                         </div>
                     )}
@@ -74,7 +74,7 @@ const UserOptions = ({ onLogout }) => {
 
             {/* Logout */}
             <div className="p-4 cursor-pointer">
-                <TertiaryButton onClick={onLogout}>Logout</TertiaryButton>
+                <TertiaryButton onClick={onLogout}>Đăng xuất</TertiaryButton>
             </div>
         </div>
     );

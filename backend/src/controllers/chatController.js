@@ -7,7 +7,7 @@ const getConversationsWithLatestMessages = async (req, res) => {
 
     // Lấy tất cả cuộc hội thoại có liên quan đến user
     const conversations = await database.query(
-      `SELECT * FROM conversations WHERE user1id = $1 OR user2id = $1`,
+      `SELECT * FROM conversations WHERE user1_id = $1 OR user2_id = $1`,
       [userID]
     );
 
@@ -32,7 +32,7 @@ const getConversationsWithLatestMessages = async (req, res) => {
             WHERE conversationid = ANY($1)
             GROUP BY conversationid
         ) latest ON m.conversationid = latest.conversationid 
-                AND m.createdat = latest.latest_messagetime
+                AND m.createdat = latest.latestmessagetime
         JOIN users u ON m.senderid = u.userid`,
       [conversationIDs]
     );
@@ -45,9 +45,9 @@ const getConversationsWithLatestMessages = async (req, res) => {
 
     // Bổ sung thông tin participant + gắn message gần nhất vào
     const enriched = await Promise.all(conversations.rows.map(async (conversation) => {
-      const participantID = conversation.user1id === userID
-        ? conversation.user2id
-        : conversation.user1id;
+      const participantID = conversation.user1_id === userID
+        ? conversation.user2_id
+        : conversation.user1_id;
 
       const userRows = await database.query(
         `SELECT username, avatarurl FROM users WHERE userid = $1`,
@@ -87,15 +87,15 @@ const createConversation = async (req, res) => {
     // Kiểm tra xem cuộc hội thoại đã tồn tại chưa
     const existingConversation = await database.query(
       `SELECT * FROM conversations WHERE 
-      (user1id = $1 AND user2id = $2) OR 
-      (user1id = $2 AND user2id = $1)`,
+      (user1_id = $1 AND user2_id = $2) OR 
+      (user1_id = $2 AND user2_id = $1)`,
       [userID, participantID]
     );
 
     if (existingConversation.rows.length > 0) {
-      const otherID = existingConversation.rows[0].user1id === userID
-        ? existingConversation.rows[0].user2id
-        : existingConversation.rows[0].user1id;
+      const otherID = existingConversation.rows[0].user1_id === userID
+        ? existingConversation.rows[0].user2_id
+        : existingConversation.rows[0].user1_id;
 
       const userRows = await database.query(
         `SELECT username, avatarurl FROM users WHERE userid = $1`,
@@ -111,8 +111,8 @@ const createConversation = async (req, res) => {
 
     // Tạo cuộc hội thoại mới
     const result = await database.query(
-      `INSERT INTO conversations (user1id, user2id, createdat) 
-       VALUES ($1, $2, NOW()) RETURNING conversationid`,
+      `INSERT INTO conversations (user1_id, user2_id, createdat) 
+      VALUES ($1, $2, NOW()) RETURNING conversationid`,
       [userID, participantID]
     );
 
@@ -123,8 +123,8 @@ const createConversation = async (req, res) => {
 
     const newConversation = {
       conversationid: result.rows[0].conversationid,
-      user1id: userID,
-      user2id: participantID,
+      user1_id: userID,
+      user2_id: participantID,
       createdat: new Date(),
       conversationname: userRows.rows[0]?.username || "Cuộc trò chuyện",
       avatarurl: userRows.rows[0]?.avatarurl || null
@@ -162,7 +162,7 @@ const deleteConversation = async (req, res) => {
 
     // Kiểm tra quyền: chỉ người trong cuộc mới được xóa
     const isParticipant =
-      conversation.user1id === currentUserID || conversation.user2id === currentUserID;
+      conversation.user1_id === currentUserID || conversation.user2_id === currentUserID;
 
     if (!isParticipant) {
       return res.status(403).json({ message: "You are not part of this conversation" });

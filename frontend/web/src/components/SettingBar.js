@@ -16,7 +16,7 @@ const SettingBar = () => {
                 className={`px-4 py-2 ${isActive("/settings/change-profile") ? "text-darkPrimary font-semibold border-b-2 border-darkPrimary " : "text-gray-400"}`}
                 onClick={() => navigate("/settings/change-profile")}
             >
-                Profile
+                Tài khoản
             </button>
             <button
                 className={`px-4 py-2 ${isActive("/settings/change-cv") ? "text-darkPrimary font-semibold border-b-2 border-darkPrimary" : "text-gray-400"}`}
@@ -28,7 +28,7 @@ const SettingBar = () => {
                 className={`px-4 py-2 ${isActive("/settings/change-password") ? "text-darkPrimary font-semibold border-b-2 border-darkPrimary" : "text-gray-400"}`}
                 onClick={() => navigate("/settings/change-password")}
             >
-                Change password
+                Đổi mật khẩu
             </button>
         </div>
     );

@@ -13,80 +13,68 @@ import Login from "./pages/login";
 import DashBoard from "./pages/dashboard";  
 import Message from "./pages/messages";
 import Spinner from "./components/Spinner";
-
 import IntroPage from "./pages/user/intro";
+import { ToastProvider } from "./contexts/ToastContext";
+import { SocketProvider } from "./contexts/SocketContext";
+import MessageHandler from "./components/MessageHandler";
 
-const isAuthenticated = async () => {
-  const token = localStorage.getItem("token");
-  if (!token) return false;
-
-  try {
-    const response = await fetch("http://localhost:3000/api/auth/verify-token", {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Invalid token");
-    }
-
-    const data = await response.json();
-    return data.valid;
-  } catch (error) {
-    console.error("Token verification failed:", error);
-    return false;
-  }
-};
-
-function App() {
-
+const AppContent = () => {
   const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-      const checkAuth = async () => {
-          const authenticated = await isAuthenticated();
-          setAuthenticated(authenticated);
-          setLoading(false)
-      };
-
-      checkAuth();
+    const token = localStorage.getItem("token");
+    if (token) {
+      setAuthenticated(true);
+    }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); 
+    localStorage.removeItem("token");
     setAuthenticated(false);
   };
 
-  if (loading) {
-    return <Spinner />
+  if (authenticated === null) {
+    return <Spinner />;
   }
-  
 
   return (
-    <Router>
-      <Routes key={authenticated}>
+    <>
+      <MessageHandler />
+      <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/settings/change-password" element={<ChangePassword />} />
-        <Route path="/settings/change-profile" element={<ChangeProfile />} />
-        <Route path="/settings/change-cv" element={<ChangeCV />} />
-        <Route path="/test" element={<Test />} />
-        
-        <Route path="/signup" element={authenticated ? <Navigate to="/dashboard" /> : <SignUp />} />
-        <Route path="/login" element={authenticated ? <Navigate to="/dashboard" /> : <Login setAuthenticated={setAuthenticated} />} /> 
+        <Route path="/login" element={!authenticated ? <Login setAuthenticated={setAuthenticated} /> : <Navigate to="/dashboard" />} />
+        <Route path="/signup" element={!authenticated ? <SignUp /> : <Navigate to="/dashboard" />} />
         <Route path="/dashboard" element={authenticated ? <DashBoard onLogout={handleLogout} /> : <Navigate to="/login" />} />
-
-        <Route path="/jobs/post" element={<PostJob />} />
-        <Route path="/jobs/page" element={<JobPage />} />
-        <Route path="/jobs/search" element={<SearchJob />} />
+        <Route path="/settings/change-password" element={authenticated ? <ChangePassword onLogout={handleLogout} /> : <Navigate to="/login" />} />
+        <Route path="/settings/change-profile" element={authenticated ? <ChangeProfile onLogout={handleLogout} /> : <Navigate to="/login" />} />
+        <Route path="/settings/change-cv" element={authenticated ? <ChangeCV onLogout={handleLogout} /> : <Navigate to="/login" />} />
+        <Route path="/jobs/post" element={authenticated ? <PostJob onLogout={handleLogout} /> : <Navigate to="/login" />} />
+        <Route path="/jobs/page" element={authenticated ? <JobPage onLogout={handleLogout} /> : <Navigate to="/login" />} />
+        <Route path="/jobs/search" element={authenticated ? <SearchJob onLogout={handleLogout} /> : <Navigate to="/login" />} />
+        <Route path="/test" element={<Test />} />
+        <Route path="/messages" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" />} />
         <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" />} />
+<<<<<<< HEAD
 
         <Route path="/profile" element={authenticated ? <IntroPage /> : <Navigate to="/login" />} /> 
         <Route path="/user/intro" element={<IntroPage />} />
 
+=======
+        <Route path="/profile" element={authenticated ? <IntroPage /> : <Navigate to="/login" />} />
+>>>>>>> a9fe9fbd897c9c552d6baa64cb6cb313d667972d
       </Routes>
+    </>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <SocketProvider>
+        <ToastProvider>
+          <AppContent />
+        </ToastProvider>
+      </SocketProvider>
     </Router>
   );
 }

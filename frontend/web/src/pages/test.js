@@ -8,7 +8,7 @@ const Test = () => {
     const { createConversation, createLoading, createError } = useCreateConversation();
     const navigate = useNavigate();
     // nữa edit chỗ này /////////////
-    const participantID = 1;
+    const participantID = 2;
 
     const handleCreate = async () => {
         const data = await createConversation(participantID);
@@ -27,7 +27,7 @@ const Test = () => {
                     {
                         createLoading ? <Spinner /> : 
                         <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent ">
-                            contact
+                            Liên hệ
                         </span>
                     }
                 </button>

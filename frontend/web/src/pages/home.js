@@ -24,7 +24,7 @@ const Home = () => {
             <StartNavbar className="fixed"/>
             <Banner className="mt-[50px]"/>
             <div className="text-center mt-10 mb-6">
-                <p>Don't have an account? Click this <PrimaryButton onClick={() => navigate("/signup")}>Button</PrimaryButton> to create one</p>
+                <p>Chưa có tài khoản? Bấm <PrimaryButton onClick={() => navigate("/signup")}>nút này</PrimaryButton> để tạo tài khoản mới</p>
             </div>
 
             <div className="flex gap-5 overflow-x-auto whitespace-nowrap scrollbar-hide p-4 justify-center">

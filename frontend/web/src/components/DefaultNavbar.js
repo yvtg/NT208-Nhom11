@@ -22,6 +22,7 @@ const DefaultNavbar = ({ className, onLogout  }) => {
     // khi click vào icon tin nhắn
     const [showConversation, setShowConversation] = useState(false);
     const { conversations, loading, error, refresh } = useConversations(showConversation);
+    console.log(conversations)
 
     // dropdown
     const optionRef = useRef(null);
@@ -49,7 +50,7 @@ const DefaultNavbar = ({ className, onLogout  }) => {
         };
     }, []);
 
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <div>Lỗi: {error}</div>;
 
     return (
         <div className={className}>
@@ -67,9 +68,9 @@ const DefaultNavbar = ({ className, onLogout  }) => {
 
                 {/* Menu */}
                 <div className="hidden md:flex justify-center space-x-6 text-darkPrimary font-semibold">
-                    <a href="/dashboard"><TertiaryButton>Home</TertiaryButton></a>
-                    <a href="/check-cv"><SecondaryButton>Check CV</SecondaryButton></a>
-                    <a href="/jobs/post"><PrimaryButton>Post</PrimaryButton></a>
+                    <a href="/dashboard"><TertiaryButton>Trang chủ</TertiaryButton></a>
+                    <a href="/check-cv"><SecondaryButton>Kiểm tra CV</SecondaryButton></a>
+                    <a href="/jobs/post"><PrimaryButton>Đăng dự án</PrimaryButton></a>
                 
                         {/* Nút icon */}
                         <div className="flex space-x-3 items-center">
