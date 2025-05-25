@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DefaultNavbar from "../../components/DefaultNavbar"
 import PrimaryButton from "../../components/PrimaryButton";
 import SettingBar from "../../components/SettingBar";
@@ -6,11 +7,20 @@ import TextInput from "../../components/TextInput";
 import ChatIcon from "../../components/ChatIcon"
 import Toaster from "../../components/Toaster";
 import { updateProfile } from "../../api/userAPI";
+import { storage } from "../../firebase/firebaseconfig";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
+const uploadAvatarToFirebase = async (file) => {
+  if (!file) return "";
+
+  const storageRef = ref(storage, `avatars/${file.name}`);
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  return url;
+};
 
 const ChangePassword = ({onLogout}) => {
-
-    //TODO: nào có firebase thì thêm sửa avatar
+    const navigate = useNavigate();
 
     // thông tin cần sửa
     const [username, setUsername] = useState("");
@@ -23,15 +33,23 @@ const ChangePassword = ({onLogout}) => {
     const [toastType, setToastType] = useState(""); // success, danger, warning
     const [isLoading, setIsLoading] = useState(false);
 
+    const [uploadImage, setUploadImage] = useState("");
+
     const handleChangeProfile = async () => {
         try {
             setIsLoading(true);
+
+            let avatarUrl = "";
+            if (uploadImage) {
+            avatarUrl = await uploadAvatarToFirebase(uploadImage);
+            }
 
             // câp nhật thông tin
             const updatedData = await updateProfile({
                 username: username,
                 email: email,
                 phone: phone,
+                avatarurl: avatarUrl
             });
             
             setUsername(updatedData.username);
@@ -42,11 +60,16 @@ const ChangePassword = ({onLogout}) => {
             setMessage("Cập nhật thông tin thành công");
             setToastType("success");
             setShowToast(true);
-            setTimeout(() => setShowToast(false), 3000);
             setIsLoading(false);
+
+            setTimeout(() => {
+                navigate("../dashboard");
+            }, 1500);
         }
         catch (error) {
-            setError(error.response.data.message);
+            const errorMessage = error?.response?.data?.message || error.message || "Đã xảy ra lỗi không xác định";
+
+            setError(errorMessage);
             setToastType("danger");
             setShowToast(true);
             setTimeout(() => setShowToast(false), 3000);
@@ -76,10 +99,17 @@ const ChangePassword = ({onLogout}) => {
                 <div className="rounded-md border-divideColor shadow-lg shadow-lightPrimary p-11 bg-white lg:w-1/2 sm:w-auto">
                     <div className="space-y-4">
                         {/*Avatar*/}
-                        <TextInput 
-                            label="Ảnh đại diện"
-                            type="avatar"
+                        <div className="space-y-2">
+                        <label className="text-sm font-medium text-gray-700">Ảnh đại diện</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setUploadImage(e.target.files[0])}
+                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
+                                    file:rounded-full file:border-0 file:text-sm file:font-semibold 
+                                    file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                         />
+                        </div>
 
                         <TextInput 
                             label="Tên đăng nhập"

@@ -8,6 +8,8 @@ services:
     ports:
       - "3000:3000"  # REST API
       - "3002:3002"  # Socket
+    volumes:
+      - /backend/node_modules        # giữ node_modules trong container không bị ghi đè
     networks:
       - app-network
 

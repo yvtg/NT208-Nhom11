@@ -42,6 +42,7 @@ export const getCurrentUser = async () => {
     try {
         // Lấy token từ localStorage
         const token = localStorage.getItem('token');
+        console.log("Token in getCurrentUser:", token);
         
         if (!token) {
             throw new Error('Không tìm thấy token');
@@ -53,8 +54,9 @@ export const getCurrentUser = async () => {
                 Authorization: `Bearer ${token}`
             }
         };
-        
         const response = await apiClient.get('/api/profile', config);
+        console.log("API Response:", response.data);
+        
         return response.data;
     } catch (error) {
         console.error('Lỗi khi lấy thông tin người dùng hiện tại:', error);

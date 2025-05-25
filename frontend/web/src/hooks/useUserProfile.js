@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { getCurrentUser } from '../api/userAPI';
 
 const useUserProfile = (userId) => {
     const [loading, setLoading] = useState(true);
@@ -22,65 +22,46 @@ const useUserProfile = (userId) => {
         const fetchUserData = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`/api/users/${userId}`);
-                setUserData(response.data);
+                console.log("Fetching user data...");
+                const response = await getCurrentUser();
+                console.log("API Response:", response);
+                
+                if (!response) {
+                    throw new Error('No data received from API');
+                }
+
+                setUserData(response);
                 setError(null);
             } catch (err) {
-                setError('Failed to load user data');
                 console.error('Error fetching user data:', err);
+                setError(err.message || 'Failed to load user data');
+                setUserData({
+                    username: '',
+                    title: '',
+                    email: '',
+                    avatar: '',
+                    rating: 0,
+                    isOnline: false,
+                    about: '',
+                    skills: [],
+                    postedJobs: [],
+                    completedJobs: [],
+                    cv: null
+                });
             } finally {
                 setLoading(false);
             }
         };
 
-        if (userId) {
-            fetchUserData();
-        }
-    }, [userId]);
+        fetchUserData();
+    }, []); 
 
-    // Function to update user profile
-    const updateUserProfile = async (updatedData) => {
-        try {
-            setLoading(true);
-            const response = await axios.put(`/api/users/${userId}`, updatedData);
-            setUserData(response.data);
-            setError(null);
-            return true;
-        } catch (err) {
-            setError('Failed to update user data');
-            console.error('Error updating user data:', err);
-            return false;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Function to update specific sections
-    const updateUserSection = async (section, data) => {
-        try {
-            setLoading(true);
-            const response = await axios.patch(`/api/users/${userId}/${section}`, data);
-            setUserData(prev => ({
-                ...prev,
-                [section]: response.data[section]
-            }));
-            setError(null);
-            return true;
-        } catch (err) {
-            setError(`Failed to update ${section}`);
-            console.error(`Error updating ${section}:`, err);
-            return false;
-        } finally {
-            setLoading(false);
-        }
-    };
+    console.log("Current user data:", JSON.stringify(userData, null, 2));
 
     return {
         userData,
         loading,
-        error,
-        updateUserProfile,
-        updateUserSection
+        error
     };
 };
 

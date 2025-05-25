@@ -1,4 +1,3 @@
-// components/MessageItem.jsx
 import { timeFromNow, formatTime } from '../utils/dayjs';
 import useAuth from '../hooks/useAuth';
 import Spinner from './Spinner';
