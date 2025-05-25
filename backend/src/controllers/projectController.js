@@ -45,33 +45,37 @@ const getProjectById = async (req, res) => {
 const createProject = async (req, res) => {
   try {
     const {
-      ProjectName,
-      Field,
-      ExpiredDate,
-      WorkingType,
-      Budget,
-      Description,
+      projectName,
+      field,
+      skills, // array
+      expiredDate,
+      workingType,
+      workingPlace,
+      budget,
+      description,
     } = req.body;
 
     const OwnerID = req.userId; // Lấy từ token đã xác thực
 
     const result = await database.query(
       `INSERT INTO projects (
-        projectname, field_id, expireddate, workingtype, 
-        budget, description, ownerid, uploadeddate, status
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), 'open')
+        projectName, field_id, skills, expiredDate, workingType, 
+        workingPlace, budget, description, ownerid, uploadeddate, status
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW(), 'open')
       RETURNING projectid`,
-      [ProjectName, Field, new Date(ExpiredDate), WorkingType, Budget, Description, OwnerID]
+      [projectName, field, skills, new Date(expiredDate), workingType, workingPlace, budget, description, OwnerID]
     );
 
     const newProject = {
       projectid: result.rows[0].project_id,
-      projectname: ProjectName,
-      field_id: Field,
-      expireddate: ExpiredDate,
-      workingtype: WorkingType,
-      budget: Budget,
-      description: Description,
+      projectName: projectName,
+      field_id: field,
+      skills: skills,
+      expiredDate: expiredDate,
+      workingType: workingType,
+      workingPlace: workingPlace,
+      budget: budget,
+      description: description,
       ownerid: OwnerID
     };
 
@@ -86,20 +90,20 @@ const updateProject = async (req, res) => {
     const { ProjectID } = req.params;
     try {
         const {
-        ProjectName,
-        Field,
-        ExpiredDate,
-        WorkingType,
-        Budget,
-        Description,
+        projectName,
+        field,
+        expiredDate,
+        workingType,
+        budget,
+        description,
         } = req.body;
         
         await database.query(
           `UPDATE projects 
-           SET projectname = $1, field_id = $2, expireddate = $3, 
-               workingtype = $4, budget = $5, description = $6
+           SET projectName = $1, field_id = $2, expiredDate = $3, 
+               workingType = $4, budget = $5, description = $6
            WHERE projectid = $7`,
-          [ProjectName, Field, ExpiredDate, WorkingType, Budget, Description, parseInt(ProjectID)]
+          [projectName, field, expiredDate, workingType, budget, description, parseInt(ProjectID)]
         );
         
         const result = await database.query('SELECT * FROM projects WHERE projectid = $1', [parseInt(ProjectID)]);
