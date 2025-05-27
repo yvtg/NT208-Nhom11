@@ -4,6 +4,7 @@ import ChatIcon from "../../components/ChatIcon";
 import TextInput from "../../components/TextInput";
 import Select from "../../components/Select";
 import { useState, useEffect } from "react";
+import { formatCurrency, getRawNumber } from "../../utils/formatCurrency";
 
 const PostJob = ({onLogout}) => {
   const [fieldOptions, setFieldOptions] = useState([]);
@@ -19,6 +20,7 @@ const PostJob = ({onLogout}) => {
   const [expiredDate, setExpiredDate] = useState("");
 
   const [budget, setBudget] = useState("");
+  const [rawBudget, setRawBudget] = useState("");
 
   const [description, setDescription] = useState("");
 
@@ -88,20 +90,6 @@ const PostJob = ({onLogout}) => {
   const handlePostJob = async (e) => {
     e.preventDefault();
 
-    if (
-      !projectName.trim() ||
-      !field ||
-      skills.length === 0 ||
-      !workingType ||
-      !workingPlace ||
-      !expiredDate ||
-      !budget.trim() ||
-      !description.trim()
-    ) {
-      alert("Please fill in all fields!");
-      return;
-    }
-
     try {
       const expiredDateObj = new Date(expiredDate);
       const token = localStorage.getItem("token");
@@ -119,7 +107,7 @@ const PostJob = ({onLogout}) => {
           expiredDate: expiredDateObj,
           workingType,
           workingPlace,
-          budget,
+          budget:rawBudget,
           description,
         }),
       });
@@ -241,7 +229,14 @@ const PostJob = ({onLogout}) => {
                 type="text"
                 placeholder="Nhập số tiền"
                 value={budget}
-                onChange={(e) => setBudget(e.target.value)}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  const formatted = formatCurrency(input);      // "10.000"
+                  const raw = getRawNumber(input);              // "10000"
+
+                  setBudget(formatted);
+                  setRawBudget(raw);
+                }}
                 required
               />
 

@@ -67,6 +67,13 @@ const getConversationsWithLatestMessages = async (req, res) => {
       };
     }));
 
+    // sắp xếp các cuộc hội thoại gần đây nhất
+    enriched.sort((a, b) => {
+      const timeA = a.lastmessagetime ? new Date(a.lastmessagetime).getTime() : 0;
+      const timeB = b.lastmessagetime ? new Date(b.lastmessagetime).getTime() : 0;
+      return timeB - timeA;
+    });
+
     res.status(200).json(enriched);
   } catch (error) {
     console.error("Error fetching conversations with latest messages: ", error);

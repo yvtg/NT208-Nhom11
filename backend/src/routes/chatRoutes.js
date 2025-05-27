@@ -139,4 +139,9 @@ chatRoutes.get("/messages/:conversationID", middlewareToken, getMessages);
  */
 chatRoutes.post("/messages", middlewareToken, sendMessage);
 
+// chatRoutes.post('/conversations/:conversationId/read', 
+//     authMiddleware, 
+//     messageController.markMessagesAsRead
+// );
+
 export default chatRoutes;

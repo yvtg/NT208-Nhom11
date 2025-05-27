@@ -89,14 +89,14 @@ const JobPage = ({ onLogout }) => {
                 </div>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-8 max-w-[90%] mx-auto mt-5 z-40">
+            <div className="flex flex-col lg:flex-row gap-8 max-w-[90%] mx-auto mt-5 ">
                 <div className="w-full lg:w-[90%]">
                     {loading ? (
-                        <div className="flex justify-center items-center h-40 z-40">
+                        <div className="flex justify-center items-center h-40 ">
                             <p className="text-gray-500">Đang tải dữ liệu...</p>
                         </div>
                     ) : error ? (
-                        <div className="flex justify-center items-center h-40 z-40">
+                        <div className="flex justify-center items-center h-40 ">
                             <p className="text-red-500">{error}</p>
                         </div>
                     ) : (
@@ -104,12 +104,16 @@ const JobPage = ({ onLogout }) => {
                     )}
                 </div>
 
-                <div className="lg:w-[30%] flex flex-col justify-start items-end space-y-4 z-40">
+                <div className="lg:w-[30%] flex flex-col justify-start space-y-4">
                     <PrimaryButton className="w-full h-[50px] font-bold text-2xl rounded-full">
                         Ứng tuyển
                     </PrimaryButton>
-                    <HirerInfo project={project} />
+                    <div className="w-full">
+                        <HirerInfo project={project} />
+                    </div>
                 </div>
+
+
             </div>
 
             <ChatIcon />

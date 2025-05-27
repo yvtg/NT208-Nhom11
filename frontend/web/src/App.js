@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Home from "./pages/home";
 import ChangePassword from "./pages/settings/change-password";
@@ -21,6 +21,8 @@ import MessageHandler from "./components/MessageHandler";
 
 const AppContent = () => {
   const [authenticated, setAuthenticated] = useState(null);
+  const location = useLocation();
+  const isMessagePage = location.pathname.startsWith("/messages");
 
   useEffect(() => {
     const checkAuth = () => {
@@ -65,7 +67,7 @@ const AppContent = () => {
         <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
         <Route path="/users/:id" element={authenticated ? <IntroPage onLogout={handleLogout}  /> : <Navigate to="/login" replace />} />
       </Routes>
-      <ChatBot />
+      {!isMessagePage && <ChatBot />}
     </>
   );
 };
