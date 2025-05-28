@@ -1,14 +1,13 @@
 import { useState } from "react";
 
-const FileInput = ({ label }) => {
-    const [fileName, setFileName] = useState("Không có tệp nào được chọn");
+const FileInput = () => {
+    const [fileName, setFileName] = useState(null);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setFileName(file.name);
-        } else {
-            setFileName("No file chosen");
+            const fileUrl = URL.createObjectURL(file);
+            setFileName(fileUrl);
         }
     };
 

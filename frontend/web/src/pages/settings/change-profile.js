@@ -97,6 +97,7 @@ const ChangePassword = ({onLogout}) => {
 
             <div className="flex flex-col items-center justify-center flex-grow">
                 <div className="rounded-md border-divideColor shadow-lg shadow-lightPrimary p-11 bg-white lg:w-1/2 sm:w-auto">
+
                     <div className="space-y-4">
                         {/*Avatar*/}
                         <div className="space-y-2">
@@ -109,7 +110,7 @@ const ChangePassword = ({onLogout}) => {
                                     file:rounded-full file:border-0 file:text-sm file:font-semibold 
                                     file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                         />
-                        </div>
+                    </div>
 
                         <TextInput 
                             label="Tên đăng nhập"

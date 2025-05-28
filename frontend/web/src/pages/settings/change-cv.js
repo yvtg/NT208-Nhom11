@@ -7,6 +7,17 @@ import { useState, useEffect } from "react";
 import Toaster from "../../components/Toaster";
 import { updateCV } from "../../api/userAPI";
 import useGetFields from "../../hooks/useGetFields";
+import { storage } from "../../firebase/firebaseconfig";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+const uploadCVToFirebase = async (file) => {
+    if (!file) return "";
+
+    const storageRef = ref(storage, `cv/${file.name}`);
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    return url;
+}
 
 //TODO: Nào có firebase thì thêm change cv
 const ChangeCV = ({ onLogout }) => {
@@ -14,6 +25,7 @@ const ChangeCV = ({ onLogout }) => {
     // các thông tin cần cập nhật
     const [title, setTitle] = useState("");
     const [personalWebsite, setPersonalWebsite] = useState("");
+    const [cvFile, setCvFile] = useState("");
     const [fieldId, setFieldId] = useState("");
     const [skills, setSkills] = useState([]);
     const [skillInput, setSkillInput] = useState("");
@@ -74,11 +86,18 @@ const ChangeCV = ({ onLogout }) => {
     const handleChangeCV = async () => {
         try{
             setIsLoading(true);
+
+            let cvUrl = "";
+            if(cvFile)
+            {
+                cvUrl = await uploadCVToFirebase(cvFile);
+            }
             
             // cập nhật thông tin CV
             const updatedData = await updateCV({
                 title: title,
                 personal_website: personalWebsite,
+                cv_url: cvUrl,
                 field_id: fieldId,
                 skills: skills.join(', '), 
                 introduce: introduce
@@ -138,10 +157,16 @@ const ChangeCV = ({ onLogout }) => {
                         />
 
                         {/* TODO: nho them file */}
-                        <TextInput 
-                            label="File CV"
-                            type="file"
-                        />
+                        <div className="mb-4">
+                            <label className="block mb-1 font-medium text-gray-700">File CV</label>
+                            <input
+                                type="file"
+                                accept=".pdf,.doc,.docx"
+                                onChange={(e) => setCvFile(e.target.files[0])}
+                                className="w-full px-3 py-2 border border-darkPrimary rounded-md focus:outline-none focus:ring-2 focus:ring-darkPrimary"
+                            />
+                            {cvFile && <p className="mt-1 text-sm text-gray-600">Đã chọn: {cvFile.name}</p>}
+                        </div>
 
                         {/* fields */}
                         <div className="flex items-center gap-4">
