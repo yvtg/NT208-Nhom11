@@ -5,68 +5,21 @@ import Banner from "../components/Banner";
 import ProfileBar from "../components/ProfileBar";
 import JobSummary from "../components/JobSummary";
 import JobFilterTab from "../components/JobFilterTab";
-import { getProjects, getFields } from "../api/projectAPI.js";
+import { getProjects } from "../api/projectAPI.js";
 import useAuth from "../hooks/useAuth";
 import { getCurrentUser } from "../api/userAPI";
 import UserInfo from "../components/UserInfo.js"
-
-const CACHE_KEYS = {
-    USER_DATA: 'user_data_cache',
-    PROJECTS: 'projects_cache',
-    FIELDS: 'fields_cache'
-};
-const CACHE_DURATION = 5 * 60 * 1000; // 5 phút
 
 const DashBoard = ({ onLogout }) => {
   const [selectedFilter, setSelectedFilter] = useState("Best Match");
   const { userID, isLoading } = useAuth();
   const [userData, setUserData] = useState();
   const [projects, setProjects] = useState([]);
-  const [fields, setFields] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
   const MAX_RETRIES = 3;
   const TIMEOUT_DURATION = 10000; // 10 seconds
-
-  // Hàm lấy dữ liệu từ cache
-  const getCachedData = (cacheKey) => {
-    try {
-      const cachedData = localStorage.getItem(cacheKey);
-      if (!cachedData) return null;
-
-      const { data, timestamp } = JSON.parse(cachedData);
-      const isExpired = Date.now() - timestamp > CACHE_DURATION;
-
-      if (isExpired) {
-        localStorage.removeItem(cacheKey);
-        return null;
-      }
-
-      return data;
-    } catch (error) {
-      console.error('Error reading cache:', error);
-      return null;
-    }
-  };
-
-  // Hàm lưu dữ liệu vào cache
-  const setCachedData = (cacheKey, data) => {
-    try {
-      if (!data) {
-        console.warn(`Attempting to cache null data for key: ${cacheKey}`);
-        return;
-      }
-
-      const cacheData = {
-        data,
-        timestamp: Date.now()
-      };
-      localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-    } catch (error) {
-      console.error('Error saving to cache:', error);
-    }
-  };
 
   const fetchWithTimeout = async (promise, timeoutMs) => {
     const timeoutPromise = new Promise((_, reject) => {
@@ -80,55 +33,15 @@ const DashBoard = ({ onLogout }) => {
       setLoading(true);
       setError(null);
 
-      // Kiểm tra cache cho từng loại dữ liệu
-      const cachedUserData = getCachedData(CACHE_KEYS.USER_DATA);
-      const cachedProjects = getCachedData(CACHE_KEYS.PROJECTS);
-      const cachedFields = getCachedData(CACHE_KEYS.FIELDS);
+      // Gọi tất cả API cùng lúc
+      const [userResponse, projectsResponse] = await Promise.all([
+        fetchWithTimeout(getCurrentUser(), TIMEOUT_DURATION),
+        fetchWithTimeout(getProjects(), TIMEOUT_DURATION)
+      ]);
 
-      // Tạo mảng các promise cần gọi
-      const promises = [];
-      const results = {
-        userData: cachedUserData,
-        projects: cachedProjects || [],
-        fields: cachedFields || []
-      };
-
-      if (!cachedUserData) {
-        promises.push(fetchWithTimeout(getCurrentUser(), TIMEOUT_DURATION).then(data => {
-          if (data) {
-            results.userData = data;
-            setCachedData(CACHE_KEYS.USER_DATA, data);
-          }
-        }));
-      }
-
-      if (!cachedProjects) {
-        promises.push(fetchWithTimeout(getProjects(), TIMEOUT_DURATION).then(response => {
-          if (response && response.data) {
-            results.projects = response.data;
-            setCachedData(CACHE_KEYS.PROJECTS, response.data);
-          }
-        }));
-      }
-
-      if (!cachedFields) {
-        promises.push(fetchWithTimeout(getFields(), TIMEOUT_DURATION).then(data => {
-          if (data) {
-            results.fields = data;
-            setCachedData(CACHE_KEYS.FIELDS, data);
-          }
-        }));
-      }
-
-      // Nếu có promise nào cần gọi
-      if (promises.length > 0) {
-        await Promise.all(promises);
-      }
-
-      // Kiểm tra và cập nhật state
-      if (results.userData) setUserData(results.userData);
-      if (results.projects) setProjects(results.projects);
-      if (results.fields) setFields(results.fields);
+      // Cập nhật state với dữ liệu mới
+      if (userResponse) setUserData(userResponse);
+      if (projectsResponse) setProjects(projectsResponse);
 
       setRetryCount(0);
     } catch (error) {
@@ -146,17 +59,16 @@ const DashBoard = ({ onLogout }) => {
     }
   };
 
+  // Gọi API khi component mount
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   // Debug log để kiểm tra dữ liệu
   useEffect(() => {
-    console.log('Projects from state:', projects);
-    console.log('Cached projects:', getCachedData(CACHE_KEYS.PROJECTS));
-  }, [projects]);
-
-  useEffect(() => {
     console.log('Projects:', projects);
-    console.log('Fields:', fields);
     console.log('Selected Filter:', selectedFilter);
-  }, [projects, fields, selectedFilter]);
+  }, [projects, selectedFilter]);
 
   // Hàm format ngày tháng
   const formatDate = (dateString) => {
@@ -189,7 +101,7 @@ const DashBoard = ({ onLogout }) => {
         return projects
           .filter(project => project.status === "open")
           .sort((a, b) => new Date(b.uploadeddate) - new Date(a.uploadeddate));
-      case "Budget":
+      case "Save":
         return projects
           .filter(project => project.status === "open")
           .sort((a, b) => parseFloat(b.budget) - parseFloat(a.budget));
@@ -214,12 +126,14 @@ const DashBoard = ({ onLogout }) => {
     <div className="flex flex-col min-h-screen bg-gray-100">
       <DefaultNavbar onLogout={onLogout} />
 
-      <div className="relative w-full h-[488px] flex flex-col items-center">
+      <div className="relative w-full min-h-[488px] flex flex-col items-center">
         <Banner />
 
-        <div className="relative flex justify-between w-4/5 mt-5">
-          <div className="w-full lg:w-[90%]">
+        <div className="relative flex flex-col lg:flex-row justify-between w-full px-4 lg:px-16 mt-5 gap-4">
+          {/* Cột chính - Danh sách công việc */}
+          <div className="w-full lg:w-3/4">
             <JobFilterTab onSelect={setSelectedFilter} />
+
             {loading ? (
               <div className="flex justify-center items-center h-40">
                 <p className="text-gray-500">Đang tải dữ liệu...</p>
@@ -233,32 +147,37 @@ const DashBoard = ({ onLogout }) => {
                 <p className="text-gray-500">Không có dự án nào</p>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                 {getFilteredProjects().map((project) => (
-                  <JobSummary 
+                  <JobSummary
                     key={project.projectid}
                     filter={selectedFilter}
-                    project={processProjectData(project)}
-                    fields={fields}
+                    job={processProjectData(project)}
+                    className="w-full"
                   />
                 ))}
               </div>
             )}
           </div>
 
-          <div className="w-3/4 flex justify-end mt-[-50px]">
-            <UserInfo 
-              username={userData?.username} 
-              email={userData?.email} 
-              avatar={userData?.avatarurl} 
-              rating="0" 
-            />
+          {/* Cột bên - Thông tin người dùng */}
+          <div className="w-full lg:w-1/4">
+            <div className="sticky top-24">
+              <UserInfo
+                username={userData?.username}
+                email={userData?.email}
+                avatar={userData?.avatarurl}
+                rating="0"
+                userID={userID}
+              />
+            </div>
           </div>
         </div>
       </div>
 
       <ChatIcon />
     </div>
+
   );
 };
 

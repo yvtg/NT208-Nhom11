@@ -3,25 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import { formatCurrency } from '../utils/formatCurrency';
 
 
-const JobSummary = ({ job }) => {
+const JobSummary = ({ job, className }) => {
     const navigate = useNavigate();
     return (
-        <div className="cursor-pointer hover:bg-gray-100 bg-white shadow-md rounded-xl p-4 w-80 relative" onClick={() => navigate(`/jobs/${job.projectid}`)}>
-            <h3 className="text-lg font-semibold">{job?.projectname}</h3>
-                
-                <p className="text-gray-600 text-sm mt-1 line-clamp-2">{job?.description}</p>
+        <div
+        className={`cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-white shadow-md rounded-2xl p-5 w-96 relative ${className}`}
+        onClick={() => navigate(`/jobs/${job.projectid}`)}
+        >
+            <h3 className="text-xl font-semibold text-gray-800 truncate">{job?.projectname}</h3>
 
-            {/* <div className="flex gap-2 mt-3 flex-wrap">
-                {job.tags.map((tag, index) => (
-                    <span key={index} className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full">
-                        {tag}
-                    </span>
+            <p className="text-gray-600 text-sm mt-2 line-clamp-2">{job?.description}</p>
+
+            <div className="flex gap-2 mt-4 flex-wrap">
+                {job?.tags?.slice(0, 3).map((tag, index) => (
+                <span
+                    key={index}
+                    className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full font-medium"
+                >
+                    {tag}
+                </span>
                 ))}
-            </div> */}
+                {job?.tags?.length > 3 && (
+                <span className="text-gray-400 text-xs">+{job.tags.length - 3} tags</span>
+                )}
+            </div>
 
-            <div className="flex justify-between items-center mt-3">
-                <p className="text-gray-500 text-xs">{timeFromNow(job?.uploadeddate)}</p>
-                <p className="text-black font-bold">{formatCurrency(job?.budget)}</p>
+            <div className="flex justify-between items-center mt-5">
+                <p className="text-gray-400 text-xs">{timeFromNow(job?.uploadeddate)}</p>
+                <p className="text-green-600 font-bold text-sm">{formatCurrency(job?.budget)}</p>
             </div>
         </div>
     );
