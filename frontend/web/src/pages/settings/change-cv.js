@@ -137,8 +137,8 @@ const ChangeCV = ({ onLogout }) => {
                 </div>
             )}
 
-            <div className="flex flex-col items-center justify-center flex-grow">
-                <div className="rounded-md border-divideColor shadow-lg shadow-lightPrimary p-11 bg-white sm:w-auto lg:w-1/2">
+            <div className="flex flex-col items-center justify-center flex-grow px-4 sm:px-6 lg:px-8 mt-20">
+                <div className="w-full max-w-2xl rounded-md border-divideColor shadow-lg shadow-lightPrimary p-4 sm:p-6 lg:p-11 bg-white">
                     <div className="space-y-4">
                         {/* Title */}
                         <TextInput
@@ -150,29 +150,27 @@ const ChangeCV = ({ onLogout }) => {
 
                         {/* Personal website */}
                         <TextInput 
-                            label="Website cá hân"
+                            label="Website cá nhân"
                             type="link"
                             value={personalWebsite}
                             onChange={(e) => setPersonalWebsite(e.target.value)}
                         />
 
-                        {/* TODO: nho them file */}
-                        <div className="mb-4">
-                            <label className="block mb-1 font-medium text-gray-700">File CV</label>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                            <label className="w-full sm:w-1/3 text-gray-700 font-medium">File CV</label>
                             <input
                                 type="file"
                                 accept=".pdf,.doc,.docx"
                                 onChange={(e) => setCvFile(e.target.files[0])}
-                                className="w-full px-3 py-2 border border-darkPrimary rounded-md focus:outline-none focus:ring-2 focus:ring-darkPrimary"
+                                className="w-full sm:w-2/3 px-3 py-2 border border-darkPrimary rounded-md focus:outline-none focus:ring-2 focus:ring-darkPrimary"
                             />
-                            {cvFile && <p className="mt-1 text-sm text-gray-600">Đã chọn: {cvFile.name}</p>}
                         </div>
 
                         {/* fields */}
-                        <div className="flex items-center gap-4">
-                            <label className="w-1/3 mb-2 font-medium text-gray-700">Lĩnh vực</label>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                            <label className="w-full sm:w-1/3 font-medium text-gray-700">Lĩnh vực</label>
                             <select 
-                                className="w-2/3 px-4 py-2 border border-darkPrimary rounded-md focus:outline-none focus:ring-2 focus:ring-darkPrimary resize-none"
+                                className="w-full sm:w-2/3 px-4 py-2 border border-darkPrimary rounded-md focus:outline-none focus:ring-2 focus:ring-darkPrimary resize-none"
                                 value={fieldId}
                                 onChange={(e) => setFieldId(e.target.value)}
                                 disabled={fieldsLoading}
@@ -191,14 +189,14 @@ const ChangeCV = ({ onLogout }) => {
                         </div>
                         
                         {/* skills */}
-                        <div className="flex items-start gap-4">
-                            <label className="w-1/3 mb-2 font-medium text-gray-700">Kỹ năng</label>
-                            <div className="w-2/3">
+                        <div className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                            <label className="w-full sm:w-1/3 font-medium text-gray-700">Kỹ năng</label>
+                            <div className="w-full sm:w-2/3">
                                 <div className="px-4 py-2 border border-darkPrimary rounded-md focus-within:ring-2 focus-within:ring-darkPrimary mb-2">
                                     <div className="flex flex-wrap gap-2 mb-2">
                                         {skills.map((skill, index) => (
                                             <div key={index} className="flex items-center bg-lightPrimary rounded-md px-3 py-1">
-                                                <span>{skill}</span>
+                                                <span className="text-sm">{skill}</span>
                                                 <button 
                                                     type="button" 
                                                     className="ml-2 text-gray-500 hover:text-gray-700"
@@ -210,7 +208,7 @@ const ChangeCV = ({ onLogout }) => {
                                         ))}
                                         <input
                                             type="text"
-                                            className="outline-none flex-grow min-w-[100px] bg-transparent"
+                                            className="outline-none flex-grow min-w-[100px] bg-transparent text-sm"
                                             value={skillInput}
                                             onChange={(e) => setSkillInput(e.target.value)}
                                             onKeyDown={handleKeyDown}
@@ -243,16 +241,15 @@ const ChangeCV = ({ onLogout }) => {
                         />
 
                     </div>
-                    <div className="flex justify-center mt-10">
+                    <div className="flex justify-center mt-8 sm:mt-10">
                         <PrimaryButton 
-                            className="w-auto flex justify-center px-3 py-1 text-lg"
+                            className="w-full sm:w-auto flex justify-center px-3 py-1 text-base sm:text-lg"
                             onClick={handleChangeCV}
                             disabled={isLoading}
                         > 
                             {isLoading ? "Đang cập nhật..." : "Cập nhật"} 
                         </PrimaryButton>
                     </div>
-
                 </div>
             </div>
             <ChatIcon></ChatIcon>

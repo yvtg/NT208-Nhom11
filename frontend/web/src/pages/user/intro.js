@@ -16,21 +16,19 @@ const IntroPage = ({onLogout}) => {
     <div className="min-h-screen bg-gray-100">
       <DefaultNavbar onLogout={onLogout} />
 
-
-      <div className="relative w-full h-[220px]">
-        <Banner />
-        <div className="absolute top-4 right-8">
-          <Searchbar />
-        </div>
-      </div>
-
-      <div className="container mx-auto px-6 py-8 z-40 mt-10">
-        <div className="flex justify-between gap-6 z-40">
-          <div className="w-[72%] bg-white rounded-2xl shadow-lg p-6 z-40">
-            <ProfileBar />
+      {/* Main Content */}
+      <div className="container mx-auto px-4 sm:px-6 py-8 mt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          
+          {/* Profile Section */}
+          <div className="lg:col-span-3 bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+            <div className="sticky top-24">
+              <ProfileBar />
+            </div>
           </div>
 
-          <div className="w-[28%]">
+          {/* Contact Section*/}
+          <div className="lg:col-span-1 w-full">
             <div className="sticky top-24">
               <UserContactBox
                 phone={userData?.phonenumber}

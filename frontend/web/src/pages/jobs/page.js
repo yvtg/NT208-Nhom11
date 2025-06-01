@@ -82,14 +82,7 @@ const JobPage = ({ onLogout }) => {
         <div className="min-h-screen bg-gray-100">
             <DefaultNavbar onLogout={onLogout} />
 
-            <div className="relative w-full h-[250px]">
-                {/* <Banner /> */}
-                <div className="absolute top-3 right-10">
-                    <Searchbar />
-                </div>
-            </div>
-
-            <div className="flex flex-col lg:flex-row gap-8 max-w-[90%] mx-auto mt-5 ">
+            <div className="flex flex-col lg:flex-row gap-8 max-w-[90%] mx-auto mt-20 ">
                 <div className="w-full lg:w-[90%]">
                     {loading ? (
                         <div className="flex justify-center items-center h-40 ">

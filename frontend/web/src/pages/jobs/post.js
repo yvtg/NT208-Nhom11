@@ -137,77 +137,81 @@ const PostJob = ({onLogout}) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <DefaultNavbar onLogout={onLogout} />
 
-      <div className="flex flex-col items-center justify-center flex-grow">
-        <div className="rounded-md border-divideColor shadow-lg shadow-lightPrimary p-11 bg-white sm:w-auto lg:w-1/2">
-          <h2 className="flex text-5xl font-bold justify-center items-start mb-10">
+      <div className="flex flex-col items-center justify-center flex-grow py-8 px-4 sm:px-6 mt-9">
+        <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-6 sm:p-8 md:p-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8">
             Đăng dự án
           </h2>
-          <form onSubmit={handlePostJob}>
-            <div className="space-y-4">
-              <TextInput
-                label="Tên công việc"
-                type="text"
-                placeholder="Nhập tên công việc"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-                required
-              />
+          <form onSubmit={handlePostJob} className="space-y-6">
+            <TextInput
+              label="Tên công việc"
+              type="text"
+              placeholder="Nhập tên công việc"
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              required
+            />
 
-              <Select
-                label="Lĩnh vực"
-                options={fieldOptions}
-                value={field}
-                onChange={(val) => setField(val)}
-                placeholder="Chọn lĩnh vực"
-              />
+            <Select
+              label="Lĩnh vực"
+              options={fieldOptions}
+              value={field}
+              onChange={(val) => setField(val)}
+              placeholder="Chọn lĩnh vực"
+            />
 
-              {/* skills */}
-              <div className="flex items-start gap-4">
-                <label className="w-1/3 mb-2 font-medium text-gray-700">Skills</label>
-                <div className="w-2/3">
-                    <div className="px-4 py-2 border border-darkPrimary rounded-md focus-within:ring-2 focus-within:ring-darkPrimary mb-2">
-                        <div className="flex flex-wrap gap-2 mb-2">
-                            {skills.map((skill, index) => (
-                                <div key={index} className="flex items-center bg-lightPrimary rounded-md px-3 py-1">
-                                    <span>{skill}</span>
-                                    <button 
-                                        type="button" 
-                                        className="ml-2 text-gray-500 hover:text-gray-700"
-                                        onClick={() => handleRemoveSkill(skill)}
-                                    >
-                                        ×
-                                    </button>
-                                </div>
-                            ))}
-                            <input
-                                type="text"
-                                className="outline-none flex-grow min-w-[100px] bg-transparent"
-                                value={skillInput}
-                                onChange={(e) => setSkillInput(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                            />
-                        </div>
-                    </div>
-                    {skills.length > 0 && (
-                        <div className="flex justify-end">
-                            <button 
-                                type="button"
-                                className="text-sm text-red-500 hover:text-red-700"
-                                onClick={handleRemoveAllSkills}
-                            >
-                                Remove All
-                            </button>
-                        </div>
-                    )}
-                    <div className="text-xs text-gray-500 mt-1">
-                        {skills.length} skill đã được thêm
-                    </div>
+            {/* Skills Section */}
+            <div className="space-y-2">
+              <label className="block font-medium text-gray-700">Kỹ năng yêu cầu</label>
+              <div className="relative">
+                <div className="px-4 py-3 border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-darkPrimary focus-within:border-transparent transition-all">
+                  <div className="flex flex-wrap gap-2">
+                    {skills.map((skill, index) => (
+                      <div 
+                        key={index} 
+                        className="flex items-center bg-lightPrimary rounded-full px-3 py-1 text-sm"
+                      >
+                        <span>{skill}</span>
+                        <button 
+                          type="button" 
+                          className="ml-2 text-gray-500 hover:text-gray-700 transition-colors"
+                          onClick={() => handleRemoveSkill(skill)}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                    <input
+                      type="text"
+                      className="outline-none flex-grow min-w-[120px] bg-transparent text-sm"
+                      value={skillInput}
+                      onChange={(e) => setSkillInput(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      placeholder={skills.length === 0 ? "Nhập kỹ năng và nhấn Enter" : ""}
+                    />
+                  </div>
                 </div>
+                {skills.length > 0 && (
+                  <div className="flex justify-between items-center mt-2">
+                    <span className="text-sm text-gray-500">
+                      {skills.length} kỹ năng đã được thêm
+                    </span>
+                    <button 
+                      type="button"
+                      className="text-sm text-red-500 hover:text-red-700 transition-colors"
+                      onClick={handleRemoveAllSkills}
+                    >
+                      Xóa tất cả
+                    </button>
+                  </div>
+                )}
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <TextInput
                 label="Ngày hết hạn"
                 type="datetime-local"
@@ -223,36 +227,39 @@ const PostJob = ({onLogout}) => {
                 onChange={(val) => setWorkingType(val)}
                 placeholder="Chọn hình thức"
               />
+            </div>
 
-              <TextInput
-                label="Số tiền"
-                type="text"
-                placeholder="Nhập số tiền"
-                value={budget}
-                onChange={(e) => {
-                  const input = e.target.value;
-                  const formatted = formatCurrency(input);      // "10.000"
-                  const raw = getRawNumber(input);              // "10000"
+            <TextInput
+              label="Ngân sách dự án"
+              type="text"
+              placeholder="Nhập số tiền"
+              value={budget}
+              onChange={(e) => {
+                const input = e.target.value;
+                const formatted = formatCurrency(input);
+                const raw = getRawNumber(input);
 
-                  setBudget(formatted);
-                  setRawBudget(raw);
-                }}
-                required
-              />
+                setBudget(formatted);
+                setRawBudget(raw);
+              }}
+              required
+            />
 
-              <TextInput
-                label="Mô tả công việc"
-                type="textarea"
-                placeholder="Nhâp mô tả công việc"
+            <div className="space-y-2">
+              <label className="block font-medium text-gray-700">Mô tả công việc</label>
+              <textarea
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-darkPrimary focus:border-transparent transition-all min-h-[150px] resize-y"
+                placeholder="Nhập mô tả chi tiết về công việc"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
               />
             </div>
-            <div className="flex justify-center mt-10">
+
+            <div className="flex justify-center pt-4">
               <PrimaryButton
                 type="submit"
-                className="w-auto flex justify-center px-3 py-1 text-lg"
+                className="w-full md:w-auto px-8 py-3 text-lg font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
               >
                 Đăng tải
               </PrimaryButton>

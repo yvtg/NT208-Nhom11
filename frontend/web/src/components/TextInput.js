@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash, FaSyncAlt } from "react-icons/fa";
 import FileInput from "./FileInput";
-import AvatarInput from "./AvatarInput";
 import Select from "./Select";
 
 const TextInput = ({ label, type, value, onChange, placeholder }) => {
@@ -39,8 +38,6 @@ const TextInput = ({ label, type, value, onChange, placeholder }) => {
                         placeholder={placeholder}
                         className="w-full p-2 border border-darkPrimary rounded-md focus:outline-none focus:ring-2 focus:ring-darkPrimary"
                     />
-                ) : type === "avatar" ? (
-                    <AvatarInput />
                 ) : type === "money" ? (
                     <div className="flex gap-2">
                         <input

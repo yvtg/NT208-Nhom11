@@ -20,7 +20,7 @@ const Searchbar = ({ className }) => {
     };
 
     return (
-        <div className={`flex-1 lg:mx-6 sm:mx-2 hidden sm:block md:block lg:block ${className}`}>
+        <div className={`w-full ${className}`}>
             <div className="relative">
                 <input 
                     type="text" 
@@ -28,10 +28,14 @@ const Searchbar = ({ className }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    className="w-full px-4 py-2 rounded-full shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-darkPrimary"
+                    className="w-full px-4 py-2 text-sm md:text-base rounded-full shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-darkPrimary"
                 />
-                <button type="button" onClick={handleSubmit}>
-                    <FaSearch className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-500" />
+                <button 
+                    type="button" 
+                    onClick={handleSubmit}
+                    className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 hover:text-darkPrimary transition-colors"
+                >
+                    <FaSearch className="text-sm md:text-base" />
                 </button>
             </div>
         </div>

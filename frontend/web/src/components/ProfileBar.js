@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import useUserProfile from "../hooks/useUserProfile";
+import PDFViewer from "../components/PDFViewer";
+
+
 
 const ProfileBar = ({ username, email, avatar, rating = "0" }) => {
     const { userId } = useParams();
@@ -103,15 +106,11 @@ const ProfileBar = ({ username, email, avatar, rating = "0" }) => {
                 return (
                     <div className="mt-4 p-4 bg-white rounded-lg shadow">
                         <h3 className="text-lg font-semibold mb-2">CV</h3>
-                        {userData.cv ? (
+                        {userData.cv_url ? (
                             <div>
-                                <a 
-                                    href={userData.cv.url} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-blue-600 hover:text-blue-800 underline"
-                                >
-                                    Xem CV
+                                <PDFViewer fileUrl={userData.cv_url} />
+                                <a href={userData.cv_url} target="_blank" rel="noopener noreferrer" className="...">
+                                    📄 Xem hoặc tải PDF
                                 </a>
                             </div>
                         ) : (
@@ -148,74 +147,104 @@ const ProfileBar = ({ username, email, avatar, rating = "0" }) => {
     }
     const displayUsername = username || userData?.username;
     const displayEmail = email || userData?.email;
-    const displayAvatar = avatar || userData?.avatar || "/images/avatar.png";
+    const displayAvatar = avatar || userData?.avatarurl || '/images/avatar.png';
     const displayRating = rating || userData?.rating || 0;
 
     return (
-        <div className="flex flex-col gap-8">
-            <div className="flex items-center gap-8">
-                <div className="relative">
-                    <img
-                        src={displayAvatar}
-                        alt="avatar"
-                        className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-lg bg-gray-200"
-                    />
-                    {userData?.isOnline && (
-                        <div className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-                    )}
-                </div>
-                <div className="flex flex-col justify-center">
-                    <div className="text-2xl font-bold mb-1">{displayUsername}</div>
-                    <div className="text-lg text-gray-600 mb-1">{userData?.title}</div>
-                    <div className={`text-sm ${userData?.isOnline ? 'text-green-500' : 'text-gray-500'} mb-4`}>
-                        ● {userData?.isOnline ? 'Online' : 'Offline'}
+        <div className="flex flex-col gap-8 p-4 md:p-6 lg:p-8">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
+                {/* Avatar */}
+                <div className="relative w-32 h-32 md:w-40 md:h-40">
+                    <div className="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg bg-gray-100 transition-transform hover:scale-105">
+                        <img
+                            src={displayAvatar}
+                            alt="avatar"
+                            className="w-full h-full object-cover"
+                        />
                     </div>
-                    <div className="flex gap-2 mt-2">
-                        <button 
-                            onClick={() => setActiveTab('introduce')}
-                            className={`px-2 pb-1 font-semibold ${activeTab === 'introduce' ? 'border-b-2 border-black' : 'text-gray-400'}`}
-                        >
-                            Giới thiệu
-                        </button>
-                        <button 
-                            onClick={() => setActiveTab('skill')}
-                            className={`px-2 pb-1 font-semibold ${activeTab === 'skill' ? 'border-b-2 border-black' : 'text-gray-400'}`}
-                        >
-                            Kỹ năng
-                        </button>
-                        <button 
-                            onClick={() => setActiveTab('jobPosted')}
-                            className={`px-2 pb-1 font-semibold ${activeTab === 'jobPosted' ? 'border-b-2 border-black' : 'text-gray-400'}`}
-                        >
-                            Dự án đã đăng
-                        </button>
-                        <button 
-                            onClick={() => setActiveTab('jobFinished')}
-                            className={`px-2 pb-1 font-semibold ${activeTab === 'jobFinished' ? 'border-b-2 border-black' : 'text-gray-400'}`}
-                        >
-                            Dự án đã hoàn thành
-                        </button>
-                        <button 
-                            onClick={() => setActiveTab('cv')}
-                            className={`px-2 pb-1 font-semibold ${activeTab === 'cv' ? 'border-b-2 border-black' : 'text-gray-400'}`}
-                        >
-                            CV
-                        </button>
+                    {/* Rating stars */}
+                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-md">
+                        <div className="flex items-center gap-1">
+                            {Array.from({ length: 5 }, (_, index) => (
+                                index < displayRating ? (
+                                    <FaStar key={index} className="text-yellow-400 text-sm" />
+                                ) : (
+                                    <FaRegStar key={index} className="text-gray-300 text-sm" />
+                                )
+                            ))}
+                        </div>
                     </div>
                 </div>
                 
-                {/* <div className="flex items-center mt-4">
-                    {Array.from({ length: 5 }, (_, index) => (
-                        index < displayRating ? (
-                            <FaStar key={index} className="text-yellow-400 text-lg" />
-                        ) : (
-                            <FaRegStar key={index} className="text-gray-400 text-lg" />
-                        )
-                    ))}
-                </div> */}
+                <div className="flex flex-col items-center md:items-start text-center md:text-left flex-1">
+                    {/* Tên và chức danh */}
+                    <div className="mb-4">
+                        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-1">{displayUsername}</h1>
+                        <p className="text-lg text-gray-600">{userData?.title || 'Freelancer'}</p>
+                    </div>
+
+                    {/* Các tab */}
+                    <div className="w-full">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-row gap-2 md:gap-4">
+                            <button 
+                                onClick={() => setActiveTab('introduce')}
+                                className={`px-3 py-2 font-medium rounded-lg transition-all text-center ${
+                                    activeTab === 'introduce' 
+                                    ? 'bg-darkPrimary text-white shadow-md' 
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                            >
+                                Giới thiệu
+                            </button>
+                            <button 
+                                onClick={() => setActiveTab('skill')}
+                                className={`px-3 py-2 font-medium rounded-lg transition-all text-center ${
+                                    activeTab === 'skill' 
+                                    ? 'bg-darkPrimary text-white shadow-md' 
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                            >
+                                Kỹ năng
+                            </button>
+                            <button 
+                                onClick={() => setActiveTab('jobPosted')}
+                                className={`px-3 py-2 font-medium rounded-lg transition-all text-center ${
+                                    activeTab === 'jobPosted' 
+                                    ? 'bg-darkPrimary text-white shadow-md' 
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                            >
+                                Dự án đã đăng
+                            </button>
+                            <button 
+                                onClick={() => setActiveTab('jobFinished')}
+                                className={`px-3 py-2 font-medium rounded-lg transition-all text-center ${
+                                    activeTab === 'jobFinished' 
+                                    ? 'bg-darkPrimary text-white shadow-md' 
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                            >
+                                Dự án đã hoàn thành
+                            </button>
+                            <button 
+                                onClick={() => setActiveTab('cv')}
+                                className={`px-3 py-2 font-medium rounded-lg transition-all text-center ${
+                                    activeTab === 'cv' 
+                                    ? 'bg-darkPrimary text-white shadow-md' 
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                            >
+                                CV
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            {renderTabContent()}
+            {/* Tab content */}
+            <div className="mt-6">
+                {renderTabContent()}
+            </div>
         </div>
     );
 };

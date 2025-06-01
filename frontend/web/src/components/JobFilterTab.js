@@ -1,26 +1,30 @@
 import { useState } from "react";
 
 const JobFilterTab = ({ onSelect }) => {
-    const [activeTab, setActiveTab] = useState("Best Match");
+    const [activeTab, setActiveTab] = useState("Phù hợp nhất");
 
     const tabs = ["Phù hợp nhất", "Vừa cập nhật", "Đã lưu"];
 
     return (
-        <div className="flex space-x-4 border-b border-gray-300 mt-6">
-            {tabs.map((tab) => (
-                <button
-                    key={tab}
-                    onClick={() => {
-                        setActiveTab(tab);
-                        onSelect(tab);
-                    }}
-                    className={`px-4 py-2 font-semibold ${
-                        activeTab === tab ? "border-b-2 border-black" : "text-gray-400"
-                    }`}
-                >
-                    {tab}
-                </button>
-            ))}
+        <div className="w-full bg-white rounded-xl shadow-sm p-1">
+            <div className="flex flex-wrap gap-2">
+                {tabs.map((tab) => (
+                    <button
+                        key={tab}
+                        onClick={() => {
+                            setActiveTab(tab);
+                            onSelect(tab);
+                        }}
+                        className={`flex-1 min-w-[120px] px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+                            activeTab === tab 
+                            ? "bg-darkPrimary text-white shadow-md" 
+                            : "text-gray-600 hover:bg-gray-50"
+                        }`}
+                    >
+                        {tab}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 };

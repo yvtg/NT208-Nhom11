@@ -123,7 +123,7 @@ const DashBoard = ({ onLogout }) => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100 mb-4">
       <DefaultNavbar onLogout={onLogout} />
 
       <div className="relative w-full min-h-[488px] flex flex-col items-center">

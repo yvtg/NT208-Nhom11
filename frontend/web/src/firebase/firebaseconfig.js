@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage"
+import { getStorage, ref, getDownloadURL  } from "firebase/storage"
+import { useState, useEffect } from "react";
 
 
 // Firebase configuration (Move sensitive data to .env file in production)
@@ -15,4 +16,37 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+function PdfLinkFromStorage({ path }) {
+    const [url, setUrl] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchUrl = async () => {
+        try {
+            const pdfRef = ref(storage, path); 
+            const downloadUrl = await getDownloadURL(pdfRef);
+            setUrl(downloadUrl);
+        } catch (err) {
+            setError(err.message);
+        }
+        };
+
+        fetchUrl();
+    }, [path]);
+
+    if (error) return <div>Lỗi: {error}</div>;
+    if (!url) return <div>Đang tải...</div>;
+
+    return (
+        <div>
+        <a href={url} target="_blank" rel="noopener noreferrer">
+            Mở PDF
+        </a>
+        <iframe src={url} width="100%" height="600px" title="PDF file" />
+        </div>
+    );
+}
+
 export const storage = getStorage(app);
+export { PdfLinkFromStorage };
