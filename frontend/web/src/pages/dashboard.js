@@ -90,13 +90,23 @@ const DashBoard = ({ onLogout }) => {
 
   // Hàm lọc projects theo filter
   const getFilteredProjects = () => {
-    if (!projects) return [];
+    if (!projects || !userData?.skills) return [];
+
+    const userSkills = userData.skills.map(s => s.toLowerCase());
     
     switch (selectedFilter) {
       case "Best Match":
         return projects
-          .filter(project => project.status === "open")
-          .sort((a, b) => b.averagerating - a.averagerating);
+          .filter(p => p.status === "open")
+          .map(p => {
+            const projectSkills = p.skills || [];
+            const matchCount = projectSkills.filter(skill =>
+              userSkills.includes(skill.toLowerCase())
+            ).length;
+            return { ...p, matchScore: matchCount };
+          })
+          .filter(p => p.matchScore > 0)
+          .sort((a, b) => b.matchScore - a.matchScore);
       case "Newest":
         return projects
           .filter(project => project.status === "open")

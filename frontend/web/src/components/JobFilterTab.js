@@ -3,7 +3,7 @@ import { useState } from "react";
 const JobFilterTab = ({ onSelect }) => {
     const [activeTab, setActiveTab] = useState("Best Match");
 
-    const tabs = ["Phù hợp nhất", "Vừa cập nhật", "Đã lưu"];
+    const tabs = ["Best Match", "Newest", "Save"];
 
     return (
         <div className="flex space-x-4 border-b border-gray-300 mt-6">
