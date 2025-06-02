@@ -11,7 +11,7 @@ import { getCurrentUser } from "../api/userAPI";
 import UserInfo from "../components/UserInfo.js"
 
 const DashBoard = ({ onLogout }) => {
-  const [selectedFilter, setSelectedFilter] = useState("Best Match");
+  const [selectedFilter, setSelectedFilter] = useState("Phù hợp nhất");
   const { userID, isLoading } = useAuth();
   const [userData, setUserData] = useState();
   const [projects, setProjects] = useState([]);
@@ -95,7 +95,7 @@ const DashBoard = ({ onLogout }) => {
     const userSkills = userData.skills.map(s => s.toLowerCase());
     
     switch (selectedFilter) {
-      case "Best Match":
+      case "Phù hợp nhất":
         return projects
           .filter(p => p.status === "open")
           .map(p => {
@@ -107,11 +107,11 @@ const DashBoard = ({ onLogout }) => {
           })
           .filter(p => p.matchScore > 0)
           .sort((a, b) => b.matchScore - a.matchScore);
-      case "Newest":
+      case "Mới nhất":
         return projects
           .filter(project => project.status === "open")
           .sort((a, b) => new Date(b.uploadeddate) - new Date(a.uploadeddate));
-      case "Save":
+      case "Đã lưu":
         return projects
           .filter(project => project.status === "open")
           .sort((a, b) => parseFloat(b.budget) - parseFloat(a.budget));

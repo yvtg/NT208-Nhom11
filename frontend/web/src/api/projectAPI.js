@@ -40,6 +40,24 @@ export const getFields = async () => {
     }
 }
 
+export const getMyProject = async () => {
+    try {
+        const token = localStorage.getItem('token');
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await apiClient.get(`/api/project/getmyprojects`, config);
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi lấy thông tin projects', error);
+        throw error;
+    }
+}
+
 export const getProject = async (projectID) => {
     try {
         const token = localStorage.getItem('token');

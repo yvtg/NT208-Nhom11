@@ -1,13 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import useUserProfile from "../hooks/useUserProfile";
 import PDFViewer from "../components/PDFViewer";
+import { getMyProject } from "../api/projectAPI";
+import JobSummary from "./JobSummary";
 
 const ProfileBar = () => {
     const { id } = useParams();
     const { userData, loading, error } = useUserProfile(id);
     const [activeTab, setActiveTab] = useState('introduce');
+    const [projects, setProjects] = useState([]);
+    const [projectsLoading, setProjectsLoading] = useState(false);
+    const [projectsError, setProjectsError] = useState(null);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            if (activeTab === 'jobPosted') {
+                setProjectsLoading(true);
+                try {
+                    const data = await getMyProject();
+                    setProjects(data);
+                    setProjectsError(null);
+                } catch (err) {
+                    setProjectsError('Không thể tải danh sách dự án');
+                    console.error(err);
+                } finally {
+                    setProjectsLoading(false);
+                }
+            }
+        };
+
+        fetchProjects();
+    }, [activeTab]);
 
     const renderTabContent = () => {
         if (loading) {
@@ -33,7 +58,7 @@ const ProfileBar = () => {
                 return (
                     <div className="mt-4 p-4 bg-white rounded-lg shadow">
                         <h3 className="text-lg font-semibold mb-2">Giới thiệu</h3>
-                        <p className="text-gray-600">{userData.about || 'Chưa có thông tin giới thiệu.'}</p>
+                        <p className="text-gray-600">{userData?.introduce || 'Chưa có thông tin giới thiệu.'}</p>
                     </div>
                 );
             case 'skill':
@@ -57,19 +82,34 @@ const ProfileBar = () => {
                     </div>
                 );
             case 'jobPosted':
+                if (projectsLoading) {
+                    return (
+                        <div className="mt-4 p-4 bg-white rounded-lg shadow animate-pulse">
+                            <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {[1, 2, 3].map((i) => (
+                                    <div key={i} className="h-48 bg-gray-200 rounded"></div>
+                                ))}
+                            </div>
+                        </div>
+                    );
+                }
+
+                if (projectsError) {
+                    return (
+                        <div className="mt-4 p-4 bg-red-50 rounded-lg shadow">
+                            <p className="text-red-600">{projectsError}</p>
+                        </div>
+                    );
+                }
+
                 return (
-                    <div className="mt-4 p-4 bg-white rounded-lg shadow">
-                        <h3 className="text-lg font-semibold mb-2">Dự án đã đăng</h3>
-                        {userData.postedJobs && userData.postedJobs.length > 0 ? (
-                            <div className="space-y-4">
-                                {userData.postedJobs.map((job) => (
-                                    <div key={job.id} className="border-b pb-4 last:border-b-0">
-                                        <h4 className="font-medium">{job.title}</h4>
-                                        <p className="text-sm text-gray-600">{job.description}</p>
-                                        <div className="text-sm text-gray-500 mt-1">
-                                            Posted: {new Date(job.createdAt).toLocaleDateString()}
-                                        </div>
-                                    </div>
+                    <div className="mt-4">
+                        <h3 className="text-lg font-semibold mb-4">Dự án đã đăng</h3>
+                        {projects.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {projects.map(project => (
+                                    <JobSummary job={project} />
                                 ))}
                             </div>
                         ) : (
@@ -101,9 +141,9 @@ const ProfileBar = () => {
             case 'cv':
                 return (
                     <div className="mt-4 p-4 bg-white rounded-lg shadow">
-                        {userData.cv ? (
+                        {userData.cv_url ? (
                             <div>
-                                <PDFViewer fileUrl={userData.cv} />
+                                <PDFViewer fileUrl={userData.cv_url} />
                                 <a href={userData.cv} target="_blank" rel="noopener noreferrer" className="...">
                                     📄 Xem hoặc tải PDF
                                 </a>

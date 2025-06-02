@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 const JobFilterTab = ({ onSelect }) => {
-    const [activeTab, setActiveTab] = useState("Best Match");
+    const [activeTab, setActiveTab] = useState("Phù hợp nhất");
 
-    const tabs = ["Best Match", "Newest", "Save"];
+    const tabs = ["Phù hợp nhất", "Mới nhất", "Đã lưu"];
 
     return (
         <div className="w-full bg-white rounded-xl shadow-sm p-1">
