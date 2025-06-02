@@ -1,5 +1,5 @@
 import express from 'express';
-import { login , signup } from '../controllers/authController.js';
+import { forgotPassword, login , resetPassword, signup } from '../controllers/authController.js';
 import { middlewareToken } from '../config/jwt.js'
 import passport from '../config/passport.js';
 import { createAccessToken } from '../config/jwt.js';
@@ -204,5 +204,27 @@ authRoutes.get('/github/callback',
         res.redirect(`http://localhost:3001/login?token=${token}`);
     }
 );
+
+authRoutes.post('/forgot-password', forgotPassword);
+
+/**
+ * @swagger
+ * /api/auth/reset-password/{token}:
+ *   get:
+ *     summary: Xác thực token reset password
+ *     tags: [Auth]
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Token hợp lệ
+ *       400:
+ *         description: Token không hợp lệ hoặc đã hết hạn
+ */
+authRoutes.post('/reset-password', resetPassword);
 
 export default authRoutes;

@@ -20,6 +20,8 @@ import { SocketProvider } from "./contexts/SocketContext";
 import MessageHandler from "./components/MessageHandler";
 import useAuth from './hooks/useAuth';
 import AdminDashboard from './pages/admin/adminDashboard';
+import ForgotPassword from "./pages/forgot_password";
+import ResetPassword from "./pages/reset_password";
 
 const AppContent = () => {
   const { user, role } = useAuth();
@@ -57,6 +59,8 @@ const AppContent = () => {
       <MessageHandler />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/forgot-password" element={!authenticated ? <ForgotPassword /> : <Navigate to="/dashboard" replace />} />
+        <Route path="/reset-password/:token" element={!authenticated ? <ResetPassword /> : <Navigate to="/dashboard" replace />} />
         <Route path="/login" element={!authenticated ? <Login setAuthenticated={setAuthenticated} /> : <Navigate to="/dashboard" replace />} />
         <Route path="/signup" element={!authenticated ? <SignUp /> : <Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={

@@ -133,7 +133,8 @@ const Login = ({ setAuthenticated }) => {
                     </form>
 
                     {/* "Forgot password?" */}
-                    <div className="text-right text-sm text-blue-400 mt-2 cursor-pointer hover:underline">
+                    <div className="text-right text-sm text-blue-400 mt-2 cursor-pointer hover:underline"
+                        onClick={() => navigate("/forgot-password")}>
                         Quên mật khẩu?
                     </div>
 

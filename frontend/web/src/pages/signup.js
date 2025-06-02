@@ -169,7 +169,9 @@ import OAuthButtons from "../components/OAuthButtons";
                 <div className="bg-slate-400 bg-opacity-75 z-40 w-screen h-screen fixed">
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                         <div className="bg-lightPrimary z-50 p-6 rounded-lg text-center border-2 border-white">
-                            <SuccessNoti message="Đăng ký thành công!" onClick={() => navigate("/login")} />
+                            <SuccessNoti title="Đăng ký thành công!" message="Bạn đã tạo tài khoản mới thành công. Bây giờ bạn có thể bắt đầu đăng tải hoặc tìm kiếm dự án" 
+                            onClick={() => navigate("/login")}
+                            btnMsg="Đăng nhập ngay" />
                         </div>
                     </div>
                 </div>
