@@ -4,12 +4,13 @@ import bcrypt from "bcrypt";
 // lấy thông tin toàn bộ người dùng có trong database
 const getUsers = async (req, res) => {
   try {
-    const result = await database.query('SELECT * FROM users');
-    console.log("Users:", result.rows);
+    const result = await database.query(
+      'SELECT userid, username, email, avatarurl, phonenumber FROM users'
+    );
     return res.status(200).json(result.rows);
   } catch (error) {
     console.error("Get user error:", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -50,7 +51,7 @@ const getUserById = async (req, res) => {
 const getCurrentUser = async (req, res) => {
   try {
     // Lấy userId từ token đã được xác thực trong middleware
-    const userId = req.userId;
+    const userId = req.user.userid;
 
     console.log(userId);
 
@@ -94,7 +95,7 @@ const getCurrentUser = async (req, res) => {
 // cập nhật profile
 const updateProfile = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.userid;
     const { avatarurl, username, email, phonenumber } = req.body;
 
     const updates = [];
@@ -168,7 +169,7 @@ const updateProfile = async (req, res) => {
 // cập nhật mật khẩu
 const updatePassword = async (req, res) => {
   try {
-    const userId = req.userId; // lấy userId từ token 
+    const userId = req.user.userid; // lấy userId từ token 
     const { oldPassword, newPassword, confirmPassword } = req.body;
 
     // Kiểm tra xem mật khẩu cũ có chính xác không
@@ -207,7 +208,7 @@ const updatePassword = async (req, res) => {
 // cập nhật cv
 const updateCV = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.userid;
     const { title, personal_website, cv_url, field_id, skills, introduce } = req.body;
 
     // kiểm tra null và giữ lại giá trị cũ
@@ -274,7 +275,39 @@ const updateCV = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    // Kiểm tra quyền admin trước khi xóa (bạn cần middleware hoặc kiểm tra role ở đây)
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Bạn không có quyền thực hiện hành động này" });
+    }
 
+    const { userid } = req.params;
+    const userIdNum = parseInt(userid);
 
+    if (isNaN(userIdNum)) {
+      return res.status(400).json({ message: "User ID không hợp lệ" });
+    }
 
-export { getUsers, getUserById, getCurrentUser, updateProfile, updatePassword, updateCV };
+    const result = await database.query("DELETE FROM users WHERE userid = $1", [userIdNum]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Không tìm thấy người dùng để xóa" });
+    }
+
+    return res.status(200).json({ message: "Xóa người dùng thành công" });
+  } catch (error) {
+    console.error("Lỗi xóa người dùng:", error);
+    return res.status(500).json({ error: "Lỗi server nội bộ" });
+  }
+};
+
+export {
+  getUsers,
+  getUserById,
+  getCurrentUser,
+  updateProfile,
+  updatePassword,
+  updateCV,
+  deleteUser,
+};

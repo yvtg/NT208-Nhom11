@@ -13,7 +13,7 @@ const projectRoutes = express.Router();
  *       200:
  *         description: Trả về danh sách dự án thành công
  */
-projectRoutes.get('/getproject', getProjects);
+projectRoutes.get('/getproject', middlewareToken,  getProjects);
 
 /**
  * @swagger
@@ -98,7 +98,7 @@ projectRoutes.put('/updateproject/:ProjectID', updateProject);
  *       404:
  *         description: Không tìm thấy dự án
  */
-projectRoutes.delete('/deleteproject/:ProjectID', deleteProject);
+projectRoutes.delete('/deleteproject/:ProjectID',middlewareToken, deleteProject);
 
 /**
  * @swagger

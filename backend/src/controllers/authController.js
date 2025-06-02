@@ -80,6 +80,7 @@ const login = async (req, res) => {
     const payload = {
       userid: user.userid,
       username: user.username,
+      role: user.role
     };
 
     const accessToken = createAccessToken(payload);

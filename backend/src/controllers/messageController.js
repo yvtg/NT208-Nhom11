@@ -21,7 +21,7 @@ const getMessages =  async (req, res) => {
 // Lấy những tin nhắn gần đây nhất của tất cả cuộc hội thoại (tên người gửi + tin nhắn)
 const getLastestMessages = async (req, res) => {
     try {
-        const userID = req.userId; // lấy id của user hiện tại
+        const userID = req.user.userid; // lấy id của user hiện tại
 
         const result = await database.query(
             `SELECT 
@@ -59,7 +59,7 @@ const getLastestMessages = async (req, res) => {
 // gửi tin nhắn
 const sendMessage = async (req, res) => {
     try {
-        const userID = req.userId; // Extracted from the token
+        const userID = req.user.userid; // Extracted from the token
         const { conversationID, content } = req.body;
 
         if (!conversationID || !content) {

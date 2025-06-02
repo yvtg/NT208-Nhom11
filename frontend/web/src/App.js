@@ -18,8 +18,11 @@ import ChatBot from "./components/ChatBot";
 import { ToastProvider } from "./contexts/ToastContext";
 import { SocketProvider } from "./contexts/SocketContext";
 import MessageHandler from "./components/MessageHandler";
+import useAuth from './hooks/useAuth';
+import AdminDashboard from './pages/admin/adminDashboard';
 
 const AppContent = () => {
+  const { user, role } = useAuth();
   const [authenticated, setAuthenticated] = useState(null);
   const location = useLocation();
   const isMessagePage = location.pathname.startsWith("/messages");
@@ -41,6 +44,7 @@ const AppContent = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user_data_cache");
     setAuthenticated(false);
   };
 
@@ -55,7 +59,17 @@ const AppContent = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={!authenticated ? <Login setAuthenticated={setAuthenticated} /> : <Navigate to="/dashboard" replace />} />
         <Route path="/signup" element={!authenticated ? <SignUp /> : <Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={authenticated ? <DashBoard onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
+        <Route path="/dashboard" element={
+          authenticated ? (
+            role === 'admin' ? (
+              <AdminDashboard onLogout={handleLogout} />
+            ) : (
+              <DashBoard onLogout={handleLogout} />
+            )
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        } />
         <Route path="/settings/change-password" element={authenticated ? <ChangePassword onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
         <Route path="/settings/change-profile" element={authenticated ? <ChangeProfile onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
         <Route path="/settings/change-cv" element={authenticated ? <ChangeCV onLogout={handleLogout} /> : <Navigate to="/login" replace />} />

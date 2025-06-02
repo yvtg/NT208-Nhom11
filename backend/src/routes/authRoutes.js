@@ -124,6 +124,7 @@ authRoutes.get('/google/callback',
         const payload = {
             userid: req.user.userid,
             username: req.user.username,
+            role: req.user.role
         };
         const token = createAccessToken(payload);
         res.redirect(`http://localhost:3001/login?token=${token}`);
@@ -160,6 +161,7 @@ authRoutes.get('/facebook/callback',
         const payload = {
             userid: req.user.userid,
             username: req.user.username,
+            role: req.user.role
         };
         const token = createAccessToken(payload);
         res.redirect(`http://localhost:3001/login?token=${token}`);
@@ -196,6 +198,7 @@ authRoutes.get('/github/callback',
         const payload = {
             userid: req.user.userid,
             username: req.user.username,
+            role: req.user.role
         };
         const token = createAccessToken(payload);
         res.redirect(`http://localhost:3001/login?token=${token}`);

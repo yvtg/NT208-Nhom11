@@ -21,7 +21,7 @@ const HirerInfo = ({ project, className }) => {
 
             <div className="flex flex-col items-center">
                 <img 
-                    src="/images/avatar.png" 
+                    src={project?.avatarurl ? project?.avatarurl : "/images/avatar.png"} 
                     alt="Hirer Avatar" 
                     className="w-16 h-16 rounded-full mb-2 cursor-pointer"
                     onClick={() => navigate(`/users/${project?.ownerid}`)}

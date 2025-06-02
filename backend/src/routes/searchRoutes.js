@@ -21,6 +21,6 @@ const searchRoutes = express.Router();
  *       200:
  *         description: Danh sách các project phù hợp
  */
-searchRoutes.get('/search', searchProject);
+searchRoutes.get('/search', middlewareToken, searchProject);
 
 export default searchRoutes;

@@ -57,3 +57,21 @@ export const getProject = async (projectID) => {
         throw error;
     }
 }
+
+export const deleteProject = async (projectID) => {
+    try {
+        const token = localStorage.getItem('token');
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        
+        const response = await apiClient.delete(`/api/project/deleteproject/${projectID}`);
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi xóa dự án:', error);
+        throw error;
+    }
+}

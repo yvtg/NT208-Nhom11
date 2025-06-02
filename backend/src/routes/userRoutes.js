@@ -1,15 +1,17 @@
 import express from "express";
-import { getUsers, getUserById, getCurrentUser, updateProfile, updatePassword, updateCV } from "../controllers/userController.js";
+import { getUsers, getUserById, getCurrentUser, updateProfile, updatePassword, updateCV, deleteUser } from "../controllers/userController.js";
 import { middlewareToken } from '../config/jwt.js';
+import adminMiddlewares from "../middlewares/adminMiddlewares.js";
 
 const userRoutes = express.Router();
 
+// admin
 /**
  * @swagger
  * /api/users:
  *   get:
  *     summary: Lấy thông tin toàn bộ người dùng có trong database
- *     tags: [Users]
+ *     tags: [Admin]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -18,7 +20,7 @@ const userRoutes = express.Router();
  *       401:
  *         description: Không có quyền truy cập
  */
-userRoutes.get("/users", middlewareToken, getUsers);
+userRoutes.get("/users", middlewareToken, adminMiddlewares, getUsers);
 
 /**
  * @swagger
@@ -163,5 +165,32 @@ userRoutes.put("/profile/password", middlewareToken, updatePassword);
  *         description: Không tìm thấy thông tin người dùng
  */
 userRoutes.put("/profile/cv", middlewareToken, updateCV);
+
+/**
+ * @swagger
+ * /api/users/{userid}:
+ *   delete:
+ *     summary: Xóa người dùng theo ID
+ *     tags: [Admin]
+ *     parameters:
+ *       - in: path
+ *         name: userid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID của người dùng cần xóa
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Xóa người dùng thành công
+ *       401:
+ *         description: Không có quyền truy cập
+ *       403:
+ *         description: Không có quyền admin
+ *       404:
+ *         description: Không tìm thấy người dùng
+ */
+userRoutes.delete("/users/:userid", middlewareToken, adminMiddlewares, deleteUser)
 
 export default userRoutes;

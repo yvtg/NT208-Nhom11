@@ -2,7 +2,6 @@ import database from "../config/database.js";
 
 const searchProject = async (req, res) => {
     try {
-        const userId = req.userId;
         const { q } = req.query || '';
 
         if (!q.trim()) {

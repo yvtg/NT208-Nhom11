@@ -3,7 +3,7 @@ import database from "../config/database.js";
 // lấy tất cả cuộc hội thoại + tin nhắn gần nhất của 1 người dùng
 const getConversationsWithLatestMessages = async (req, res) => {
   try {
-    const userID = req.userId;
+    const userID = req.user.userid;
 
     // Lấy tất cả cuộc hội thoại có liên quan đến user
     const conversations = await database.query(
@@ -84,7 +84,7 @@ const getConversationsWithLatestMessages = async (req, res) => {
 // tạo cuộc hội thoại mới
 const createConversation = async (req, res) => {
   try {
-    const userID = req.userId; // lấy user id từ token
+    const userID = req.user.userid; // lấy user id từ token
     const { participantID } = req.body;
 
     if (!participantID) {
@@ -148,7 +148,7 @@ const createConversation = async (req, res) => {
 const deleteConversation = async (req, res) => {
   try {
     const conversationID = req.params.conversationID;
-    const currentUserID = req.userId; 
+    const currentUserID = req.user.userid;
 
     if (!conversationID) {
       return res.status(400).json({ message: "Missing conversation ID" });

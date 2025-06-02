@@ -103,9 +103,9 @@ export const updateCV = async (cvData) => {
     try {
         const token = localStorage.getItem('token');
         const config = {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         };
         
         const response = await apiClient.put('/api/profile/cv', cvData, config);
@@ -115,3 +115,37 @@ export const updateCV = async (cvData) => {
         throw error;
     }
 };
+
+export const getAllUsers = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+
+        const response = await apiClient.get('/api/users');
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách người dùng:', error);
+        throw error;
+    }
+}
+
+export const deleteUser = async (userID) => {
+    try {
+        const token = localStorage.getItem('token');
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+        
+        const response = await apiClient.delete(`/api/users/${userID}`);
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi xóa người dùng:', error);
+        throw error;
+    }
+}

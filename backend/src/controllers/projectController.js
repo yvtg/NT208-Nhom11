@@ -13,7 +13,8 @@ const getProjects = async (req, res) => {
                                           field_id,
                                           skills
                                           FROM 
-                                          projects;
+                                          projects
+                                        ORDER BY uploadeddate DESC;
                                       `);
     res.status(200).json(result.rows);
   } catch (error) {
@@ -24,10 +25,33 @@ const getProjects = async (req, res) => {
 
 const getMyProjects = async (req, res) => {
   try {
-    const ownerId = req.userId; // Lấy từ JWT đã xác thực qua middleware
+    const ownerId = req.user.userid; // Lấy từ JWT đã xác thực qua middleware
 
     const result = await database.query(
-      'SELECT * FROM projects WHERE ownerid = $1 ORDER BY uploadeddate DESC',
+      `SELECT 
+        p.projectid,
+        p.projectname,
+        p.uploadeddate,
+        p.expireddate,
+        p.budget,
+        p.ownerid,
+        p.description,
+        p.workingtype,
+        p.workingplace,
+        p.status,
+        p.averagerating,
+        p.field_id,
+        p.skills,
+        u.username, 
+        u.email,
+        u.phonenumber,
+        u.avatarurl,
+        u.userid
+      FROM projects p
+      JOIN users u ON p.ownerid = u.userid
+      WHERE p.ownerid = $1
+      ORDER BY p.uploadeddate DESC
+      `,
       [ownerId]
     );
 
@@ -42,7 +66,19 @@ const getProjectById = async (req, res) => {
   const { ProjectID } = req.params;
   try {
     const result = await database.query(
-      ` SELECT p.*, 
+      ` SELECT p.projectid,
+        p.projectname,
+        p.uploadeddate,
+        p.expireddate,
+        p.budget,
+        p.ownerid,
+        p.description,
+        p.workingtype,
+        p.workingplace,
+        p.status,
+        p.averagerating,
+        p.field_id,
+        p.skills,
         u.username, 
         u.email,
         u.phonenumber,
@@ -77,7 +113,7 @@ const createProject = async (req, res) => {
       description,
     } = req.body;
 
-    const OwnerID = req.userId; // Lấy từ token đã xác thực
+    const OwnerID = req.user.userid; // Lấy từ token đã xác thực
 
     const result = await database.query(
       `INSERT INTO projects (
@@ -140,14 +176,36 @@ const updateProject = async (req, res) => {
 
 const deleteProject = async (req, res) => {
   const { ProjectID } = req.params;
+  const userId = req.user.userid; 
+  const role = req.user.role;
+
   try {
-    await database.query('DELETE FROM projects WHERE projectid = $1', [parseInt(ProjectID)]);
+    // Lấy thông tin project
+    const project = await database.query(
+      'SELECT ownerid FROM projects WHERE projectid = $1',
+      [parseInt(ProjectID)]
+    );
+
+    if (project.rowCount === 0) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    const ownerId = project.rows[0].ownerid;
+
+    // Chỉ cho phép xóa nếu là owner hoặc admin
+    if (ownerId !== userId && role !== 'admin') {
+      return res.status(403).json({ message: "Unauthorized to delete this project" });
+    }
+    // Xóa project
+    await database.query('DELETE FROM projects WHERE projectid = $1', [ProjectID]);
+
     res.status(200).json({ message: "Project deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error deleting project" });
   }
 };
+
 
 const getFields = async (req, res) => {
   try {

@@ -143,7 +143,7 @@ const ProfileBar = () => {
 
     const displayUsername = userData?.username || '';
     const displayEmail = userData?.email || '';
-    const displayAvatar = userData?.avatar || '/images/avatar.png';
+    const displayAvatar = userData?.avatarurl || '/images/avatar.png';
     const displayRating = userData?.rating || 0;
 
     return (

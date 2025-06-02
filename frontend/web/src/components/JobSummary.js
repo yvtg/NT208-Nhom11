@@ -7,7 +7,7 @@ const JobSummary = ({ job, className }) => {
     const navigate = useNavigate();
     return (
         <div
-        className={`cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-white shadow-md rounded-2xl p-5 w-96 relative ${className}`}
+        className={`cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-white shadow-md rounded-2xl p-5 w-full relative ${className}`}
         onClick={() => navigate(`/jobs/${job.projectid}`)}
         >
             <h3 className="text-xl font-semibold text-gray-800 truncate">{job?.projectname}</h3>
