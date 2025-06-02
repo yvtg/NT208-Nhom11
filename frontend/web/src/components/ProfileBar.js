@@ -4,14 +4,10 @@ import { useParams } from "react-router-dom";
 import useUserProfile from "../hooks/useUserProfile";
 import PDFViewer from "../components/PDFViewer";
 
-
-
-const ProfileBar = ({ username, email, avatar, rating = "0" }) => {
-    const { userId } = useParams();
+const ProfileBar = () => {
+    const { id } = useParams();
+    const { userData, loading, error } = useUserProfile(id);
     const [activeTab, setActiveTab] = useState('introduce');
-    const { userData, loading, error, updateUserSection } = useUserProfile(userId);
-    
-    console.log("User Data:", JSON.stringify(userData, null, 2));
 
     const renderTabContent = () => {
         if (loading) {
@@ -37,7 +33,7 @@ const ProfileBar = ({ username, email, avatar, rating = "0" }) => {
                 return (
                     <div className="mt-4 p-4 bg-white rounded-lg shadow">
                         <h3 className="text-lg font-semibold mb-2">Giới thiệu</h3>
-                        <p className="text-gray-600">{userData.introduce || 'No introduction available.'}</p>
+                        <p className="text-gray-600">{userData.about || 'Chưa có thông tin giới thiệu.'}</p>
                     </div>
                 );
             case 'skill':
@@ -105,11 +101,10 @@ const ProfileBar = ({ username, email, avatar, rating = "0" }) => {
             case 'cv':
                 return (
                     <div className="mt-4 p-4 bg-white rounded-lg shadow">
-                        <h3 className="text-lg font-semibold mb-2">CV</h3>
-                        {userData.cv_url ? (
+                        {userData.cv ? (
                             <div>
-                                <PDFViewer fileUrl={userData.cv_url} />
-                                <a href={userData.cv_url} target="_blank" rel="noopener noreferrer" className="...">
+                                <PDFViewer fileUrl={userData.cv} />
+                                <a href={userData.cv} target="_blank" rel="noopener noreferrer" className="...">
                                     📄 Xem hoặc tải PDF
                                 </a>
                             </div>
@@ -145,10 +140,11 @@ const ProfileBar = ({ username, email, avatar, rating = "0" }) => {
             </div>
         );
     }
-    const displayUsername = username || userData?.username;
-    const displayEmail = email || userData?.email;
-    const displayAvatar = avatar || userData?.avatarurl || '/images/avatar.png';
-    const displayRating = rating || userData?.rating || 0;
+
+    const displayUsername = userData?.username || '';
+    const displayEmail = userData?.email || '';
+    const displayAvatar = userData?.avatar || '/images/avatar.png';
+    const displayRating = userData?.rating || 0;
 
     return (
         <div className="flex flex-col gap-8 p-4 md:p-6 lg:p-8">

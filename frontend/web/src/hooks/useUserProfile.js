@@ -1,68 +1,70 @@
-import { useState, useEffect } from 'react';
-import { getCurrentUser } from '../api/userAPI';
+import { useState, useEffect, useRef } from 'react';
+import { getUserById } from '../api/userAPI';
 
-const useUserProfile = (userId) => {
+const initialUserData = {
+    username: '',
+    title: '',
+    email: '',
+    avatar: '',
+    rating: 0,
+    isOnline: false,
+    about: '',
+    skills: [],
+    postedJobs: [],
+    completedJobs: [],
+    cv: null
+};
+
+const useUserProfile = (id) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [userData, setUserData] = useState({
-        username: '',
-        title: '',
-        email: '',
-        avatar: '',
-        rating: 0,
-        isOnline: false,
-        about: '',
-        skills: [],
-        postedJobs: [],
-        completedJobs: [],
-        cv: null
-    });
+    const [userData, setUserData] = useState(initialUserData);
+    const isMounted = useRef(true);
 
     useEffect(() => {
+        isMounted.current = true;
+
         const fetchUserData = async () => {
+            if (!id) {
+                setUserData(initialUserData);
+                setLoading(false);
+                setError(null);
+                return;
+            }
+
             try {
                 setLoading(true);
-                console.log("Fetching user data...");
-                const response = await getCurrentUser();
-                console.log("API Response:", response);
-                
+                setError(null);
+                const response = await getUserById(id);
+
                 if (!response) {
-                    throw new Error('No data received from API');
+                    throw new Error('Không nhận được dữ liệu từ API');
                 }
 
-                setUserData(response);
-                setError(null);
+                if (isMounted.current) {
+                    setUserData(response);
+                    setError(null);
+                }
             } catch (err) {
-                console.error('Error fetching user data:', err);
-                setError(err.message || 'Failed to load user data');
-                setUserData({
-                    username: '',
-                    title: '',
-                    email: '',
-                    avatar: '',
-                    rating: 0,
-                    isOnline: false,
-                    about: '',
-                    skills: [],
-                    postedJobs: [],
-                    completedJobs: [],
-                    cv: null
-                });
+                if (isMounted.current) {
+                    setError(err.message || 'Không thể tải thông tin người dùng');
+                    setUserData(initialUserData);
+                }
             } finally {
-                setLoading(false);
+                if (isMounted.current) {
+                    setLoading(false);
+                }
             }
         };
 
         fetchUserData();
-    }, []); 
 
-    console.log("Current user data:", JSON.stringify(userData, null, 2));
+        return () => {
+            isMounted.current = false;
+        };
+    }, [id]);
 
-    return {
-        userData,
-        loading,
-        error
-    };
+    return { userData, loading, error };
 };
 
-export default useUserProfile; 
+export default useUserProfile;

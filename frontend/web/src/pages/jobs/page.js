@@ -79,10 +79,10 @@ const JobPage = ({ onLogout }) => {
     console.log(project)
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="h-screen bg-gray-100">
             <DefaultNavbar onLogout={onLogout} />
 
-            <div className="flex flex-col lg:flex-row gap-8 max-w-[90%] mx-auto mt-20 ">
+            <div className="flex flex-col lg:flex-row gap-8 max-w-[90%] mx-auto pt-24">
                 <div className="w-full lg:w-[90%]">
                     {loading ? (
                         <div className="flex justify-center items-center h-40 ">

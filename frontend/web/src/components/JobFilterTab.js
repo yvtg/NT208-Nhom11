@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const JobFilterTab = ({ onSelect }) => {
-    const [activeTab, setActiveTab] = useState("Phù hợp nhất");
+    const [activeTab, setActiveTab] = useState("Best Match");
 
     const tabs = ["Best Match", "Newest", "Save"];
 

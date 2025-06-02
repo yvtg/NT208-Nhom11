@@ -2,7 +2,6 @@ import { FaPhoneAlt, FaEnvelope, FaLinkedin } from "react-icons/fa";
 import PrimaryButton from "./PrimaryButton";
 import useCreateConversation from "../hooks/useCreateConversation";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../components/Spinner";
 
 const HirerInfo = ({ project, className }) => {
     const { createConversation, createLoading, createError } = useCreateConversation();
@@ -24,7 +23,8 @@ const HirerInfo = ({ project, className }) => {
                 <img 
                     src="/images/avatar.png" 
                     alt="Hirer Avatar" 
-                    className="w-16 h-16 rounded-full mb-2"
+                    className="w-16 h-16 rounded-full mb-2 cursor-pointer"
+                    onClick={() => navigate(`/users/${project?.ownerid}`)}
                 />
                 <p className="font-semibold text-lg">{project?.username}</p>
                 <p className="text-sm text-gray-500">{project?.email}</p>

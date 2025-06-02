@@ -18,7 +18,24 @@ const getUserById = async (req, res) => {
   try 
   {
     const { id } = req.params;
-    const result = await database.query('SELECT * FROM users WHERE userid = $1', [parseInt(id)]);
+    const result = await database.query(
+      `SELECT 
+        u.userid,
+        u.username,
+        u.email,
+        u.avatarurl,
+        u.phonenumber,
+        up.title,
+        up.introduce,
+        up.cv_url,
+        up.skills,
+        f.field_name
+      FROM users u
+      LEFT JOIN user_profile up ON u.userid = up.userid
+      LEFT JOIN fields f ON up.field_id = f.field_id
+      WHERE u.userid = $1`, 
+    [parseInt(id)]);
+    
     const user = result.rows[0];
     return res.status(200).json(user || {});
   } 
