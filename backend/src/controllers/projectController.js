@@ -1,4 +1,45 @@
 import database from "../config/database.js";
+import multer from 'multer';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Cấu hình Multer để lưu trữ file CV
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // Đường dẫn tới thư mục lưu CV. Cần đảm bảo thư mục này tồn tại.
+        // Ví dụ: backend/uploads/cvs
+        cb(null, path.join(__dirname, '../uploads/cvs')); 
+    },
+    filename: function (req, file, cb) {
+        // Đặt tên file: projectID-userID-timestamp.ext
+        const projectId = req.params.projectID;
+        const userId = req.user.userid; // Lấy từ middlewareToken
+        const ext = path.extname(file.originalname);
+        cb(null, `${projectId}-${userId}-${Date.now()}${ext}`);
+    }
+});
+
+// Filter file để chỉ chấp nhận pdf, doc, docx
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Chỉ cho phép tải lên file PDF, DOC, và DOCX!'), false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5 // Giới hạn kích thước file 5MB
+    },
+    fileFilter: fileFilter
+});
 
 const getProjects = async (req, res) => {
   try {
@@ -228,4 +269,57 @@ const getProjectOwner = async (req, res) => {
   }
 }
 
-export { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields };
+// Controller function để nộp hồ sơ ứng tuyển
+const applyToProject = async (req, res) => {
+    try {
+        // req.user được set bởi middlewareToken
+        const userId = req.user.userid;
+        const projectId = req.params.projectID;
+
+        // req.file chứa thông tin file đã upload
+        // req.body chứa các trường text khác (fullName, email, phone, introduction)
+        const { fullName, email, phone, introduction } = req.body;
+        const cvPath = req.file ? `/uploads/cvs/${req.file.filename}` : null; // Lưu đường dẫn tương đối của file
+
+        if (!cvPath) {
+            return res.status(400).json({ message: 'Không tìm thấy file CV đã tải lên.' });
+        }
+
+        // Lưu thông tin ứng tuyển vào database
+        // Bạn cần có một bảng trong DB để lưu thông tin ứng tuyển, ví dụ: applications
+        /*
+        CREATE TABLE applications (
+            application_id SERIAL PRIMARY KEY,
+            project_id INT REFERENCES projects(projectid),
+            user_id INT REFERENCES users(userid),
+            full_name VARCHAR(255),
+            email VARCHAR(255),
+            phone VARCHAR(50),
+            introduction TEXT,
+            cv_path VARCHAR(255),
+            applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        */
+        const result = await database.query(
+            `INSERT INTO applications (
+                project_id, user_id, full_name, email, phone, introduction, cv_path
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING application_id`,
+            [projectId, userId, fullName, email, phone, introduction, cvPath]
+        );
+
+        res.status(201).json({ message: 'Hồ sơ ứng tuyển đã được nộp thành công!', applicationId: result.rows[0].application_id });
+
+    } catch (error) {
+        console.error('Lỗi khi nộp hồ sơ:', error);
+        // Xóa file đã upload nếu có lỗi xảy ra sau khi upload
+        if (req.file) {
+            const fs = require('fs');
+            fs.unlink(req.file.path, (err) => {
+                if (err) console.error('Lỗi khi xóa file tạm:', err);
+            });
+        }
+        res.status(500).json({ message: 'Đã xảy ra lỗi khi nộp hồ sơ.' });
+    }
+};
+
+export { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields, applyToProject, upload };

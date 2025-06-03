@@ -1,6 +1,5 @@
 import { timeFromNow, formatTime } from '../utils/dayjs';
 import { useNavigate } from 'react-router-dom';
-import { formatCurrency } from '../utils/formatCurrency';
 
 
 const JobSummary = ({ job, className }) => {
@@ -29,8 +28,8 @@ const JobSummary = ({ job, className }) => {
             </div>
 
             <div className="flex justify-between items-center mt-5">
-                <p className="text-gray-400 text-xs">{timeFromNow(job?.uploadeddate)}</p>
-                <p className="text-green-600 font-bold text-sm">{formatCurrency(job?.budget)}</p>
+                <p className="text-gray-400 text-xs">{job?.formattedUploadDate}</p>
+                <p className="text-green-600 font-bold text-sm">{job?.formattedBudget}</p>
             </div>
         </div>
     );
