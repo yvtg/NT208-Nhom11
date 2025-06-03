@@ -19,7 +19,7 @@ const IntroPage = ({ onLogout }) => {
     <div className="min-h-screen bg-gray-100">
       <DefaultNavbar onLogout={onLogout} />
 
-      <div className="container mx-auto px-4 sm:px-6 py-8 mt-14">
+      <div className="container mx-auto px-4 sm:px-6 py-8 pt-14">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3 bg-white rounded-2xl shadow-lg p-4 sm:p-6">
             <div className="sticky top-24">
@@ -32,6 +32,7 @@ const IntroPage = ({ onLogout }) => {
               <UserContactBox
                 phone={userData?.phonenumber || userData?.phone}
                 email={userData?.email}
+                id={id}
               />
             </div>
           </div>

@@ -46,7 +46,7 @@ export const getFields = async () => {
     }
 }
 
-export const getMyProject = async () => {
+export const getMyProject = async (ownerid) => {
     try {
         const token = localStorage.getItem('token');
 
@@ -56,7 +56,7 @@ export const getMyProject = async () => {
             }
         }
 
-        const response = await apiClient.get(`/api/project/getmyprojects`, config);
+        const response = await apiClient.get(`/api/project/getmyprojects/${ownerid}`, config);
         return response.data;
     } catch (error) {
         console.error('Lỗi khi lấy thông tin projects', error);

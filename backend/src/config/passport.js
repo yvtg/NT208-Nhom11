@@ -4,6 +4,8 @@ import { Strategy as FacebookStrategy } from 'passport-facebook';
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import database from "../config/database.js";
 
+const CALLBACK_URL = process.env.CALLBACK_URL;
+
 passport.serializeUser((user, done) => {
     done(null, user.userid);
 });
@@ -24,7 +26,7 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/api/auth/google/callback"
+    callbackURL: `${CALLBACK_URL}/api/auth/google/callback`
 },
 async (accessToken, refreshToken, profile, done) => {
     try {
@@ -62,7 +64,7 @@ async (accessToken, refreshToken, profile, done) => {
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3000/api/auth/facebook/callback",
+    callbackURL: `${CALLBACK_URL}/api/auth/facebook/callback`,
     profileFields: ['id', 'displayName', 'email']
 },
 async (accessToken, refreshToken, profile, done) => {
@@ -101,7 +103,7 @@ async (accessToken, refreshToken, profile, done) => {
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/api/auth/github/callback",
+    callbackURL: `${CALLBACK_URL}/api/auth/github/callback`,
     scope: ['user:email']
 },
 async (accessToken, refreshToken, profile, done) => {

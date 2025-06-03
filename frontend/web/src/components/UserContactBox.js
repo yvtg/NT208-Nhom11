@@ -1,8 +1,24 @@
 import React from "react";
 import { FiPhone, FiMail } from "react-icons/fi";
 import PrimaryButton from "./PrimaryButton";
+import useCreateConversation from "../hooks/useCreateConversation";
+import { useNavigate } from "react-router-dom";
 
-const UserContactBox = ({ phone, email }) => {
+const UserContactBox = ({ phone, email, id }) => {
+    const { createConversation, createLoading, createError } = useCreateConversation();
+    const navigate = useNavigate();
+    // tạo hội thoại mới
+    const handleCreate = async () => {
+        const data = await createConversation(id);
+            if (data) {
+                console.log('Tạo thành công:', data);
+                const conversationId = data?.ConversationID || data?.conversationid;
+                if (conversationId) {
+                    navigate(`/messages/${conversationId}`);
+                }
+            }
+    };
+
   return (
     <div className="w-full bg-white rounded-2xl shadow-lg border border-gray-100">
       {/* Header */}
@@ -14,8 +30,9 @@ const UserContactBox = ({ phone, email }) => {
       {/* Content */}
       <div className="p-6">
         {/* Button */}
-        <PrimaryButton 
+      <PrimaryButton 
           className="w-full font-medium text-base py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+          onClick={handleCreate} disabled={createLoading}
         >
           LIÊN HỆ NGAY
         </PrimaryButton>

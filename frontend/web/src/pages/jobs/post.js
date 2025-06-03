@@ -6,6 +6,8 @@ import Select from "../../components/Select";
 import { useState, useEffect } from "react";
 import { formatCurrency, getRawNumber } from "../../utils/formatCurrency";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+
 const PostJob = ({onLogout}) => {
   const [fieldOptions, setFieldOptions] = useState([]);
   const [field, setField] = useState(""); // Đây sẽ là field_id
@@ -36,7 +38,7 @@ const PostJob = ({onLogout}) => {
   useEffect(() => {
     const fetchfields = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/project/getfields");
+        const res = await fetch(`${BACKEND_URL}/api/project/getfields`);
         const data = await res.json();
         const options = data.map((field) => ({
           value: field.field_id,
@@ -94,7 +96,7 @@ const PostJob = ({onLogout}) => {
       const expiredDateObj = new Date(expiredDate);
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:3000/api/project/createproject", {
+      const response = await fetch(`${BACKEND_URL}/api/project/createproject`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

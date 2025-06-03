@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+
 // xử lý update project
 const useUpdateProject = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -11,7 +13,7 @@ const useUpdateProject = () => {
             setError(null);
 
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:3000/api/project/updateproject/${projectId}`, {
+            const response = await fetch(`${BACKEND_URL}/project/updateproject/${projectId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

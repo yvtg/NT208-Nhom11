@@ -1,12 +1,10 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:3000/api/chat';
+import apiClient from "./apiClient";
 
 // Lấy danh sách cuộc hội thoại
 export const getConversations = async () => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/conversations`, {
+        const response = await apiClient.get(`/api/chat/conversations`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -21,7 +19,7 @@ export const getConversations = async () => {
 export const getMessages = async (conversationID) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/messages/${conversationID}`, {
+        const response = await apiClient.get(`/api/chat/messages/${conversationID}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -36,7 +34,7 @@ export const getMessages = async (conversationID) => {
 export const sendMessage = async (conversationID, content) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.post(`${API_URL}/messages`, {
+        const response = await apiClient.post(`/api/chat/messages`, {
             conversationID,
             content
         }, {
@@ -55,7 +53,7 @@ export const sendMessage = async (conversationID, content) => {
 export const createConversation = async (participantID) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.post(`${API_URL}/conversations`, {
+        const response = await apiClient.post(`/api/chat/conversations`, {
             participantID
         }, {
             headers: {
@@ -73,7 +71,7 @@ export const createConversation = async (participantID) => {
 export const deleteConversation = async (conversationID) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.delete(`${API_URL}/conversations/${conversationID}`, {
+        const response = await apiClient.delete(`/api/chat/conversations/${conversationID}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

@@ -23,7 +23,7 @@ dotenv.config();
 const app = express();
 
 const SERVER_PORT = process.env.SERVER_PORT || 3000;
-const FRONTEND_PORT = process.env.FRONTEND_PORT || 3001;
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3001";
 const SOCKET_PORT = process.env.SOCKET_PORT || 3002; 
 
 
@@ -42,7 +42,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: `http://localhost:${FRONTEND_PORT}`, 
+    origin: `${FRONTEND_URL}`, 
     credentials: true
     }));
 app.use(cookieParser());

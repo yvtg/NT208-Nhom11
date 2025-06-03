@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 dotenv.config();
 
-const FRONTEND_PORT=process.env.FRONTEND_PORT;
+const FRONTEND_URL=process.env.FRONTEND_URL;
 const SECRET_KEY=process.env.SECRET_KEY;
 
 const setupSocket = (server) => {
@@ -13,7 +13,7 @@ const setupSocket = (server) => {
     // tạo socket server
     const io = new Server(server, {
         cors: {
-            origin: `http://localhost:${FRONTEND_PORT}`, 
+            origin: `${FRONTEND_URL}`, 
             methods: ["GET", "POST"],
             credentials: true,
         },

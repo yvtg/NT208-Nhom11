@@ -3,6 +3,7 @@ import { io } from 'socket.io-client';
 import useAuth from '../hooks/useAuth';
 
 const SocketContext = createContext(null);
+const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || "http://localhost:3002";
 
 export const useSocket = () => {
     const context = useContext(SocketContext);
@@ -22,7 +23,7 @@ export const SocketProvider = ({ children }) => {
         if (socketRef.current || !userID || isLoading) return;
 
         // Kết nối tới server socket.io
-        socketRef.current = io("http://localhost:3002", {
+        socketRef.current = io(SOCKET_URL, {
             transports: ["websocket"],
             auth: {
                 token: localStorage.getItem("token")

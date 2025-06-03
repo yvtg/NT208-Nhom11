@@ -66,7 +66,8 @@ const getProjects = async (req, res) => {
 
 const getMyProjects = async (req, res) => {
   try {
-    const ownerId = req.user.userid; // Lấy từ JWT đã xác thực qua middleware
+    const { ownerId } = req.params;
+    console.log("owner ", ownerId)
 
     const result = await database.query(
       `SELECT 

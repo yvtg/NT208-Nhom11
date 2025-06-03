@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import useAuth from '../hooks/useAuth';
 
+const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || "http://localhost:3002";
+
 const useSocket = () => {
     const socket = useRef(null);
     const { userID, isLoading } = useAuth();
@@ -10,7 +12,7 @@ const useSocket = () => {
         if (!userID || isLoading) return; // Chưa có thông tin user thì chưa kết nối
         
         // Kết nối tới server socket.io
-        socket.current = io("http://localhost:3002", {
+        socket.current = io(SOCKET_URL, {
             transports: ["websocket"],
             auth: {
                 token: localStorage.getItem("token") // hoặc từ context

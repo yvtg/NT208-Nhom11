@@ -14,12 +14,14 @@ const ProfileBar = () => {
     const [projectsLoading, setProjectsLoading] = useState(false);
     const [projectsError, setProjectsError] = useState(null);
 
+    console.log(projects)
+
     useEffect(() => {
         const fetchProjects = async () => {
             if (activeTab === 'jobPosted') {
                 setProjectsLoading(true);
                 try {
-                    const data = await getMyProject();
+                    const data = await getMyProject(id);
                     setProjects(data);
                     setProjectsError(null);
                 } catch (err) {
