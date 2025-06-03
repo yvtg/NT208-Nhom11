@@ -42,9 +42,12 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Middleware (được di chuyển xuống dưới các route sử dụng Multer)
 // app.use(express.json()); // <-- Moved below routes
 app.use(cors({
-    origin: `${FRONTEND_URL}`, 
+    origin: (origin, callback) => {
+        callback(null, true); // Cho phép tất cả origins
+    },
     credentials: true
-    }));
+}));
+
 app.use(cookieParser());
 app.use(session({
     secret: process.env.JWT_SECRET,
