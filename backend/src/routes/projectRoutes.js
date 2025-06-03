@@ -77,7 +77,7 @@ projectRoutes.post('/createproject', middlewareToken, createProject);
  *       404:
  *         description: Không tìm thấy dự án
  */
-projectRoutes.put('/updateproject/:ProjectID', updateProject);
+projectRoutes.put('/updateproject/:ProjectID', middlewareToken,  updateProject);
 
 /**
  * @swagger

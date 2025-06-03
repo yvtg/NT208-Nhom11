@@ -15,16 +15,16 @@ const JobSummary = ({ job, className }) => {
             <p className="text-gray-600 text-sm mt-2 line-clamp-2">{job?.description}</p>
 
             <div className="flex gap-2 mt-4 flex-wrap">
-                {job?.tags?.slice(0, 3).map((tag, index) => (
+                {job?.skills?.slice(0, 3).map((tag, index) => (
                 <span
                     key={index}
-                    className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full font-medium"
+                    className="bg-lightPrimary text-darkPrimary text-xs px-3 py-1 rounded-full font-medium"
                 >
                     {tag}
                 </span>
                 ))}
-                {job?.tags?.length > 3 && (
-                <span className="text-gray-400 text-xs">+{job.tags.length - 3} tags</span>
+                {job?.skills?.length > 3 && (
+                <span className="text-gray-400 text-xs">+{job.skills.length - 3} tags</span>
                 )}
             </div>
 

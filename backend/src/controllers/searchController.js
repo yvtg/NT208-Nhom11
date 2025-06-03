@@ -10,7 +10,7 @@ const searchProject = async (req, res) => {
 
         // truy van search
         const queryText = `
-            SELECT projectid, projectname, uploadeddate, expireddate, budget, ownerid, description, workingtype, workingplace, status, averagerating, field_id
+            SELECT projectid, projectname, uploadeddate, expireddate, budget, ownerid, description, workingtype, workingplace, status, averagerating, field_id, skills
             FROM (
                 SELECT *,
                     ts_rank_cd(document_with_weights, plainto_tsquery('simple', unaccent($1))) AS rank,

@@ -15,6 +15,8 @@ import database from "./src/config/database.js";
 import rootRoutes from "./src/routes/rootRoutes.js";
 import chatbotRoutes from "./src/routes/chatbotRoute.js";
 
+import { updateExpiredProjects } from './src/config/cronJob.js'
+
 dotenv.config();
 
 const app = express();

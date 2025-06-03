@@ -146,22 +146,23 @@ const createProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
     const { ProjectID } = req.params;
+    const userid = req.user.userid;
     try {
         const {
-        projectName,
-        field,
-        expiredDate,
-        workingType,
-        budget,
-        description,
+          projectName,
+          expiredDate,
+          workingType,
+          budget,
+          description,
+          skills,
         } = req.body;
         
         await database.query(
           `UPDATE projects 
-          SET projectName = $1, field_id = $2, expiredDate = $3, 
-              workingType = $4, budget = $5, description = $6
+          SET projectName = $1, expiredDate = $2, 
+              workingType = $3, budget = $4, description = $5, skills = $6
           WHERE projectid = $7`,
-          [projectName, field, expiredDate, workingType, budget, description, parseInt(ProjectID)]
+          [projectName, expiredDate, workingType, budget, description, skills,  parseInt(ProjectID)]
         );
         
         const result = await database.query('SELECT * FROM projects WHERE projectid = $1', [parseInt(ProjectID)]);
