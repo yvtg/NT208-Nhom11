@@ -14,6 +14,7 @@ import database from "./src/config/database.js";
 
 import rootRoutes from "./src/routes/rootRoutes.js";
 import chatbotRoutes from "./src/routes/chatbotRoute.js";
+import projectRoutes from "./src/routes/projectRoutes.js";
 
 import { updateExpiredProjects } from './src/config/cronJob.js'
 
@@ -56,6 +57,7 @@ app.use(passport.session());
 // Routes
 app.use("/api", rootRoutes);
 app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/project", projectRoutes);
 
 // Kiểm tra kết nối database
 database.connect()

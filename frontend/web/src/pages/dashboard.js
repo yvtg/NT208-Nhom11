@@ -105,8 +105,17 @@ const DashBoard = ({ onLogout }) => {
             ).length;
             return { ...p, matchScore: matchCount };
           })
-          .filter(p => p.matchScore > 0)
-          .sort((a, b) => b.matchScore - a.matchScore);
+          .sort((a, b) => {
+            if (a.matchScore > 0 && b.matchScore > 0) {
+              return b.matchScore - a.matchScore;
+            } else if (a.matchScore > 0) {
+              return -1;
+            } else if (b.matchScore > 0) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
       case "Mới nhất":
         return projects
           .filter(project => project.status === "open")

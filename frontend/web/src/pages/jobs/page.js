@@ -10,12 +10,18 @@ import JobSummary from "../../components/JobSummary";
 import { getProject, getFields } from "../../api/projectAPI.js";
 import { useParams } from "react-router-dom";
 
+
+import { getCurrentUser } from "../../api/userAPI"; 
+import ApplyModal from "../../components/ApplyModal";
+
 const JobPage = ({ onLogout }) => {
     const { id } = useParams();
     const [project, setProject] = useState(null);
     const [fields, setFields] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isApplyModalOpen, setIsApplyModalOpen] = useState(false); // chế độ ứng tuyển
+    const [userData, setUserData] = useState(null); // ché độ user
 
     // Hàm format ngày tháng
     const formatDate = (dateString) => {
@@ -57,13 +63,18 @@ const JobPage = ({ onLogout }) => {
                 setError(null);
 
                 // Gọi API trực tiếp
-                const response = await getProject(id);
-                const fieldsData = await getFields();
+                const [projectResponse, fieldsData, userResponse] = await Promise.all([
+                    getProject(id),
+                    getFields(),
+                    getCurrentUser()
+                ]);
                 
-                console.log(response)
+                console.log('Project Response:', projectResponse)
+                console.log('User Response:', userResponse)
 
-                setProject(processProjectData(response));
+                setProject(processProjectData(projectResponse));
                 setFields(fieldsData || []);
+                setUserData(userResponse); // Set user data
 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -77,6 +88,16 @@ const JobPage = ({ onLogout }) => {
     }, [id]);
 
     console.log(project)
+
+    // Handlers for modal
+    const handleOpenApplyModal = () => {
+        setIsApplyModalOpen(true);
+    };
+
+    const handleCloseApplyModal = () => {
+        setIsApplyModalOpen(false);
+    };
+
 
     return (
         <div className="h-screen bg-gray-100">
@@ -98,7 +119,7 @@ const JobPage = ({ onLogout }) => {
                 </div>
 
                 <div className="lg:w-[30%] flex flex-col justify-start space-y-4">
-                    <PrimaryButton className="w-full h-[50px] font-bold text-2xl rounded-full">
+                    <PrimaryButton className="w-full h-[50px] font-bold text-2xl rounded-full" onClick={handleOpenApplyModal} disabled={!userData}> {/* Disable if user data not loaded */}
                         Ứng tuyển
                     </PrimaryButton>
                     <div className="w-full">
@@ -110,6 +131,15 @@ const JobPage = ({ onLogout }) => {
             </div>
 
             <ChatIcon />
+
+            {/* Render ApplyModal */}
+            {isApplyModalOpen && (
+                <ApplyModal
+                    project={project}
+                    onClose={handleCloseApplyModal}
+                    userData={userData} // truyền dữ liệu user
+                />
+            )}
         </div>
     );
 };

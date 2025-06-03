@@ -1,5 +1,5 @@
 import express from 'express';
-import { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields } from '../controllers/projectController.js';
+import { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields, applyToProject, upload } from '../controllers/projectController.js';
 import { middlewareToken } from '../config/jwt.js';
 const projectRoutes = express.Router();
 
@@ -165,5 +165,56 @@ projectRoutes.get('/getmyprojects', middlewareToken, getMyProjects);
  *         description: Lỗi khi truy vấn danh sách lĩnh vực
  */
 projectRoutes.get('/getfields', getFields)
+
+/**
+ * @swagger
+ * /api/project/{ProjectID}/apply:
+ *   post:
+ *     summary: Nộp hồ sơ ứng tuyển cho dự án
+ *     tags: [Projects]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: ProjectID
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID của dự án cần ứng tuyển
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               fullName:
+ *                 type: string
+ *                 description: Họ và tên ứng viên
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Email ứng viên
+ *               phone:
+ *                 type: string
+ *                 description: Số điện thoại ứng viên
+ *               introduction:
+ *                 type: string
+ *                 description: Thư giới thiệu (tùy chọn)
+ *               cvFile:
+ *                 type: string
+ *                 format: binary
+ *                 description: File CV (PDF, DOC, DOCX)
+ *     responses:
+ *       201:
+ *         description: Nộp hồ sơ ứng tuyển thành công
+ *       400:
+ *         description:"Yêu cầu không hợp lệ (ví dụ: thiếu file CV)"
+ *       401:
+ *         description: "Không được phép (thiếu hoặc token không hợp lệ)"
+ *       500:
+ *         description: Lỗi server
+ */
+projectRoutes.post('/:projectID/apply', middlewareToken, upload.single('cvFile'), applyToProject);
 
 export default projectRoutes;
