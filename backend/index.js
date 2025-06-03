@@ -41,9 +41,12 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: `${FRONTEND_URL}`, 
+    origin: (origin, callback) => {
+        callback(null, true); // Cho phép tất cả origins
+    },
     credentials: true
-    }));
+}));
+
 app.use(cookieParser());
 app.use(session({
     secret: process.env.JWT_SECRET,

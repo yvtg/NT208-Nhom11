@@ -13,11 +13,12 @@ const setupSocket = (server) => {
     // tạo socket server
     const io = new Server(server, {
         cors: {
-            origin: `${FRONTEND_URL}`, 
+            origin: true,               // Cho phép mọi origin
             methods: ["GET", "POST"],
-            credentials: true,
-        },
+            credentials: true
+        }
     });
+
 
     // lấy userId từ token
     io.use((socket, next) => {
