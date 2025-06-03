@@ -5,6 +5,7 @@ import passport from '../config/passport.js';
 import { createAccessToken } from '../config/jwt.js';
 
 const authRoutes = express.Router();
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 /**
  * @swagger
@@ -127,7 +128,7 @@ authRoutes.get('/google/callback',
             role: req.user.role
         };
         const token = createAccessToken(payload);
-        res.redirect(`http://localhost:3001/login?token=${token}`);
+        res.redirect(`${FRONTEND_URL}/login?token=${token}`);
     }
 );
 
@@ -164,7 +165,7 @@ authRoutes.get('/facebook/callback',
             role: req.user.role
         };
         const token = createAccessToken(payload);
-        res.redirect(`http://localhost:3001/login?token=${token}`);
+        res.redirect(`${FRONTEND_URL}/login?token=${token}`);
     }
 );
 
@@ -201,7 +202,7 @@ authRoutes.get('/github/callback',
             role: req.user.role
         };
         const token = createAccessToken(payload);
-        res.redirect(`http://localhost:3001/login?token=${token}`);
+        res.redirect(`${FRONTEND_URL}/login?token=${token}`);
     }
 );
 

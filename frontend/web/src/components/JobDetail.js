@@ -588,7 +588,7 @@ const JobDetail = ({ project }) => {
                                 project?.status === 'closed' ? 'bg-blue-100 text-blue-800' :
                                 'bg-gray-100 text-gray-800'}`}>
                                 {project?.status === 'open' ? 'Đang tuyển' :
-                                project?.status === 'closed' ? 'Đã hoàn thành' :
+                                project?.status === 'closed' ? 'Đã đóng' :
                                 'Không xác định'}
                         </span>
                     </div>

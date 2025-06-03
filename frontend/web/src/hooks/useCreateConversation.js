@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+
 const useCreateConversation = () => {
     const [createLoading, setLoading] = useState(false);
     const [createError, setError] = useState(null);
@@ -10,7 +12,7 @@ const useCreateConversation = () => {
         const token = localStorage.getItem('token');
 
         try {
-        const res = await fetch('http://localhost:3000/api/chat/conversations', {
+        const res = await fetch(`${BACKEND_URL}/api/chat/conversations`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

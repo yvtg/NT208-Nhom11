@@ -4,6 +4,8 @@ import bcrypt from "bcrypt";
 import crypto from 'crypto'
 import transporter from "../config/mailer.js";
 
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3001";
+
 const avatarURL = 'https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg';
 
 const signup = async (req, res) => {
@@ -131,7 +133,7 @@ const forgotPassword = async (req, res) => {
     `, [email, token, expires]);
 
     // TODO: Gửi mail
-    const resetLink = `http://localhost:3001/reset-password/${token}`;
+    const resetLink = `${FRONTEND_URL}/reset-password/${token}`;
     console.log(resetLink)
 
     await transporter.sendMail({

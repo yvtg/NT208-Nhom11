@@ -22,6 +22,9 @@ import OAuthButtons from "../components/OAuthButtons";
 //     return ""; // Nếu mật khẩu hợp lệ
 // };
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+
+
 const Login = ({ setAuthenticated }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -68,7 +71,7 @@ const Login = ({ setAuthenticated }) => {
 
         // Send login request to API
         try {
-            const response = await fetch("http://localhost:3000/api/auth/login", {
+            const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),

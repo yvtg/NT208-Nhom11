@@ -1,23 +1,24 @@
 import { FaGoogle, FaFacebook, FaGithub } from "react-icons/fa";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
 const OAuthButtons = () => {
     const handleGoogleLogin = () => {
-        const redirectUrl = encodeURIComponent('http://localhost:5173/login');
-        const oauthUrl = `http://localhost:3000/api/auth/google?redirect_url=${redirectUrl}`;
+        const redirectUrl = encodeURIComponent(`${BACKEND_URL}/login`);
+        const oauthUrl = `${BACKEND_URL}/api/auth/google?redirect_url=${redirectUrl}`;
         console.log('Google OAuth URL:', oauthUrl);
         window.location.href = oauthUrl;
     };
 
     const handleFacebookLogin = () => {
-        const redirectUrl = encodeURIComponent('http://localhost:5173/login');
-        const oauthUrl = `http://localhost:3000/api/auth/facebook?redirect_url=${redirectUrl}`;
+        const redirectUrl = encodeURIComponent(`${BACKEND_URL}/login`);
+        const oauthUrl = `${BACKEND_URL}/api/auth/facebook?redirect_url=${redirectUrl}`;
         console.log('Facebook OAuth URL:', oauthUrl);
         window.location.href = oauthUrl;
     };
 
     const handleGithubLogin = () => {
-        const redirectUrl = encodeURIComponent('http://localhost:5173/login');
-        const oauthUrl = `http://localhost:3000/api/auth/github?redirect_url=${redirectUrl}`;
+        const redirectUrl = encodeURIComponent(`${BACKEND_URL}/login`);
+        const oauthUrl = `${BACKEND_URL}/api/auth/github?redirect_url=${redirectUrl}`;
         console.log('GitHub OAuth URL:', oauthUrl);
         window.location.href = oauthUrl;
     };

@@ -8,8 +8,9 @@ import SuccessNoti from "../components/SuccessNoti";
 import Footer from "../components/Footer";
 import OAuthButtons from "../components/OAuthButtons";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
 
-    const SignUp = () => {
+const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -90,7 +91,7 @@ import OAuthButtons from "../components/OAuthButtons";
 
         try 
         {
-            const res = await fetch("http://localhost:3000/api/auth/signup", {
+            const res = await fetch(`${BACKEND_URL}/api/auth/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

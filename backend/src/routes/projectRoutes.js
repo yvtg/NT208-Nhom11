@@ -130,13 +130,20 @@ projectRoutes.get('/getprojectbyid/:ProjectID', getProjectById);
  *     tags: [Projects]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: ownerId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: owner id
  *     responses:
  *       200:
  *         description: Trả về danh sách dự án của người dùng
  *       401:
  *         description: Không có token hoặc token không hợp lệ
  */
-projectRoutes.get('/getmyprojects', middlewareToken, getMyProjects);
+projectRoutes.get('/getmyprojects/:ownerId', middlewareToken, getMyProjects);
 
 
 /**

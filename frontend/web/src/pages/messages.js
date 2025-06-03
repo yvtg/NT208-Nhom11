@@ -42,6 +42,20 @@ const Message = ( { onLogout }) => {
     const selectedConversation = conversations?.find(
         (conv) => conv.conversationid === conversationID
     );
+
+    console.log(selectedConversation)
+    
+    // Xử lý xem trang cá nhân
+    const handleViewProfile = () => {
+        if (selectedConversation) {
+            // Nếu người gửi tin nhắn cuối là người dùng hiện tại, lấy ID của người còn lại
+            const otherUserId = selectedConversation.user1_id === userID 
+                ? selectedConversation.user2_id 
+                : selectedConversation.user1_id;
+            
+            navigate(`/users/${otherUserId}`);
+        }
+    };
     
     // xóa cuộc hội thoại
     const handleDelete = async () => {
@@ -151,7 +165,10 @@ const Message = ( { onLogout }) => {
                                     className="text-2xl text-red-500 cursor-pointer hover:text-red-300 mr-4"
                                     onClick={handleDelete} 
                                 />
-                                <FaInfoCircle className="text-2xl text-darkPrimary cursor-pointer hover:text-lightPrimary mr-4" />
+                                <FaInfoCircle 
+                                    className="text-2xl text-darkPrimary cursor-pointer hover:text-lightPrimary mr-4" 
+                                    onClick={handleViewProfile}
+                                />
                             </div>
                         </div>
                     ) : (

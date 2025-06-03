@@ -1,9 +1,11 @@
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+
 const useSendMessage = () => {
     const sendMessage = async (conversationID, content) => {
         try {
             const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 
-            const response = await fetch("http://localhost:3000/api/chat/messages", {
+            const response = await fetch(`${BACKEND_URL}/api/chat/messages`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

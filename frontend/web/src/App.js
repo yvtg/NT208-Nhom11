@@ -7,7 +7,6 @@ import ChangeCV from "./pages/settings/change-cv";
 import PostJob from "./pages/jobs/post";
 import JobPage from "./pages/jobs/page";
 import SearchJob from "./pages/jobs/search"; 
-import Test from "./pages/test"
 import SignUp from "./pages/signup"; 
 import Login from "./pages/login"; 
 import DashBoard from "./pages/dashboard";  
@@ -80,7 +79,7 @@ const AppContent = () => {
         <Route path="/jobs/post" element={authenticated ? <PostJob onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
         <Route path="/jobs/:id" element={authenticated ? <JobPage onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
         <Route path="/jobs/search" element={authenticated ? <SearchJob onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
-        <Route path="/test" element={<Test />} />
+
         <Route path="/messages" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
         <Route path="/messages/:id" element={authenticated ? <Message onLogout={handleLogout} /> : <Navigate to="/login" replace />} />
         <Route path="/users/:id" element={authenticated ? <IntroPage onLogout={handleLogout}  /> : <Navigate to="/login" replace />} />

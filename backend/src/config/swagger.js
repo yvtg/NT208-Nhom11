@@ -1,5 +1,7 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 
+const CALLBACK_URL = process.env.CALLBACK_URL;
+
 const options = {
     definition: {
         openapi: '3.0.0',
@@ -14,7 +16,7 @@ const options = {
         },
         servers: [
             {
-                url: 'http://localhost:3000',
+                url: `${CALLBACK_URL}`,
                 description: 'Development server',
             },
         ],
