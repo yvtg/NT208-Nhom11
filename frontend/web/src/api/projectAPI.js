@@ -110,9 +110,8 @@ export const applyToProject = async (projectID, applicationData) => {
             }
         };
 
-        // applicationData should be a FormData object
-        // Corrected the URL to match backend route
-        const response = await apiClient.post(`/api/project/apply/${projectID}`, applicationData, config);
+        
+        const response = await apiClient.post(`/api/project/${projectID}/apply`, applicationData, config);
         return response.data;
     } catch (error) {
         console.error('Lỗi khi nộp hồ sơ ứng tuyển:', error);

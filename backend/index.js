@@ -39,8 +39,8 @@ server.listen(SOCKET_PORT, () => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
-// Middleware
-app.use(express.json());
+// Middleware (được di chuyển xuống dưới các route sử dụng Multer)
+// app.use(express.json()); // <-- Moved below routes
 app.use(cors({
     origin: `${FRONTEND_URL}`, 
     credentials: true
@@ -58,6 +58,12 @@ app.use(passport.session());
 app.use("/api", rootRoutes);
 app.use("/api/chatbot", chatbotRoutes);
 app.use("/api/project", projectRoutes);
+
+// Middleware xử lý body (đặt sau các route sử dụng Multer)
+app.use(express.json());
+// Nếu có express.urlencoded() cũng nên đặt ở đây
+// app.use(express.urlencoded({ extended: true }));
+
 
 // Kiểm tra kết nối database
 database.connect()

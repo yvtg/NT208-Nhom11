@@ -8,6 +8,7 @@ const ApplyModal = ({ project, onClose, userData }) => {
     const [phone, setPhone] = useState('');
     const [introduction, setIntroduction] = useState('');
     const [cvFile, setCvFile] = useState(null);
+    const [hasSelectedNewCv, setHasSelectedNewCv] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -20,14 +21,24 @@ const ApplyModal = ({ project, onClose, userData }) => {
     }, [userData]);
 
     const handleFileChange = (event) => {
-        setCvFile(event.target.files[0]);
+        const file = event.target.files[0];
+        console.log('File selected:', file);
+        setCvFile(file);
+        setHasSelectedNewCv(!!file);
+        console.log('hasSelectedNewCv after selection:', !!file);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!cvFile && !userData?.cv_url) {
-            setError('Vui lòng tải lên CV mới hoặc đảm bảo bạn có CV đã lưu.');
+        console.log('Submitting form...');
+        console.log('Current state - cvFile:', cvFile);
+        console.log('Current state - hasSelectedNewCv:', hasSelectedNewCv);
+        console.log('Current state - userData?.cv_url:', userData?.cv_url);
+
+        if (!hasSelectedNewCv && !userData?.cv_url) {
+            console.log('Validation failed: No new CV and no existing CV.');
+            setError('Vui lòng tải lên CV mới hoặc đảm bảo bạn có CV đã lưu trong hồ sơ.');
             return;
         }
 
@@ -39,12 +50,26 @@ const ApplyModal = ({ project, onClose, userData }) => {
         formData.append('email', email);
         formData.append('phone', phone);
         formData.append('introduction', introduction);
-        if (cvFile) {
-            formData.append('cvFile', cvFile);
+
+        if (hasSelectedNewCv && cvFile) {
+             console.log('Appending new CV file to FormData.');
+             formData.append('cvFile', cvFile);
+        } else if (userData?.cv_url) {
+             console.log('Appending useExistingCv flag to FormData.');
+             formData.append('useExistingCv', 'true');
+        }
+
+        // Log FormData contents - Note: Directly inspecting FormData values is tricky
+        // This loop helps visualize what's being appended
+        console.log('FormData contents before API call:');
+        for (let [key, value] of formData.entries()) {
+             console.log(`${key}:`, value);
         }
 
         try {
+            console.log('Calling applyToProject API...');
             await applyToProject(project.projectid, formData);
+            console.log('applyToProject API call successful.');
             alert('Hồ sơ của bạn đã được gửi thành công!');
             onClose();
         } catch (err) {
@@ -63,13 +88,13 @@ const ApplyModal = ({ project, onClose, userData }) => {
                     <IoClose size={24} />
                 </button>
 
-                <h2 className="text-2xl font-bold text-center text-darkPrimary mb-4">Ứng tuyển {project?.projectname}</h2>
+                <h2 className="text-2xl font-bold text-darkPrimary mb-4">Ứng tuyển {project?.projectname}</h2>
 
                 <form onSubmit={handleSubmit}>
                     {/* Upload CV Section */}
                     <div className="mb-4 border border-dashed border-gray-300 rounded-lg p-4 text-center">
                         <h3 className="text-lg font-semibold text-gray-700 mb-2">Chọn CV để ứng tuyển</h3>
-                        {userData?.cv_url && (
+                        {userData?.cv_url && !hasSelectedNewCv && (
                             <div className="bg-gray-50 border border-darkPrimary rounded-md p-3 mb-3 text-left">
                                 <p className="text-darkPrimary-800 font-medium">CV ứng tuyển gần nhất: {userData.cv_url.split('/').pop()} <span className="text-blue-600 cursor-pointer">Xem</span></p>
                                 <p className="text-sm text-gray-700">Họ và tên: {userData.username}</p>
@@ -81,9 +106,11 @@ const ApplyModal = ({ project, onClose, userData }) => {
                         <div>
                             <input type="file" id="cvUpload" className="hidden" onChange={handleFileChange} accept=".doc,.docx,.pdf" disabled={isLoading} />
                             <label htmlFor="cvUpload" className={`cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                                Tải lên CV từ máy tính, chọn hoặc kéo thả
+                                {hasSelectedNewCv ? 'Chọn lại CV' : 'Tải lên CV từ máy tính, chọn hoặc kéo thả'}
                             </label>
-                            {cvFile && <p className="mt-2 text-sm text-darkPrimary-600">Đã chọn tệp: {cvFile.name}</p>}
+                            {cvFile && hasSelectedNewCv && <p className="mt-2 text-sm text-darkPrimary-600">Đã chọn tệp mới: {cvFile.name}</p>}
+                            {!hasSelectedNewCv && userData?.cv_url && <p className="mt-2 text-sm text-darkPrimary-600">Sử dụng CV đã lưu.</p>}
+                            {!hasSelectedNewCv && !userData?.cv_url && <p className="mt-2 text-sm text-darkPrimary-600">Chưa có CV nào được chọn.</p>}
                             <p className="text-xs text-gray-500 mt-1">Hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB</p>
                             {error && error.includes('CV') && <p className="text-red-500 text-sm mt-1">{error}</p>}
                         </div>

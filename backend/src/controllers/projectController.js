@@ -7,15 +7,11 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Cấu hình Multer để lưu trữ file CV
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        // Đường dẫn tới thư mục lưu CV. Cần đảm bảo thư mục này tồn tại.
-        // Ví dụ: backend/uploads/cvs
-        cb(null, path.join(__dirname, '../uploads/cvs')); 
+        cb(null, path.join(__dirname, '../uploads/cvs')); //tạm thời lưu ở backend 
     },
     filename: function (req, file, cb) {
-        // Đặt tên file: projectID-userID-timestamp.ext
         const projectId = req.params.projectID;
         const userId = req.user.userid; // Lấy từ middlewareToken
         const ext = path.extname(file.originalname);
@@ -285,21 +281,7 @@ const applyToProject = async (req, res) => {
             return res.status(400).json({ message: 'Không tìm thấy file CV đã tải lên.' });
         }
 
-        // Lưu thông tin ứng tuyển vào database
-        // Bạn cần có một bảng trong DB để lưu thông tin ứng tuyển, ví dụ: applications
-        /*
-        CREATE TABLE applications (
-            application_id SERIAL PRIMARY KEY,
-            project_id INT REFERENCES projects(projectid),
-            user_id INT REFERENCES users(userid),
-            full_name VARCHAR(255),
-            email VARCHAR(255),
-            phone VARCHAR(50),
-            introduction TEXT,
-            cv_path VARCHAR(255),
-            applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-        */
+        // Lưu thông tin ứng tuyển vào database application 
         const result = await database.query(
             `INSERT INTO applications (
                 project_id, user_id, full_name, email, phone, introduction, cv_path
@@ -311,15 +293,15 @@ const applyToProject = async (req, res) => {
 
     } catch (error) {
         console.error('Lỗi khi nộp hồ sơ:', error);
-        // Xóa file đã upload nếu có lỗi xảy ra sau khi upload
-        if (req.file) {
-            const fs = require('fs');
-            fs.unlink(req.file.path, (err) => {
-                if (err) console.error('Lỗi khi xóa file tạm:', err);
-            });
-        }
+        // Xóa file đã upload nếu có lỗi xảy ra sau khi upload - Note: fs needs to be imported
+        // if (req.file) {
+        //     const fs = require('fs');
+        //     fs.unlink(req.file.path, (err) => {
+        //         if (err) console.error('Lỗi khi xóa file tạm:', err);
+        //     });
+        // }
         res.status(500).json({ message: 'Đã xảy ra lỗi khi nộp hồ sơ.' });
     }
 };
 
-export { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields, applyToProject, upload };
+export { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields, applyToProject };

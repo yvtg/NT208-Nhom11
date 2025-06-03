@@ -1,6 +1,63 @@
 import express from 'express';
-import { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields, applyToProject, upload } from '../controllers/projectController.js';
+import { getProjects, createProject, updateProject, deleteProject, getProjectById, getMyProjects, getFields, applyToProject } from '../controllers/projectController.js';
 import { middlewareToken } from '../config/jwt.js';
+
+import multer from 'multer';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import fs from 'fs'; 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Cấu hình Multer để lưu trữ file CV
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const uploadPath = path.join(__dirname, '../uploads/cvs'); // đường dẫn tới thư mục lưu CV
+        console.log('Multer destination:', uploadPath);
+        if (!fs.existsSync(uploadPath)){
+            console.log('Upload directory does not exist. Creating...', uploadPath);
+            fs.mkdirSync(uploadPath, { recursive: true });
+            console.log('Upload directory created.');
+        } else {
+            console.log('Upload directory already exists.', uploadPath);
+        }
+        cb(null, uploadPath);
+    },
+    filename: function (req, file, cb) {
+        const projectId = req.params.projectID;
+        const userId = req.user.userid;
+        
+
+        const ext = path.extname(file.originalname);
+        const filename = `${projectId}-${userId}-${Date.now()}${ext}`;
+        console.log('Multer filename:', filename);
+        cb(null, filename);
+    }
+});
+
+// Filter file để chỉ chấp nhận pdf, doc, docx
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    console.log('Checking file mimetype:', file.mimetype);
+    if (allowedTypes.includes(file.mimetype)) {
+        console.log('File type allowed.');
+        cb(null, true);
+    } else {
+        console.log('File type disallowed.');
+        cb(new Error('Chỉ cho phép tải lên file PDF, DOC, và DOCX!'), false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5 // Giới hạn kích thước file 5MB
+    },
+    fileFilter: fileFilter
+});
+
 const projectRoutes = express.Router();
 
 /**
@@ -222,6 +279,25 @@ projectRoutes.get('/getfields', getFields)
  *       500:
  *         description: Lỗi server
  */
-projectRoutes.post('/:projectID/apply', middlewareToken, upload.single('cvFile'), applyToProject);
+projectRoutes.post(
+    '/:projectID/apply',
+     middlewareToken, 
+    (req, res, next) => { // Log Content-Type
+        console.log('Request received. Content-Type:', req.headers['content-type']);
+        next();
+    },
+    upload.single('cvFile'),
+    (req, res, next) => { 
+        console.log('Entering multer error handling middleware...');
+        if (req.file) {
+            console.log('Multer processed file successfully.', req.file);
+        } else {
+            console.log('Multer did NOT process file successfully. req.file is undefined.');
+        }
+        console.log('req.body in error handling middleware:', req.body);
+        next();
+    },
+    applyToProject
+);
 
 export default projectRoutes;

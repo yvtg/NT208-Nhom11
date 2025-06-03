@@ -6,7 +6,7 @@ const apiClient = axios.create({
   baseURL: BACKEND_URL,
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
+    // 'Content-Type': 'application/json', // Removed to allow Axios to set Content-Type automatically (e.g., for FormData)
   },
   withCredentials: true
 });
@@ -17,6 +17,7 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // Note: Do NOT manually set Content-Type here for FormData requests. Axios handles it.
     return config;
   },
   (error) => {
